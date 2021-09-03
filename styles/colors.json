@@ -1,0 +1,87 @@
+{
+    "cm": {
+        "bg": "#ffffff",
+        "gutterBg": "#f7f7f7",
+        "gutterBorder": "#dddddd",
+        "numbers": "#999999",
+        "cursor": "#000000",
+        "cursorFat": "#77EE77",
+        "cursorFatMark": "#14FF14",
+        "ruler": "#cccccc",
+        "header": "#0000FF",
+        "quote": "#009900",
+        "negative": "#DD4444",
+        "positive": "#229922",
+        "keyword": "#770088",
+        "atom": "#221199",
+        "number": "#116644",
+        "def": "#0000FF",
+        "var2": "#0055aa",
+        "var3": "#008855",
+        "comment": "#aa5500",
+        "string": "#aa1111",
+        "string2": "#ff5500",
+        "metaQualifier": "#555555",
+        "builtin": "#3300aa",
+        "bracket": "#999977",
+        "tag": "#117700",
+        "attr": "#0000cc",
+        "link": "#0000cc",
+        "hr": "#999999",
+        "error": "#ff0000",
+        "invalidChar": "#ff0000",
+        "matchBracket": "#00bb00",
+        "noMatchBracket": "#aa2222",
+        "matchingTag": "#FF9600",
+        "activeLine": "#e8f2ff",
+        "selected": "#d9d9d9",
+        "focused": "#d7d4f0",
+        "selection": "#d7d4f0",
+        "searchingBg": "#ffff0066",
+        "searchMatch": "#ffd700",
+        "searchMatchBorder": "#ffa500"
+    },
+    "transparent": "transparent",
+    "current": "currentColor",
+    "dark": {
+        "light": "#636366",
+        "dark": "#1c1c1e",
+        "DEFAULT": "#2c2c2e"
+    },
+    "disabled": {
+        "dark": "#8e8e93",
+        "DEFAULT": "#c7c7cc",
+        "light": "#e5e5ea"
+    },
+    "base": {
+        "DEFAULT": "#fbfbfc",
+        "dark": "#f1f3f7",
+        "light": "#ffffff"
+    },
+    "on-base": "#FFFFFF",
+    "primary": {
+        "light": "#007aff",
+        "DEFAULT": "#1987ff",
+        "dark": "#0a84ff"
+    },
+    "danger": {
+        "light": "#ff8982",
+        "DEFAULT": "#ff3b30",
+        "dark": "#ff453a"
+    },
+    "warn": {
+        "light": "#ffbf66",
+        "DEFAULT": "#ff9f0a",
+        "dark": "#ff9500"
+    },
+    "success": {
+        "light": "#9ae6b4",
+        "DEFAULT": "#30d158",
+        "dark": "#34c759"
+    },
+    "info": {
+        "light": "#a2e4ff",
+        "DEFAULT": "#64d2ff",
+        "dark": "#5ac8fa"
+    }
+}

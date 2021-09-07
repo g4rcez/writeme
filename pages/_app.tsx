@@ -1,14 +1,15 @@
 import "codemirror/lib/codemirror.css";
 import type { AppProps } from "next/app";
 import { useEffect } from "react";
-import "../styles/globals.css";
 import Colors from "../styles/colors.json";
+import "../styles/globals.css";
 
 const setColor = (varName: string, color: string, root: HTMLElement) =>
   root.style.setProperty(varName, color);
 
 type Styles = typeof Colors;
-export const setCssVars = (colors: Styles, element: HTMLElement) => {
+
+const setCssVars = (colors: Styles, element: HTMLElement) =>
   Object.entries(colors).forEach(([key, value]) => {
     if (typeof value === "string") {
       setColor(`--${key}`, value, element);
@@ -18,13 +19,12 @@ export const setCssVars = (colors: Styles, element: HTMLElement) => {
       });
     }
   });
-  return colors;
-};
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     setCssVars(Colors, document.documentElement);
   }, []);
+
   return <Component {...pageProps} />;
 }
 export default MyApp;

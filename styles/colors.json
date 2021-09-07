@@ -40,48 +40,5 @@
         "searchingBg": "#ffff0066",
         "searchMatch": "#ffd700",
         "searchMatchBorder": "#ffa500"
-    },
-    "transparent": "transparent",
-    "current": "currentColor",
-    "dark": {
-        "light": "#636366",
-        "dark": "#1c1c1e",
-        "DEFAULT": "#2c2c2e"
-    },
-    "disabled": {
-        "dark": "#8e8e93",
-        "DEFAULT": "#c7c7cc",
-        "light": "#e5e5ea"
-    },
-    "base": {
-        "DEFAULT": "#fbfbfc",
-        "dark": "#f1f3f7",
-        "light": "#ffffff"
-    },
-    "on-base": "#FFFFFF",
-    "primary": {
-        "light": "#007aff",
-        "DEFAULT": "#1987ff",
-        "dark": "#0a84ff"
-    },
-    "danger": {
-        "light": "#ff8982",
-        "DEFAULT": "#ff3b30",
-        "dark": "#ff453a"
-    },
-    "warn": {
-        "light": "#ffbf66",
-        "DEFAULT": "#ff9f0a",
-        "dark": "#ff9500"
-    },
-    "success": {
-        "light": "#9ae6b4",
-        "DEFAULT": "#30d158",
-        "dark": "#34c759"
-    },
-    "info": {
-        "light": "#a2e4ff",
-        "DEFAULT": "#64d2ff",
-        "dark": "#5ac8fa"
     }
 }

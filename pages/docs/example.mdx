@@ -1,0 +1,48 @@
+---
+title: Authenticate
+project: iam
+repository: org/iam
+author: IamTeam
+tags: ["security", "auth"]
+issues: ["org/auth/issues"]
+order: 1
+section: Authentication
+banner: http://api.xpto/images/iam.png
+---
+
+<TableOfContent />
+
+# Intro
+
+Only for test mdx docs with all components
+
+- Mention: [**@octocat**](https://github.com/octocat)
+- Try link: https://github.com/octocat
+
+:::note
+Some **content** with _markdown_ `syntax`. Check [this `api`](#).
+With emoji :heart: :wales:
+:::
+
+<Tabs default="Response">
+  <Tab id="Request">
+    <HttpRequest
+      curl={`curl https://api.xpto/auth -X POST -H 'Content-Type: application/json' --data '{ "user": "nickname", "password": "53cur39455w0rd" }'`}
+    />
+  </Tab>
+  <Tab id="Response">
+    <h1>Response</h1>
+    <HttpResponse
+      body={{ errors: ["Error 1", "Error 2"], status: "error", data: null }}
+      statusCode={400}
+    >
+      Status code 400 when not Silva
+    </HttpResponse>
+  </Tab>
+</Tabs>
+
+```typescript
+type Props<T> = {
+  [k in keyof T]: string & T[k];
+};
+```

@@ -1,0 +1,16 @@
+.markdown p {
+  @apply antialiased text-gray-600 lining-nums tracking-wide whitespace-pre-wrap break-words w-full container mx-auto leading-relaxed;
+}
+
+.markdown table {
+  width: 100%;
+  text-align: left;
+  table-layout: auto;
+  border-collapse: separate;
+}
+
+.markdown blockquote {
+  padding: 0.5rem;
+  border: 1px solid var(--gray);
+  border-radius: 0.25rem;
+}

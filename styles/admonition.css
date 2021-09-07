@@ -1,0 +1,13 @@
+/* admonition admonition-note alert alert--secondary */
+
+.admonition {
+  @apply border px-4 py-2 rounded-lg;
+}
+
+.admonition-icon {
+  @apply inline-block mx-1;
+}
+
+.admonition-heading {
+  @apply flex flex-row space-x-4 items-center;
+}

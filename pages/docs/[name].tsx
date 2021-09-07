@@ -1,26 +1,27 @@
-import { GetStaticPaths, GetStaticProps } from "next";
+import axios from "axios";
 import { HttpRequest } from "components/http-request/http-request";
 import { HttpResponse } from "components/http-response/http-response";
+import { MdxDocsProvider } from "components/mdx-docs.context";
+import { CodeHighlight } from "components/prism";
+import { TableOfContent } from "components/table-of-content";
 import Fs from "fs/promises";
-import Head from "next/head";
+import GlobCallback from "glob";
 import matter from "gray-matter";
+import { Dates } from "lib/dates";
+import { GetStaticPaths, GetStaticProps } from "next";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
+import Head from "next/head";
 import Path from "path";
-import { MdxDocsProvider } from "components/mdx-docs.context";
 import { Fragment, useEffect, useRef, useState } from "react";
-import { TableOfContent } from "components/table-of-content";
-import GlobCallback from "glob";
-import { promisify } from "util";
-import { Tab, Tabs } from "../../components/tabs";
-import { CodeHighlight } from "components/prism";
-import { Dates } from "lib/dates";
-//@ts-ignore
-import admonitions from "remark-admonitions";
+import remarkGemoji from "remark-gemoji";
 import remarkGfm from "remark-gfm";
 import remarkGithub from "remark-github";
-
-import remarkGemoji from "remark-gemoji";
+import { promisify } from "util";
+import { Tab, Tabs } from "../../components/tabs";
+//@ts-ignore
+import admonitions from "remark-admonitions";
+import { Playground } from "components/playground";
 
 const Glob = promisify(GlobCallback);
 
@@ -49,7 +50,12 @@ type Metadata = {
   readingTime: number;
 };
 
-const remarkPlugins = [admonitions, remarkGemoji, remarkGfm, remarkGithub];
+const remarkPlugins: any[] = [
+  admonitions,
+  remarkGemoji,
+  remarkGfm,
+  remarkGithub,
+];
 
 export const getStaticProps: GetStaticProps = async (props) => {
   const path = props.params?.name ?? "example";
@@ -92,6 +98,15 @@ const Heading = (props: any) => (
   />
 );
 
+const playgroundScope = {
+  axios,
+  Tab,
+  Tabs,
+  HttpRequest,
+  HttpResponse,
+  CodeHighlight,
+};
+
 const components = {
   h1: (props: any) => <Heading {...props} size="text-3xl" />,
   h2: (props: any) => <Heading {...props} size="text-3xl" />,
@@ -100,11 +115,6 @@ const components = {
   h5: (props: any) => <Heading {...props} size="text-lg" />,
   h6: (props: any) => <Heading {...props} size="text-base" />,
   ul: (props: any) => <ul {...props} className={props.className ?? "my-4"} />,
-  HttpRequest,
-  HttpResponse,
-  Tab,
-  TableOfContent,
-  Tabs,
   pre: (props: any) => {
     const componentProps = props.children.props;
     const language = /\w+-(\w+)/.exec(componentProps.className)?.[1];
@@ -116,6 +126,13 @@ const components = {
       );
     return <CodeHighlight code={componentProps.children} language={language} />;
   },
+  // eslint-disable-next-line react/display-name
+  Playground: (props: any) => <Playground {...props} scope={playgroundScope} />,
+  HttpRequest,
+  HttpResponse,
+  Tab,
+  TableOfContent,
+  Tabs,
 };
 
 type Props = {

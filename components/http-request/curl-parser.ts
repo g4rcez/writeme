@@ -1,6 +1,5 @@
 // extract from https://github.com/Kong/insomnia
 import { ControlOperator, parse, ParseEntry } from "shell-quote";
-import { parse as QsParse } from "querystring";
 
 export type Comment = {
   comment?: string;

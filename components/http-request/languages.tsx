@@ -1,15 +1,9 @@
+export const HttpDefault = {
+  language: "http",
+  framework: "1.1",
+};
+
 export const HttpLanguages = [
-  {
-    frameworks: [{ value: "libcurl", label: "Libcurl" }],
-    alias: "text/x-csrc",
-    value: "c",
-    label: "C",
-  },
-  {
-    frameworks: [{ value: "clj_http", label: "Clj Http" }],
-    value: "clojure",
-    label: "Clojure",
-  },
   {
     frameworks: [
       { value: "restsharp", label: "Rest Sharp" },
@@ -18,11 +12,6 @@ export const HttpLanguages = [
     value: "csharp",
     alias: "text/x-csharp",
     label: "C#",
-  },
-  {
-    frameworks: [{ value: "native", label: "Native" }],
-    value: "go",
-    label: "Go",
   },
   {
     frameworks: [{ value: "1.1", label: "Http 1.1" }],
@@ -51,50 +40,15 @@ export const HttpLanguages = [
     label: "Javascript (Browser)",
   },
   {
-    frameworks: [{ value: "okhttp", label: "okhttp" }],
-    alias: "text/x-java",
-    value: "kotlin",
-    label: "Kotlin",
-  },
-  {
     frameworks: [
       { value: "fetch", label: "Fetch" },
       { value: "axios", label: "Axios" },
-      { value: "jquery", label: "jQuery" },
       { value: "unirest", label: "unirest" },
       { value: "xhr", label: "xhr" },
     ],
     value: "node",
     alias: "javascript",
     label: "NodeJS (Server)",
-  },
-  {
-    frameworks: [{ value: "nsurlsession", label: "NSUrlSession" }],
-    value: "objc",
-    alias: "text/x-objectivec",
-    label: "Objective C",
-  },
-  {
-    frameworks: [{ value: "cohttp", label: "coHTTP" }],
-    value: "ocaml",
-    label: "Ocaml",
-  },
-  {
-    frameworks: [
-      { value: "curl", label: "cURL" },
-      { value: "http1", label: "Http 1" },
-      { value: "http2", label: "Http 2" },
-    ],
-    value: "php",
-    label: "PHP",
-  },
-  {
-    frameworks: [
-      { value: "webrequest", label: "Web Request" },
-      { value: "restmethod", label: "Rest Method" },
-    ],
-    value: "powershell",
-    label: "Powershell",
   },
   {
     frameworks: [
@@ -105,16 +59,6 @@ export const HttpLanguages = [
     label: "Python",
   },
   {
-    frameworks: [{ value: "httr", label: "HTTR" }],
-    value: "r",
-    label: "R",
-  },
-  {
-    frameworks: [{ value: "native", label: "Native" }],
-    value: "ruby",
-    label: "Ruby",
-  },
-  {
     frameworks: [
       { value: "curl", label: "cURL" },
       { value: "httpie", label: "Httpie" },
@@ -122,10 +66,5 @@ export const HttpLanguages = [
     ],
     value: "shell",
     label: "Shell",
-  },
-  {
-    frameworks: [{ value: "nsurlsession", label: "NSUrlSession" }],
-    value: "swift",
-    label: "Swift",
   },
 ];

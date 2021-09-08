@@ -14,13 +14,8 @@ render(<App />)`;
 
 export const Playground: React.FC<Props> = (props) => {
   return (
-    <div className="w-full block p-4">
-      <LiveProvider
-        noInline
-        scope={props.scope}
-        theme={dracula}
-        code={props.code ?? defaultCode}
-      >
+    <div className="w-full block">
+      <LiveProvider noInline scope={props.scope} theme={dracula} code={props.code ?? defaultCode}>
         <LiveEditor className="w-full rounded-lg my-4" />
         <LiveError className="mt-4 block w-full p-4 rounded-lg" />
         <LivePreview className="w-full rounded-lg p-5" />

@@ -8,6 +8,8 @@ import { HttpDefault, HttpLanguages } from "./languages";
 import { MiniTitle } from "components/mini-title";
 import { HttpMethod } from "./http-method";
 import { Select } from "components/select";
+import { useHttpContext } from "components/http.context";
+import { Is } from "lib/is";
 
 type Props = {
   curl: string;
@@ -25,6 +27,7 @@ export const HttpRequest: React.VFC<Props> = ({ curl }) => {
   const [language, setLanguage] = useState(HttpDefault.language);
   const [framework, setFramework] = useState(HttpDefault.framework);
   const [req, setReq] = useState(() => convertRequest(curl));
+  const { onRequest } = useHttpContext();
 
   useEffect(() => setReq(() => convertRequest(curl)), [curl]);
 
@@ -45,20 +48,14 @@ export const HttpRequest: React.VFC<Props> = ({ curl }) => {
     }
   }, [language, framework, req]);
 
-  const onChangeLang = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const val = e.target.value;
-      setLanguage(val);
-      const lang = HttpLanguages.find((x) => x.value === val)!;
-      setFramework(lang.frameworks[0].value);
-    },
-    []
-  );
+  const onChangeLang = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value;
+    setLanguage(val);
+    const lang = HttpLanguages.find((x) => x.value === val)!;
+    setFramework(lang.frameworks[0].value);
+  }, []);
 
-  const frameworks = useMemo(
-    () => HttpLanguages.find((x) => x.value === language)!.frameworks,
-    [language]
-  );
+  const frameworks = useMemo(() => HttpLanguages.find((x) => x.value === language)!.frameworks, [language]);
 
   const onChangeRequestBody = useCallback((body: any) => {
     setReq((prev) =>
@@ -76,44 +73,46 @@ export const HttpRequest: React.VFC<Props> = ({ curl }) => {
   }, []);
 
   const onChangeRequestHeaders = useCallback(
-    (headers: any) =>
-      setReq((prev) => (prev === null ? prev : { ...prev, headers })),
+    (headers: any) => setReq((prev) => (prev === null ? prev : { ...prev, headers })),
     []
   );
 
   const headers = useMemo(() => req?.headers ?? [], [req]);
 
+  const onSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const bodyText = (req?.body as any).text;
+      onRequest({
+        body: Is.Json(bodyText) ? bodyText : req?.body,
+        headers: headers.reduce((acc, el) => ({ ...acc, [el.name]: el.value }), {}),
+        url: req?.url ?? "",
+        method: (req?.method?.toUpperCase() as never) ?? "GET",
+      });
+    },
+    [onRequest, req?.body, req?.url, req?.method, headers]
+  );
+
   return (
     <section className="flex flex-col">
       <section className="w-full">
-        <header className="mb-8">
-          <h2
-            className="text-xs mb-4"
-            data-text={`Request - ${req?.method} ${req?.url}`}
-          >
-            <HttpMethod method={req?.method} />{" "}
-            <span className="text-sm">{req?.url}</span>
+        <header className="my-4">
+          <h2 className="text-xs" data-text={`Request - ${req?.method} ${req?.url}`}>
+            <HttpMethod method={req?.method} /> <span className="text-sm">{req?.url}</span>
           </h2>
         </header>
-        <div className="my-4">
+        <div className="my-2">
           <MiniTitle data-text={`Request Headers`}>Headers</MiniTitle>
           <Headers headers={headers} onChange={onChangeRequestHeaders} />
         </div>
-        <div className="my-4">
+        <div className="my-2">
           <MiniTitle data-text={`Request Body`}>Body</MiniTitle>
-          <Body
-            onChange={onChangeRequestBody}
-            text={(req?.body as any).text ?? ""}
-          />
+          <Body onChange={onChangeRequestBody} text={(req?.body as any).text ?? ""} />
         </div>
       </section>
-      <aside className="code border-t border-b border-gray-200 my-8 py-2">
-        <form className="flex flex-row gap-x-4">
-          <Select
-            value={language}
-            placeholder="Language"
-            onChange={onChangeLang}
-          >
+      <aside className="code border-t border-b border-gray-200 my-4 py-2">
+        <form onSubmit={onSubmit} className="flex gap-x-4 items-center">
+          <Select value={language} placeholder="Language" onChange={onChangeLang}>
             {HttpLanguages.map((x) => (
               <option key={`lang-${x.value}`} value={x.value}>
                 {x.label}
@@ -121,11 +120,7 @@ export const HttpRequest: React.VFC<Props> = ({ curl }) => {
             ))}
           </Select>
           {frameworks.length > 1 && (
-            <Select
-              value={framework}
-              placeholder="Framework"
-              onChange={(e) => setFramework(e.target.value)}
-            >
+            <Select value={framework} placeholder="Framework" onChange={(e) => setFramework(e.target.value)}>
               {frameworks.map((x) => (
                 <option key={`framework-${x.value}`} value={x.value}>
                   {x.label}
@@ -133,6 +128,9 @@ export const HttpRequest: React.VFC<Props> = ({ curl }) => {
               ))}
             </Select>
           )}
+          <button type="submit" className="px-4 py-3 my-0 leading-3 text-sm bg-blue-400 text-white rounded-lg">
+            Request API
+          </button>
         </form>
         <CodeHighlight code={requestCode} language={language} />
       </aside>

@@ -1,49 +1,31 @@
-import { MiniTitle } from "components/mini-title";
+import { useHttpContext } from "components/http.context";
 import { CodeHighlight } from "components/prism";
-import { Text } from "components/text";
 import React, { useMemo } from "react";
 
-type Props = {
-  body: any;
-  language?: string;
-  statusCode: 200 | 201 | 202 | 204 | 500 | 501 | 503 | 400 | 401 | 403 | 404;
-};
+export const HttpResponse: React.VFC = () => {
+  const { response, loading } = useHttpContext();
 
-export const StatusCodeDict: Record<Props["statusCode"], React.ReactNode> = {
-  "200": "Ok",
-  "201": "Created",
-  "202": "Accepted",
-  "204": "No Content",
-  "400": "Bad Request",
-  "401": "Unauthorized",
-  "403": "Forbidden",
-  "404": "Not Found",
-  "500": "Internal Server Error",
-  "501": "Not Implemented",
-  "503": "Service Unavailable",
-};
+  const httpResponseText: string = useMemo(() => {
+    if (response === null) return "";
+    const urlParts = new URL(response.url);
+    const headers = response.headers || {};
+    const httpHeadersString = Object.keys(headers).map((key) => `${key}: ${headers[key]}`);
+    const httpResponse = [`${response.method} ${urlParts.pathname}`];
+    httpResponse.push(...httpHeadersString);
+    httpResponse.push("");
+    httpResponse.push(JSON.stringify(response.body, null, 4));
+    return httpResponse.join("\n");
+  }, [response]);
 
-export const HttpResponse: React.FC<Props> = ({
-  statusCode,
-  children,
-  body,
-  language = "json",
-}) => {
-  const responseBody = useMemo(
-    () =>
-      typeof body === "object"
-        ? JSON.stringify(body, null, 4)
-        : `${body ?? ""}`,
-    [body]
-  );
+  if (loading) return <span className="text-lg mt-4 mb-2 italic text-gray-300">Loading...</span>;
+
+  if (response === null) {
+    return null;
+  }
 
   return (
-    <section className="order-2">
-      <MiniTitle>
-        {statusCode} - {StatusCodeDict[statusCode]}
-      </MiniTitle>
-      <Text>{children}</Text>
-      <CodeHighlight code={responseBody} language={language} />
+    <section className="mt-4 mb-2">
+      <CodeHighlight code={httpResponseText} language="http" />
     </section>
   );
 };

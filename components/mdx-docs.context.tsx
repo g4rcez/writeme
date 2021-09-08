@@ -1,14 +1,11 @@
 import { createContext, useContext } from "react";
 
 type MdxDocsContextProps = {
-  root: HTMLElement | null;
   theme: string;
+  titlePrefix: string;
 };
 
-const MdxDocsContext = createContext<MdxDocsContextProps>({
-  root: null,
-  theme: "light",
-});
+const MdxDocsContext = createContext<MdxDocsContextProps>({ theme: "light", titlePrefix: "WriteMe" });
 
 export const MdxDocsProvider = MdxDocsContext.Provider;
 

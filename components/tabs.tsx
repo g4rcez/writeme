@@ -1,58 +1,29 @@
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { Fragment, useCallback, useEffect, useRef, useState } from "react";
 
-type fallback = (
-  overTop: number,
-  overBottom: number,
-  parent: HTMLElement,
-  parentBorderTopWidth: number
-) => any;
+type fallback = (overTop: number, overBottom: number, parent: HTMLElement, parentBorderTopWidth: number) => any;
 
 declare global {
   interface Element {
-    scrollIntoTab: (
-      this: HTMLElement,
-      bool?: boolean,
-      callback?: fallback
-    ) => void;
+    scrollIntoTab: (this: HTMLElement, bool?: boolean, callback?: fallback) => void;
     scrollSelectIntoView: (this: HTMLElement, bool?: boolean) => void;
   }
 }
 
 // https://gist.github.com/hsablonniere/2581101
-function scrollIfNeeded(
-  element: HTMLElement,
-  centerIfNeeded?: boolean,
-  scrollTop?: boolean
-) {
+function scrollIfNeeded(element: HTMLElement, centerIfNeeded?: boolean, scrollTop?: boolean) {
   centerIfNeeded = arguments.length === 0 ? true : !!centerIfNeeded;
 
   var parent = element.parentNode! as HTMLElement,
     parentComputedStyle = window.getComputedStyle(parent, null),
-    parentBorderTopWidth = parseInt(
-      parentComputedStyle.getPropertyValue("border-top-width")
-    ),
-    parentBorderLeftWidth = parseInt(
-      parentComputedStyle.getPropertyValue("border-left-width")
-    ),
+    parentBorderTopWidth = parseInt(parentComputedStyle.getPropertyValue("border-top-width")),
+    parentBorderLeftWidth = parseInt(parentComputedStyle.getPropertyValue("border-left-width")),
     overTop = element.offsetTop - parent.offsetTop < parent.scrollTop,
     overBottom =
-      element.offsetTop -
-        parent.offsetTop +
-        element.clientHeight -
-        parentBorderTopWidth >
+      element.offsetTop - parent.offsetTop + element.clientHeight - parentBorderTopWidth >
       parent.scrollTop + parent.clientHeight,
     overLeft = element.offsetLeft - parent.offsetLeft < parent.scrollLeft,
     overRight =
-      element.offsetLeft -
-        parent.offsetLeft +
-        element.clientWidth -
-        parentBorderLeftWidth >
+      element.offsetLeft - parent.offsetLeft + element.clientWidth - parentBorderLeftWidth >
       parent.scrollLeft + parent.clientWidth,
     alignWithTop = overTop && !overBottom;
 
@@ -69,11 +40,7 @@ function scrollIfNeeded(
 
   if ((overLeft || overRight) && centerIfNeeded) {
     parent.scrollLeft =
-      element.offsetLeft -
-      parent.offsetLeft -
-      parent.clientWidth / 2 -
-      parentBorderLeftWidth +
-      element.clientWidth / 2;
+      element.offsetLeft - parent.offsetLeft - parent.clientWidth / 2 - parentBorderLeftWidth + element.clientWidth / 2;
   }
 
   if ((overTop || overBottom || overLeft || overRight) && !centerIfNeeded) {
@@ -83,10 +50,7 @@ function scrollIfNeeded(
 
 const PolyfillsTab = () => {
   if (!Element.prototype.scrollIntoTab) {
-    Element.prototype.scrollIntoTab = function (
-      this: HTMLElement,
-      centerIfNeeded?: boolean
-    ) {
+    Element.prototype.scrollIntoTab = function (this: HTMLElement, centerIfNeeded?: boolean) {
       scrollIfNeeded(this, centerIfNeeded, false);
     };
   }
@@ -142,9 +106,7 @@ export const Tabs: React.FC<TabsProps> = (props) => {
   const header = useRef<HTMLUListElement>(null);
   const container = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(
-    () =>
-      props.default ??
-      (React.Children.toArray(props.children)[0] as any).props.id
+    () => props.default ?? (React.Children.toArray(props.children)[0] as any).props.id
   );
 
   useEffect(() => {
@@ -155,7 +117,7 @@ export const Tabs: React.FC<TabsProps> = (props) => {
     const ul = header.current;
     const div = inkBar.current;
     const current = ul.querySelector(`#${active}`) as HTMLElement;
-    if (current.scrollIntoTab) {
+    if (current && current.scrollIntoTab) {
       current.scrollIntoTab();
       const boundClient = calculateWidthSize(ul, active);
       div.style.width = `${current.getBoundingClientRect().width}px`;
@@ -165,35 +127,18 @@ export const Tabs: React.FC<TabsProps> = (props) => {
 
   const onTabClick = useCallback((i: string) => () => setActive(i), []);
 
-  const children = (
-    React.Children.toArray(props.children).find(
-      (x: any) => x.props.id === active
-    ) as any
-  )?.props?.children;
+  const children = (React.Children.toArray(props.children).find((x: any) => x.props.id === active) as any)?.props
+    ?.children;
 
   return (
     <div className="block w-full my-4">
       <header className="relative w-full tab-container overflow-x-auto flex flex-nowrap pb-2 border-b border-gray-200">
-        <div
-          ref={inkBar}
-          className="bg-blue-400 absolute bottom-0 left-0 w-fit inkbar"
-        />
-        <ul
-          ref={header}
-          className="p-0 m-0 list-none inline-flex flex-nowrap text-base font-normal"
-          role="tablist"
-        >
+        <div ref={inkBar} className="bg-blue-400 absolute bottom-0 left-0 w-fit inkbar" />
+        <ul ref={header} className="p-0 m-0 list-none inline-flex flex-nowrap text-base font-normal" role="tablist">
           {React.Children.map(props.children, (x: any) => {
             const tabProps: TabProps = x.props;
             const isActive = active === tabProps.id;
-            return (
-              <Tab
-                {...tabProps}
-                onClick={onTabClick(tabProps.id)}
-                isActive={isActive}
-                key={`${x}-li-tabs`}
-              />
-            );
+            return <Tab {...tabProps} onClick={onTabClick(tabProps.id)} isActive={isActive} key={`${x}-li-tabs`} />;
           })}
         </ul>
       </header>

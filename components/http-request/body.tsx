@@ -2,26 +2,16 @@ import { Input } from "components/input";
 import { Is } from "lib/is";
 import { Strings } from "lib/strings";
 import { assocPath } from "ramda";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 
-const getKeys = <T,>(obj: T) =>
-  Object.entries(obj).map((x) => ({ key: x[0], value: x[1] }));
+const getKeys = <T,>(obj: T) => Object.entries(obj).map((x) => ({ key: x[0], value: x[1] }));
 
 type FieldProps = {
   item: { key: string; value: string | number };
   onChangeInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Type: React.FC = ({ children }) => (
-  <small className="italic font-thin text-gray-400">{children}</small>
-);
+const Type: React.FC = ({ children }) => <small className="italic font-thin text-gray-400">{children}</small>;
 
 const Field: React.VFC<FieldProps> = ({ item: x, onChangeInput }) => {
   const firstPrototype = useRef(Is.Prototype(x.value));
@@ -29,8 +19,7 @@ const Field: React.VFC<FieldProps> = ({ item: x, onChangeInput }) => {
     <section className="w-full">
       <label>
         <span className="cursor-text w-fit">
-          <span className="font-extrabold">{x.key}</span>{" "}
-          <Type>{firstPrototype.current}</Type>
+          <span className="font-extrabold">{x.key}</span> <Type>{firstPrototype.current}</Type>
         </span>
         <Input
           style={{ width: `${x.value.toString().length + 3}ch` }}
@@ -54,12 +43,7 @@ type Props = {
   originalRef?: any;
 };
 
-const BodyRecursive: React.VFC<Props> = ({
-  parentPath = [],
-  onChange,
-  parentIsArray,
-  ...props
-}) => {
+const BodyRecursive: React.VFC<Props> = ({ parentPath = [], onChange, parentIsArray, ...props }) => {
   const uuid = useRef(Strings.uuid());
 
   const [body, setBody] = useState(() => {
@@ -74,10 +58,7 @@ const BodyRecursive: React.VFC<Props> = ({
     });
   }, [props.text]);
 
-  const index = useMemo(
-    () => (props.index === undefined ? 0 : props.index + 1),
-    [props.index]
-  );
+  const index = useMemo(() => (props.index === undefined ? 0 : props.index + 1), [props.index]);
 
   const onChangeInput = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,10 +82,7 @@ const BodyRecursive: React.VFC<Props> = ({
       {objectKeys.map((x) => {
         if (Array.isArray(x.value)) {
           return (
-            <div
-              className="w-full my-2"
-              key={`body-section-${x.key}-${uuid.current}`}
-            >
+            <div className="w-full my-1" key={`body-section-${x.key}-${uuid.current}`}>
               <div>
                 <span className="font-extrabold">{x.key} </span>
                 <Type>Array</Type>
@@ -134,13 +112,7 @@ const BodyRecursive: React.VFC<Props> = ({
             />
           );
         }
-        return (
-          <Field
-            item={x}
-            key={`body-section-${x.key}-${uuid.current}`}
-            onChangeInput={onChangeInput}
-          />
-        );
+        return <Field item={x} key={`body-section-${x.key}-${uuid.current}`} onChangeInput={onChangeInput} />;
       })}
     </section>
   );

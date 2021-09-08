@@ -36,12 +36,7 @@ type Props = {
 export default function Home({ source, data }: Props) {
   return (
     <main className="w-full container mx-auto markdown">
-      <h1 className="text-5xl leading-relaxed lining-nums tracking-wide font-extrabold text-gray-600">
-        {data.title}
-      </h1>
-      <section className="flex flex-col flex-wrap">
-        <MDXRemote {...source} components={components} />
-      </section>
+      <h1>Go to /docs</h1>
     </main>
   );
 }

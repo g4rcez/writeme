@@ -1,7 +1,8 @@
 ---
-title: Authenticate
+title: Example
+description: Lorem Ipsum
 project: iam
-repository: org/iam
+repository: https://github.com/g4rcez/writeme.git
 author: IamTeam
 tags: ["security", "auth"]
 issues: ["org/auth/issues"]
@@ -12,40 +13,111 @@ banner: http://api.xpto/images/iam.png
 
 <TableOfContent />
 
-# Intro
+# Emojis :heart:
 
-Only for test mdx docs with all components
+Support emojis using `remark-gemoji`. [**_Emoji CheatSheet_**](https://www.webfx.com/tools/emoji-cheat-sheet/)
+
+:heart: :id: :end: :alien:
+
+# Paragraph
+
+What is Lorem Ipsum?
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+## Footnotes
+
+Here is a footnote reference,[^1]
+
+[^1]:
+    Here is the footnote.
+    This paragraph won’t be part of the note, because it
+    isn’t indented.
+
+## Github Integration
 
 - Mention: [**@octocat**](https://github.com/octocat)
 - Try link: https://github.com/octocat
+- Commit: 61fb9773e4a5b9e4937222e91ba02fc1f5a0d47c
+- Issue or PR (`#`): #1
 
-:::danger
+## ToDo List
 
-Some **content** with _markdown_ `syntax`. Check [this `api`](#).
+- [ ] Apply themes
+- [ ] Beautify component
+- [ ] Admonitions
+- [x] Not ToDo, only to show checked checkbox
 
-:::
+## Code
+
+### Interative Playground
 
 <Playground />
 
-<Tabs default="Response">
-  <Tab id="Request">
-    <HttpRequest
-      curl={`curl https://api.xpto/auth -X POST -H 'Content-Type: application/json' --data '{ "user": "nickname", "password": "53cur39455w0rd" }'`}
-    />
-  </Tab>
-  <Tab id="Response">
-    <h1>Response</h1>
-    <HttpResponse
-      body={{ errors: ["Error 1", "Error 2"], status: "error", data: null }}
-      statusCode={400}
-    >
-      Status code 400 when not Silva
-    </HttpResponse>
-  </Tab>
-</Tabs>
+### Highlight
 
 ```typescript
 type Props<T> = {
   [k in keyof T]: string & T[k];
 };
 ```
+
+## Tabs
+
+You can use with TSX or markdown
+
+### With TSX
+
+<Tabs default="yarn">
+  <Tab id="yarn">
+    <CodeHighlight language="bash" code="yarn add -E @g4rcez/writeme" />
+  </Tab>
+  <Tab id="npm">
+    <CodeHighlight language="bash" code="npm i -E @g4rcez/writeme" />
+  </Tab>
+</Tabs>
+
+### With Comment + Markdown
+
+<!--|tabs yarn-->
+
+## npm
+
+<CodeHighlight language="bash" code="npm i -E @g4rcez/writeme" />
+
+## yarn
+
+<CodeHighlight language="bash" code="yarn add -E @g4rcez/writeme" />
+
+<!--/tabs-->
+
+## Http
+
+Transform `curl => <Component />`
+
+### Request
+
+```bash type=request
+curl -X POST "http://localhost:3000/api/test" -H "Content-Type: application/json" -d '{"email":"write@me.com"}'
+```
+
+### Response
+
+<HttpResponse />
+
+## Support GFM
+
+Support [Github Flavored Markdown](https://www.markdownguide.org/extended-syntax/) syntax
+
+### Table
+
+| Syntax    | Description |
+| --------- | ----------- |
+| Header    | Title       |
+| Paragraph | Text        |
+
+### Table with align
+
+| Syntax    | Description |   Test Text |
+| :-------- | :---------: | ----------: |
+| Header    |    Title    | Here's this |
+| Paragraph |    Text     |    And more |

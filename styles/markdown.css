@@ -1,16 +1,42 @@
 .markdown p {
-  @apply antialiased text-gray-600 lining-nums tracking-wide whitespace-pre-wrap break-words w-full container mx-auto leading-relaxed;
+  @apply mt-1 mb-2 antialiased text-gray-600 lining-nums tracking-wide whitespace-pre-wrap break-words w-full container mx-auto leading-relaxed;
+}
+
+.markdown a {
+  @apply hover:underline no-underline text-blue-400;
 }
 
 .markdown table {
-  width: 100%;
-  text-align: left;
-  table-layout: auto;
-  border-collapse: separate;
+  @apply table table-fixed border-collapse border border-gray-300 mb-4;
+}
+
+.markdown tr {
+  @apply border-b border-gray-200 p-2;
+}
+
+.markdown tr:last-child {
+  @apply border-b-0;
+}
+
+.markdown td,
+.markdown th {
+  @apply p-2;
 }
 
 .markdown blockquote {
   padding: 0.5rem;
   border: 1px solid var(--gray);
   border-radius: 0.25rem;
+}
+
+.markdown .contains-task-list {
+  @apply mt-2 mb-4;
+}
+
+.markdown .task-list-item {
+  @apply flex items-center gap-x-1;
+}
+
+.markdown .footnotes {
+  @apply my-4 pt-2;
 }

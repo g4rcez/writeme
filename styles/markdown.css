@@ -40,3 +40,11 @@
 .markdown .footnotes {
   @apply my-4 pt-2;
 }
+
+.markdown dt {
+  @apply font-bold;
+}
+
+.markdown dd {
+  @apply font-thin italic ml-4;
+}

@@ -27,6 +27,7 @@ import { HttpContext } from "components/http.context";
 import { MdPre } from "components/md-pre";
 import { HttpResponse } from "components/http-response/http-response";
 import { remarkTabs } from "lib/remark-tabs";
+import remarkDef from "remark-deflist";
 
 const Glob = promisify(GlobCallback);
 
@@ -71,8 +72,9 @@ export const getStaticProps: GetStaticProps = async (props) => {
       admonitions,
       remarkGemoji,
       remarkGfm,
+      remarkDef,
       remarkFootnotes,
-      [remarkGithub, { repository: data.repository }],
+      [remarkGithub, { repository: data.repository ?? "" }],
     ];
     const stat = await Fs.stat(doc);
     const mdxSource = await serialize(content, { scope: data, mdxOptions: { remarkPlugins } });

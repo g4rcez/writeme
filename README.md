@@ -17,3 +17,4 @@ Write docs like [docusaurus](https://docusaurus.io/) with:
 - [ ] Support style customization
 - [ ] i18n
 - [ ] Use the same docusaurus DX
+- [ ] Implement Github PR/issues opengraph style

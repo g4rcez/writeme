@@ -128,7 +128,10 @@ export const HttpRequest: React.VFC<Props> = ({ curl }) => {
               ))}
             </Select>
           )}
-          <button type="submit" className="px-4 py-3 my-0 leading-3 text-sm bg-blue-400 text-white rounded-lg">
+          <button
+            type="submit"
+            className="px-4 py-3 my-0 leading-3 text-sm bg-blue-400 transition-colors duration-300 ease-out hover:bg-blue-500 active:bg-blue-500 text-white rounded-lg"
+          >
             Request API
           </button>
         </form>

@@ -1,5 +1,6 @@
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from "react-live";
-import dracula from "prism-react-renderer/themes/dracula";
+//@ts-ignore
+import theme from "@g4rcez/prism-react-renderer/themes/dracula";
 
 type Props = {
   scope: any;
@@ -15,7 +16,7 @@ render(<App />)`;
 export const Playground: React.FC<Props> = (props) => {
   return (
     <div className="w-full block">
-      <LiveProvider noInline scope={props.scope} theme={dracula} code={props.code ?? defaultCode}>
+      <LiveProvider noInline scope={props.scope} theme={theme} code={props.code ?? defaultCode}>
         <LiveEditor className="w-full rounded-lg my-4" />
         <LiveError className="mt-4 block w-full p-4 rounded-lg" />
         <LivePreview className="w-full rounded-lg p-5" />

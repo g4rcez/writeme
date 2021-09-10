@@ -14,7 +14,7 @@ export const HttpMethod: React.VFC<{ method?: string }> = ({
   const text = method.toUpperCase();
   return (
     <span
-      className={`rounded-full text-white px-2 py-1 ${
+      className={`http-method ${
         MethodTheme[text] ?? MethodTheme.GET
       }`}
     >

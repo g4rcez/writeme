@@ -1,13 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import axios from "axios";
+import { httpClient } from "lib/http-client";
 import { Fragment, useEffect, useMemo, useState, VFC } from "react";
-import Image from "next/image";
 
 type Props = {
   url: string;
   height?: string;
   width?: string;
-  styles?: string;
+  className?: string;
 };
 
 type OpenGraphAttrs = Partial<{
@@ -27,7 +26,7 @@ export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
 
   useEffect(() => {
     const req = async () => {
-      const response = await axios.post("/api/proxy", {
+      const response = await httpClient.post("/proxy", {
         body: undefined,
         url,
       });
@@ -63,7 +62,7 @@ export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
   return (
     <Fragment>
       {ogp.image && (
-        <section className={`flex w-full ${props.styles}`}>
+        <section className={`flex w-full ${props.className}`}>
           <img
             className="max-w-full align-middle"
             alt={ogp["image:alt"] ?? ogp.description}

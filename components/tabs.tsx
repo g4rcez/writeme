@@ -131,10 +131,10 @@ export const Tabs: React.FC<TabsProps> = (props) => {
     ?.children;
 
   return (
-    <div className="block w-full my-4">
-      <header className="relative w-full tab-container overflow-x-auto flex flex-nowrap pb-2 border-b border-gray-200">
-        <div ref={inkBar} className="bg-blue-400 absolute bottom-0 left-0 w-fit inkbar" />
-        <ul ref={header} className="p-0 m-0 list-none inline-flex flex-nowrap text-base font-normal" role="tablist">
+    <div className="tab">
+      <header className="tab-header">
+        <div ref={inkBar} className="inkbar" />
+        <ul ref={header} className="tab-container" role="tablist">
           {React.Children.map(props.children, (x: any) => {
             const tabProps: TabProps = x.props;
             const isActive = active === tabProps.id;
@@ -142,7 +142,7 @@ export const Tabs: React.FC<TabsProps> = (props) => {
           })}
         </ul>
       </header>
-      <section className="block w-full mt-2" ref={container}>
+      <section className="tab-content" ref={container}>
         {children}
       </section>
     </div>

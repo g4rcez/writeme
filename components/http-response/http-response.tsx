@@ -17,14 +17,14 @@ export const HttpResponse: React.VFC = () => {
     return httpResponse.join("\n");
   }, [response]);
 
-  if (loading) return <span className="text-lg mt-4 mb-2 italic text-gray-300">Loading...</span>;
+  if (loading) return <span className="http-response-loading">Loading...</span>;
 
   if (response === null) {
     return null;
   }
 
   return (
-    <section className="mt-4 mb-2">
+    <section className="http-response">
       <CodeHighlight code={httpResponseText} language="http" />
     </section>
   );

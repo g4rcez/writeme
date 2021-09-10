@@ -2,7 +2,7 @@ import { Input } from "components/input";
 import { Is } from "lib/is";
 import { Strings } from "lib/strings";
 import { assocPath } from "ramda";
-import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const getKeys = <T,>(obj: T) => Object.entries(obj).map((x) => ({ key: x[0], value: x[1] }));
 
@@ -16,7 +16,7 @@ const Type: React.FC = ({ children }) => <small className="italic font-thin text
 const Field: React.VFC<FieldProps> = ({ item: x, onChangeInput }) => {
   const firstPrototype = useRef(Is.Prototype(x.value));
   return (
-    <section className="w-full">
+    <section className="http-body-field">
       <label>
         <span className="cursor-text w-fit">
           <span className="font-extrabold">{x.key}</span> <Type>{firstPrototype.current}</Type>
@@ -78,16 +78,14 @@ const BodyRecursive: React.VFC<Props> = ({ parentPath = [], onChange, parentIsAr
   const objectKeys = useMemo(() => getKeys(body), [body]);
 
   return (
-    <section className="flex flex-col gap-y-2">
+    <section className="http-body">
       {objectKeys.map((x) => {
         if (Array.isArray(x.value)) {
           return (
-            <div className="w-full my-1" key={`body-section-${x.key}-${uuid.current}`}>
-              <div>
-                <span className="font-extrabold">{x.key} </span>
-                <Type>Array</Type>
-              </div>
-              <div className="pl-4 mt-2 border-l border-gray-200">
+            <div className="w-full my-1 http-body-array" key={`body-section-${x.key}-${uuid.current}`}>
+              <b>{x.key} </b>
+              <Type>Array</Type>
+              <div className="http-body-array-item">
                 <BodyRecursive
                   index={index}
                   onChange={onChange}

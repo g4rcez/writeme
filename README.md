@@ -12,9 +12,11 @@ Write docs like [docusaurus](https://docusaurus.io/) with:
 
 ## ToDo
 
-- [ ] Proxy requests using NextJS `/api`
+- [x] Proxy requests using NextJS `/api`
+- [x] Use the same docusaurus DX
+- [x] Implement Github PR/issues opengraph style
 - [ ] Add Dark Mode
-- [ ] Support style customization
+- [ ] create-next-app example (for alpha/beta versions)
+- [ ] Deploy as lib
 - [ ] i18n
-- [ ] Use the same docusaurus DX
-- [ ] Implement Github PR/issues opengraph style
+- [ ] Support style customization (using design tokens)

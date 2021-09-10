@@ -1,10 +1,10 @@
-import axios from "axios";
+import { httpClient } from "lib/http-client";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function proxyHandler(req: NextApiRequest, res: NextApiResponse<Types.ProxyResponse>) {
   if (req.method !== "POST") return;
   const body: Types.BodyProxy = req.body;
-  const response = await axios({
+  const response = await httpClient({
     url: body.url,
     method: body.method ?? "GET",
     data: body.body,

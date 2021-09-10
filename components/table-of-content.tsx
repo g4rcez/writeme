@@ -55,11 +55,11 @@ export const TableOfContent: VFC<Props> = ({ id = "document-root" }) => {
   }, [id]);
 
   return (
-    <header className="mt-2 mb-4">
+    <header className="table-of-content">
       <nav>
         <ul className="list-inside">
           {titles.map((x) => (
-            <li key={x.id} className={`my-1 duration-500 list-none ${Tags[x.tag]}`}>
+            <li key={x.id} className={`table-of-content-item ${Tags[x.tag]}`}>
               <a className="w-fit hover:underline" href={`#${x.id}`}>
                 {x.text}
               </a>

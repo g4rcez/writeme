@@ -5,6 +5,6 @@ export const Input: VFC<
 > = ({ className = "", ...props }) => (
   <input
     {...props}
-    className={`border p-1 border-gray-300 rounded-md ${className}`}
+    className={`form-input border p-1 border-gray-300 rounded-md ${className}`}
   />
 );

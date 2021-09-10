@@ -23,22 +23,14 @@ export const StatusCodeDict: Record<Props["statusCode"], React.ReactNode> = {
   "503": "Service Unavailable",
 };
 
-export const CodeResponse: React.FC<Props> = ({
-  statusCode,
-  children,
-  body,
-  language = "json",
-}) => {
+export const CodeResponse: React.FC<Props> = ({ statusCode, children, body, language = "json" }) => {
   const responseBody = useMemo(
-    () =>
-      typeof body === "object"
-        ? JSON.stringify(body, null, 4)
-        : `${body ?? ""}`,
+    () => (typeof body === "object" ? JSON.stringify(body, null, 4) : `${body ?? ""}`),
     [body]
   );
 
   return (
-    <section className="order-2">
+    <section className="http-response-code">
       <MiniTitle>
         {statusCode} - {StatusCodeDict[statusCode]}
       </MiniTitle>

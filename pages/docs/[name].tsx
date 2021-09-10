@@ -1,6 +1,8 @@
-import axios from "axios";
 import { HttpRequest } from "components/http-request/http-request";
 import { CodeResponse } from "components/http-response/code-response";
+import { HttpResponse } from "components/http-response/http-response";
+import { HttpContext } from "components/http.context";
+import { MdPre } from "components/md-pre";
 import { MdxDocsProvider } from "components/mdx-docs.context";
 import { Playground } from "components/playground";
 import { CodeHighlight } from "components/prism";
@@ -9,6 +11,8 @@ import Fs from "fs/promises";
 import GlobCallback from "glob";
 import matter from "gray-matter";
 import { Dates } from "lib/dates";
+import { httpClient } from "lib/http-client";
+import { remarkTabs } from "lib/remark-tabs";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
@@ -17,17 +21,13 @@ import Path from "path";
 import { createElement, Fragment, useRef } from "react";
 //@ts-ignore
 import admonitions from "remark-admonitions";
+import remarkDef from "remark-deflist";
+import remarkFootnotes from "remark-footnotes";
 import remarkGemoji from "remark-gemoji";
 import remarkGfm from "remark-gfm";
 import remarkGithub from "remark-github";
 import { promisify } from "util";
 import { Tab, Tabs } from "../../components/tabs";
-import remarkFootnotes from "remark-footnotes";
-import { HttpContext } from "components/http.context";
-import { MdPre } from "components/md-pre";
-import { HttpResponse } from "components/http-response/http-response";
-import { remarkTabs } from "lib/remark-tabs";
-import remarkDef from "remark-deflist";
 
 const Glob = promisify(GlobCallback);
 
@@ -108,7 +108,7 @@ const Heading = (props: any) =>
   );
 
 const playgroundScope = {
-  axios,
+  axios: httpClient,
   Tab,
   Tabs,
   HttpRequest,

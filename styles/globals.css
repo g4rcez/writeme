@@ -1,9 +1,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-@import "./request.css";
 @import "./markdown.css";
-@import "./tabs.css";
 @import "./prism.css";
 @import "./codemirror.css";
-@import "./admonition.css";
+@import "./components.css";

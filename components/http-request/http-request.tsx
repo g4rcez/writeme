@@ -94,7 +94,7 @@ export const HttpRequest: React.VFC<Props> = ({ curl }) => {
   );
 
   return (
-    <section className="flex flex-col">
+    <section className="http-request">
       <section className="w-full">
         <header className="my-4">
           <h2 className="text-xs" data-text={`Request - ${req?.method} ${req?.url}`}>
@@ -110,7 +110,7 @@ export const HttpRequest: React.VFC<Props> = ({ curl }) => {
           <Body onChange={onChangeRequestBody} text={(req?.body as any).text ?? ""} />
         </div>
       </section>
-      <aside className="code border-t border-b border-gray-200 my-4 py-2">
+      <aside className="http-request-code">
         <form onSubmit={onSubmit} className="flex gap-x-4 items-center">
           <Select value={language} placeholder="Language" onChange={onChangeLang}>
             {HttpLanguages.map((x) => (

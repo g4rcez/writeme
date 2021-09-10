@@ -21,12 +21,12 @@ export const Headers: React.VFC<Props> = ({ headers, onChange }) => {
   );
 
   return (
-    <ul className="list-inside">
+    <ul className="http-headers">
       {(headers.length > 0 &&
         headers.map((header, index) => (
           <li
             key={`header-${header.name}`}
-            className="my-2 list-none list-item"
+            className="http-headers-item"
           >
             <label>
               <span className="text-gray-500 mr-1 italic cursor-text">
@@ -42,7 +42,7 @@ export const Headers: React.VFC<Props> = ({ headers, onChange }) => {
             </label>
           </li>
         ))) || (
-        <li className="font-bold text-gray-200 text-sm">
+        <li data-empty="true" className="http-headers-item">
           Request without headers
         </li>
       )}

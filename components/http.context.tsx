@@ -1,5 +1,5 @@
-import axios from "axios";
-import { createContext, Dispatch, SetStateAction, useCallback, useContext, useState } from "react";
+import { httpClient } from "lib/http-client";
+import { createContext, useCallback, useContext, useState } from "react";
 
 type Http = Types.Nullable<Types.BodyProxy>;
 type Response = (Types.BodyProxy & { statusCode: number }) | null;
@@ -21,7 +21,7 @@ export const HttpContext: React.FC = ({ children }) => {
   const onRequest = useCallback(async (data: Types.BodyProxy) => {
     setLoading(true);
     setRequest(data);
-    const res = await axios.post("/api/proxy", {
+    const res = await httpClient.post("/proxy", {
       url: data.url,
       method: data.method ?? "GET",
       body: data.body,

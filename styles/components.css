@@ -1,0 +1,134 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer components {
+  /* Input */
+  .input {
+    @apply form-input border p-1 border-gray-300 rounded-md;
+  }
+
+  /* Select */
+
+  .select {
+    @apply block form-select mt-1 rounded-md border-gray-300;
+    @apply shadow-sm focus:border-indigo-300 focus:ring;
+    @apply focus:ring-indigo-200 focus:ring-opacity-50;
+  }
+
+  /* Table of content */
+  .table-of-content {
+    @apply mt-2 mb-4;
+  }
+
+  .table-of-content-item {
+    @apply my-1 duration-500 list-none;
+  }
+
+  /* Button */
+  .button {
+    @apply px-4 py-3 my-0 leading-3 text-sm bg-blue-400;
+    @apply transition-colors duration-300 ease-out;
+    @apply hover:bg-blue-500 active:bg-blue-500;
+    @apply text-white rounded-lg;
+  }
+
+  /* HttpRequest */
+
+  .http-body {
+    @apply flex flex-col gap-y-2;
+  }
+
+  .http-body-array-item {
+    @apply pl-4 mt-2 border-l border-gray-200;
+  }
+
+  .http-headers {
+    @apply list-inside;
+  }
+
+  .http-headers-item {
+    @apply my-2 list-none list-item;
+  }
+
+  .http-body-array-item[data-empty="true"] {
+    @apply font-bold text-gray-200 text-sm italic;
+  }
+
+  .http-method {
+    @apply rounded-full text-white px-2 py-1;
+  }
+
+  .http-request {
+    @apply flex flex-col;
+  }
+
+  .http-request-code {
+    @apply border-t border-b border-gray-200 my-4 py-2;
+  }
+
+  /* Http Response */
+
+  .http-response {
+    @apply mt-4 mb-2;
+  }
+
+  .http-response-loading {
+    @apply text-lg mt-4 mb-2 italic text-gray-300;
+  }
+
+  /* MiniTitle */
+  .mini-title {
+    @apply uppercase mb-2 text-sm font-bold text-gray-500;
+  }
+
+  /* Tabs */
+
+  .tab {
+    @apply block w-full my-4;
+  }
+  .tab-header {
+    @apply relative w-full tab-container overflow-x-auto flex flex-nowrap pb-2 border-b border-gray-200;
+  }
+
+  .tab-content {
+    @apply block w-full mt-2;
+  }
+
+  .tab-container {
+    @apply p-0 m-0 list-none inline-flex flex-nowrap text-base font-normal;
+  }
+
+  .tab-container::-webkit-scrollbar {
+    background-color: transparent;
+    height: 0.1rem;
+    width: 0.5rem;
+  }
+
+  .tab-container::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  .tab-container::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  .tab-container::-webkit-scrollbar-thumb:hover {
+    background-color: transparent;
+  }
+
+  .inkbar {
+    @apply bg-blue-400 absolute bottom-0 left-0;
+    width: fit-content;
+    height: 0.2rem;
+    transition: all 150ms cubic-bezier(0.28, 0.5, 0.51, 0.87);
+  }
+
+  /* Paragraph */
+
+  .text-paragraph {
+    @apply my-2 antialiased text-gray-600 lining-nums tracking-wide;
+    @apply whitespace-pre-wrap break-words w-full container;
+    @apply mx-auto leading-relaxed;
+  }
+}

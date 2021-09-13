@@ -123,6 +123,7 @@ export const getStaticProps: GetStaticProps = async (props) => {
       },
     };
   } catch (error) {
+    console.error(error);
     if (process.env.NODE_ENV === "development") throw error;
     return { props: { notFound: true } };
   }

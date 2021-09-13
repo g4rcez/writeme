@@ -6,28 +6,46 @@ import { MdPre } from "components/md-pre";
 import { MdxDocsProvider } from "components/mdx-docs.context";
 import { Playground } from "components/playground";
 import { CodeHighlight } from "components/prism";
+import { Sidebar } from "components/sidebar";
 import { TableOfContent } from "components/table-of-content";
+import { Tab, Tabs } from "components/tabs";
+import { Heading } from "components/text";
 import Fs from "fs/promises";
 import GlobCallback from "glob";
 import matter from "gray-matter";
 import { Dates } from "lib/dates";
 import { httpClient } from "lib/http-client";
 import { remarkTabs } from "lib/remark-tabs";
+import { Strings } from "lib/strings";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import Head from "next/head";
 import Path from "path";
-import { createElement, Fragment, useRef } from "react";
-//@ts-ignore
-import admonitions from "remark-admonitions";
+import { Fragment, useEffect, useRef } from "react";
 import remarkDef from "remark-deflist";
 import remarkFootnotes from "remark-footnotes";
 import remarkGemoji from "remark-gemoji";
 import remarkGfm from "remark-gfm";
 import remarkGithub from "remark-github";
 import { promisify } from "util";
-import { Tab, Tabs } from "../../components/tabs";
+
+type Metadata = {
+  title: string;
+  description: string;
+  project: string;
+  repository: string;
+  order: number;
+  sidebar: number;
+  tags: string[];
+  section: string;
+  createdAt: string;
+  updatedAt: string;
+  readingTime: string;
+  link: string;
+};
+
+type Docs = Record<string, Metadata[]>;
 
 const Glob = promisify(GlobCallback);
 
@@ -41,35 +59,44 @@ const getAllDocs = async (): Promise<string[]> => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const docs = await getAllDocs();
-  return {
-    fallback: "blocking",
-    paths: docs.map((file) => ({
-      params: { name: Path.basename(file).replace(/.mdx?/, "") },
-    })),
-  };
+  const paths = await Promise.all(
+    docs.map(async (file) => ({ params: { name: file.replace("pages/docs", "").split("/") } }))
+  );
+  return { fallback: "blocking", paths };
 };
 
-type Metadata = {
-  title: string;
-  project: string;
-  repository: string;
-  author: string;
-  tags: string[];
-  issues: string[];
-  updatedAt: string;
-  createdAt: string;
-  readingTime: number;
+const getAllDocsWithMetadata = async () => {
+  const docs = await getAllDocs();
+  const metadata = await Promise.all(
+    docs.map(
+      async (x): Promise<Metadata> =>
+        ({
+          ...matter(await Fs.readFile(x, "utf-8")).data,
+          link: Strings.concatUrl("/docs", x.replace("pages/docs", "").replace(/\.mdx?$/, "")),
+        } as never)
+    )
+  );
+  const groups = metadata.reduce<Docs>((acc, doc) => {
+    const key = doc.project;
+    const current = acc[key];
+    return { ...acc, [key]: Array.isArray(current) ? [...current, doc] : [doc] };
+  }, {});
+  return Object.keys(groups).map((group) => ({
+    name: group,
+    items: groups[group].sort((a, b) => a.order - b.order),
+    sidebar: Math.max(...groups[group].map((x) => x.sidebar)),
+  }));
 };
 
 export const getStaticProps: GetStaticProps = async (props) => {
-  const path = props.params?.name ?? "example";
+  const queryPath = props.params?.name;
+  const path = Array.isArray(queryPath) ? queryPath.join("/") : queryPath;
   const doc = Path.resolve(process.cwd(), "pages", "docs", `${path}.mdx`);
   try {
     const source = await Fs.readFile(doc, "utf-8");
     const { content, data } = matter(source);
     const remarkPlugins: any[] = [
       remarkTabs,
-      admonitions,
       remarkGemoji,
       remarkGfm,
       remarkDef,
@@ -81,6 +108,7 @@ export const getStaticProps: GetStaticProps = async (props) => {
     return {
       props: {
         source: mdxSource,
+        docs: await getAllDocsWithMetadata(),
         data: {
           ...data,
           updatedAt: stat.mtime.toISOString(),
@@ -94,18 +122,6 @@ export const getStaticProps: GetStaticProps = async (props) => {
     return { props: { notFound: true } };
   }
 };
-
-const Heading = (props: any) =>
-  createElement(
-    props.tag,
-    {
-      ...props,
-      className: `mt-1 tabular-nums antialiased tracking-wide font-bold text-gray-500 leading-relaxed ${
-        props.className ?? ""
-      } ${props.size}`,
-    },
-    props.children
-  );
 
 const playgroundScope = {
   axios: httpClient,
@@ -146,13 +162,25 @@ const components = {
 type Props = {
   source: MDXRemoteSerializeResult<Record<string, unknown>>;
   data: Metadata;
+  docs: any;
   notFound?: boolean;
 };
 
 const providerValue = { theme: "light", titlePrefix: "WriteMe" };
 
-export default function Home({ source, data, notFound }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
+export default function Docs({ source, data, notFound, docs }: Props) {
+  const sidebar = useRef<HTMLDivElement>(null);
+  const main = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const onResize = () => {
+      if (sidebar.current === null || main.current === null) return;
+      const sidebarWidth = sidebar.current.getBoundingClientRect().width;
+      main.current.style.width = `${window.innerWidth - sidebarWidth}px`;
+    };
+    onResize();
+    window.addEventListener("resize", onResize);
+  }, []);
 
   if (notFound) {
     return <h1>Not found</h1>;
@@ -165,18 +193,17 @@ export default function Home({ source, data, notFound }: Props) {
           {providerValue.titlePrefix} | {data.project} {data.title}
         </title>
       </Head>
-      <main className="w-full container mx-auto markdown">
+      <Sidebar ref={sidebar} className="fixed top-16 left-0 w-56" items={docs} />
+      <main className="w-auto container top-16 mx-auto markdown absolute left-56 px-8" ref={main}>
         <header className="mb-4">
-          <h1 className="text-5xl leading-tight lining-nums tracking-wide font-extrabold text-gray-600">
-            {data.title}
-          </h1>
+          <h1 className="text-5xl leading-tight lining-nums font-extrabold text-gray-600">{data.title}</h1>
           <h2 className="text-sm text-gray-500">
             {Dates.localeDate(data.createdAt)} - Reading time: {data.readingTime}min
           </h2>
         </header>
         <HttpContext>
           <MdxDocsProvider value={providerValue}>
-            <section className="flex flex-col flex-wrap" id="document-root" ref={ref}>
+            <section className="flex flex-col flex-wrap" id="document-root">
               <MDXRemote {...source} components={components} />
             </section>
           </MdxDocsProvider>

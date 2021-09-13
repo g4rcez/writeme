@@ -1,11 +1,9 @@
-import "codemirror/lib/codemirror.css";
 import type { AppProps } from "next/app";
-import { useEffect } from "react";
+import { FormEvent, Fragment, useCallback, useEffect, useRef } from "react";
 import Colors from "../styles/colors.json";
 import "../styles/globals.css";
 
-const setColor = (varName: string, color: string, root: HTMLElement) =>
-  root.style.setProperty(varName, color);
+const setColor = (varName: string, color: string, root: HTMLElement) => root.style.setProperty(varName, color);
 
 type Styles = typeof Colors;
 
@@ -20,11 +18,42 @@ const setCssVars = (colors: Styles, element: HTMLElement) =>
     }
   });
 
-function MyApp({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppProps) {
+  const input = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     setCssVars(Colors, document.documentElement);
   }, []);
 
-  return <Component {...pageProps} />;
+  const submit = useCallback((e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  }, []);
+
+  return (
+    <Fragment>
+      <header id="writeme-header" className="flex fixed z-10 top-0 justify-between w-full text-white bg-gray-700">
+        <nav className="w-full container mx-auto p-4 flex flex-nowrap items-baseline justify-between">
+          <section className="flex items-baseline gap-x-8">
+            <h1 className="font-extrabold text-lg">WriteMe</h1>
+            <ul className="flex gap-x-4 list-none">
+              <li>Docs</li>
+              <li>Blog</li>
+            </ul>
+          </section>
+          <form onSubmit={submit} className="flex gap-x-4 align-middle self-center items-baseline">
+            <h2>☀️</h2>
+            <input
+              ref={input}
+              className="bg-gray-800 px-2 py-0.5 placeholder-shown:text-white rounded-lg text-base"
+              placeholder="Search...CTRL+K"
+              type="text"
+            />
+          </form>
+        </nav>
+      </header>
+      <section className="overflow-x-hidden">
+        <Component {...pageProps} />
+      </section>
+    </Fragment>
+  );
 }
-export default MyApp;

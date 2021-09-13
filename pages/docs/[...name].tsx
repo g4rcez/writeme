@@ -49,7 +49,7 @@ type Docs = Record<string, Metadata[]>;
 
 const Glob = promisify(GlobCallback);
 
-const docFromExt = (ext: string) => Path.join("docs", "**", `*${ext}`);
+const docFromExt = (ext: string) => Path.join("pages", "docs", "**", `*${ext}`);
 
 const getAllDocs = async (): Promise<string[]> => {
   const filesMd = await Glob(docFromExt(".md"));
@@ -61,7 +61,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const docs = await getAllDocs();
   return {
     fallback: "blocking",
-    paths: await Promise.all(docs.map(async (file) => ({ params: { name: file.replace("docs/", "").split("/") } }))),
+    paths: await Promise.all(
+      docs.map(async (file) => ({ params: { name: file.replace("pages/docs/", "").split("/") } }))
+    ),
   };
 };
 
@@ -75,10 +77,11 @@ const getAllDocsWithMetadata = async () => {
       async (x): Promise<Metadata> =>
         ({
           ...matter(await Fs.readFile(x, "utf-8")).data,
-          link: Strings.concatUrl("/docs", x.replace("docs/", "").replace(/\.mdx?$/, "")),
+          link: Strings.concatUrl("/docs", x.replace("pages/docs/", "").replace(/\.mdx?$/, "")),
         } as never)
     )
   );
+  console.log(JSON.stringify(metadata, null, 4));
   const groups = metadata.reduce<Docs>((acc, doc) => {
     const key = doc.project;
     const current = acc[key];
@@ -98,6 +101,7 @@ export const getStaticProps: GetStaticProps = async (props) => {
   const path = Array.isArray(queryPath) ? Strings.concatUrl(queryPath.join("/")) : queryPath;
   const doc = Path.resolve(process.cwd(), "docs", `${path}.mdx`);
   try {
+    console.log(JSON.stringify(doc, null, 4));
     const source = await Fs.readFile(doc, "utf-8");
     const { content, data } = matter(source);
     const remarkPlugins: any[] = [
@@ -189,7 +193,7 @@ export default function Docs({ source, data, notFound, docs }: Props) {
   }, []);
 
   if (notFound) {
-    return <h1>Not found</h1>;
+    return;
   }
 
   return (
@@ -201,19 +205,23 @@ export default function Docs({ source, data, notFound, docs }: Props) {
       </Head>
       <Sidebar ref={sidebar} className="fixed top-16 left-0 w-56" items={docs} />
       <main className="w-auto container top-16 mx-auto markdown absolute left-56 px-8" ref={main}>
-        <header className="mb-4">
-          <h1 className="text-5xl leading-tight lining-nums font-extrabold text-gray-600">{data.title}</h1>
-          <h2 className="text-sm text-gray-500">
-            {Dates.localeDate(data.createdAt)} - Reading time: {data.readingTime}min
-          </h2>
-        </header>
-        <HttpContext>
-          <MdxDocsProvider value={providerValue}>
-            <section className="flex flex-col flex-wrap" id="document-root">
-              <MDXRemote {...source} components={components} />
-            </section>
-          </MdxDocsProvider>
-        </HttpContext>
+        {(notFound && <h1>Not found</h1>) || (
+          <Fragment>
+            <header className="mb-4">
+              <h1 className="text-5xl leading-tight lining-nums font-extrabold text-gray-600">{data.title}</h1>
+              <h2 className="text-sm text-gray-500">
+                {Dates.localeDate(data.createdAt)} - Reading time: {data.readingTime}min
+              </h2>
+            </header>
+            <HttpContext>
+              <MdxDocsProvider value={providerValue}>
+                <section className="flex flex-col flex-wrap" id="document-root">
+                  <MDXRemote {...source} components={components} />
+                </section>
+              </MdxDocsProvider>
+            </HttpContext>
+          </Fragment>
+        )}
       </main>
     </Fragment>
   );

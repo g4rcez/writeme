@@ -49,7 +49,12 @@ type Docs = Record<string, Metadata[]>;
 
 const Glob = promisify(GlobCallback);
 
-const docFromExt = (ext: string) => Path.join("pages", "docs", "**", `*${ext}`);
+const router = {
+  path: ["pages", "docs"],
+  fromFile: (name: string) => name.replace("pages/docs/", "").replace(/\.mdx?$/gi, ""),
+};
+
+const docFromExt = (ext: string) => Path.join(...router.path, "**", `*${ext}`);
 
 const getAllDocs = async (): Promise<string[]> => {
   const filesMd = await Glob(docFromExt(".md"));
@@ -61,9 +66,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const docs = await getAllDocs();
   return {
     fallback: "blocking",
-    paths: await Promise.all(
-      docs.map(async (file) => ({ params: { name: file.replace("pages/docs/", "").split("/") } }))
-    ),
+    paths: await Promise.all(docs.map(async (file) => ({ params: { name: router.fromFile(file).split("/") } }))),
   };
 };
 
@@ -77,7 +80,7 @@ const getAllDocsWithMetadata = async () => {
       async (x): Promise<Metadata> =>
         ({
           ...matter(await Fs.readFile(x, "utf-8")).data,
-          link: Strings.concatUrl("/docs", x.replace("pages/docs/", "").replace(/\.mdx?$/, "")),
+          link: Strings.concatUrl("/docs", router.fromFile(x)),
         } as never)
     )
   );
@@ -99,7 +102,7 @@ const getAllDocsWithMetadata = async () => {
 export const getStaticProps: GetStaticProps = async (props) => {
   const queryPath = props.params?.name;
   const path = Array.isArray(queryPath) ? Strings.concatUrl(queryPath.join("/")) : queryPath;
-  const doc = Path.resolve(process.cwd(), "pages", "docs", `${path}.mdx`);
+  const doc = Path.resolve(process.cwd(), ...router.path, `${path}.mdx`);
   try {
     console.log(JSON.stringify(doc, null, 4));
     const source = await Fs.readFile(doc, "utf-8");

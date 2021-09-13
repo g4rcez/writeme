@@ -5,3 +5,14 @@
 @import "./prism.css";
 @import "./codemirror.css";
 @import "./components.css";
+
+html {
+  font-family: "Inter", sans-serif;
+}
+
+pre > *,
+textarea.npm__react-simple-code-editor__textarea,
+pre.prism-code > * {
+  font-size: 13px;
+  font-family: "Fira Code", monospace;
+}

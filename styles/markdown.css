@@ -1,5 +1,5 @@
 .markdown p {
-  @apply mt-1 mb-2 antialiased text-gray-600 lining-nums tracking-wide whitespace-pre-wrap break-words w-full container mx-auto leading-relaxed;
+  @apply mt-1 mb-2 antialiased text-gray-600 lining-nums whitespace-pre-wrap break-words w-full container mx-auto leading-relaxed;
 }
 
 .markdown a {

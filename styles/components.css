@@ -127,7 +127,7 @@
   /* Paragraph */
 
   .text-paragraph {
-    @apply my-2 antialiased text-gray-600 lining-nums tracking-wide;
+    @apply my-2 antialiased text-gray-600 lining-nums;
     @apply whitespace-pre-wrap break-words w-full container;
     @apply mx-auto leading-relaxed;
   }

@@ -60,7 +60,7 @@ const getAllDocs = async (): Promise<string[]> => {
 export const getStaticPaths: GetStaticPaths = async () => {
   const docs = await getAllDocs();
   const paths = await Promise.all(
-    docs.map(async (file) => ({ params: { name: file.replace("pages/docs", "").split("/") } }))
+    docs.map(async (file) => ({ params: { name: file.replace("pages/docs/", "").split("/") } }))
   );
   return { fallback: "blocking", paths };
 };
@@ -72,7 +72,7 @@ const getAllDocsWithMetadata = async () => {
       async (x): Promise<Metadata> =>
         ({
           ...matter(await Fs.readFile(x, "utf-8")).data,
-          link: Strings.concatUrl("/docs", x.replace("pages/docs", "").replace(/\.mdx?$/, "")),
+          link: Strings.concatUrl("/docs", x.replace("pages/docs/", "").replace(/\.mdx?$/, "")),
         } as never)
     )
   );
@@ -90,7 +90,7 @@ const getAllDocsWithMetadata = async () => {
 
 export const getStaticProps: GetStaticProps = async (props) => {
   const queryPath = props.params?.name;
-  const path = Array.isArray(queryPath) ? queryPath.join("/") : queryPath;
+  const path = Array.isArray(queryPath) ? Strings.concatUrl("/", queryPath.join("/")) : queryPath;
   const doc = Path.resolve(process.cwd(), "pages", "docs", `${path}.mdx`);
   try {
     const source = await Fs.readFile(doc, "utf-8");

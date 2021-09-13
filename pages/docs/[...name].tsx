@@ -99,7 +99,7 @@ const getAllDocsWithMetadata = async () => {
 export const getStaticProps: GetStaticProps = async (props) => {
   const queryPath = props.params?.name;
   const path = Array.isArray(queryPath) ? Strings.concatUrl(queryPath.join("/")) : queryPath;
-  const doc = Path.resolve(process.cwd(), "docs", `${path}.mdx`);
+  const doc = Path.resolve(process.cwd(), "pages", "docs", `${path}.mdx`);
   try {
     console.log(JSON.stringify(doc, null, 4));
     const source = await Fs.readFile(doc, "utf-8");

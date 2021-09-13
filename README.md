@@ -15,8 +15,13 @@ Write docs like [docusaurus](https://docusaurus.io/) with:
 - [x] Proxy requests using NextJS `/api`
 - [x] Use the same docusaurus DX
 - [x] Implement Github PR/issues opengraph style
-- [ ] Add Dark Mode
+- [x] Group docs by project
+- [x] Order docs by key in header (parsed by [gray-matter](https://github.com/jonschlinkert/gray-matter))
+- [ ] Better layout for sidebar
+- [ ] Create `before` and `next` link at end of docs
+- [ ] Support `/blog`. Organize blog posts by `/blog/year/month/day/post-name`
+- [ ] Support style customization (using design tokens)
 - [ ] create-next-app example (for alpha/beta versions)
+- [ ] Add Dark Mode
 - [ ] Deploy as lib
 - [ ] i18n
-- [ ] Support style customization (using design tokens)

@@ -3,10 +3,14 @@ module.exports = {
   purge: ["./pages/**/*.{js,ts,jsx,tsx,mdx,md,html}", "./components/**/*.{js,ts,jsx,tsx,mdx,md,html}"],
   darkMode: "media", // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        big: "1900px",
+      },
+    },
   },
   variants: {
     extend: {},
   },
-  plugins: [require("@tailwindcss/forms")({ strategy: "class" })],
+  plugins: [require("@tailwindcss/forms")({ strategy: "class" }), require("@tailwindcss/typography")],
 };

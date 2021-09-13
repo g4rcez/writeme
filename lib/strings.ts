@@ -21,4 +21,7 @@ export namespace Strings {
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-");
   };
+
+  export const concatUrl = (baseURL: string, ...urls: string[]) =>
+    urls.reduce((acc, el) => acc.replace(/\/+$/, "") + "/" + el.replace(/^\/+/, ""), baseURL);
 }

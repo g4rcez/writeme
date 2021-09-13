@@ -59,11 +59,16 @@ const getAllDocs = async (): Promise<string[]> => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const docs = await getAllDocs();
-  const paths = await Promise.all(
-    docs.map(async (file) => ({ params: { name: file.replace("pages/docs/", "").split("/") } }))
-  );
-  return { fallback: "blocking", paths };
+  return {
+    fallback: "blocking",
+    paths: await Promise.all(
+      docs.map(async (file) => ({ params: { name: file.replace("pages/docs/", "").split("/") } }))
+    ),
+  };
 };
+
+const sidebarOrder = (items: Metadata[]) =>
+  Math.max(...items.map((x) => x.sidebar).filter((x) => !Number.isNaN(x) && typeof x === "number"));
 
 const getAllDocsWithMetadata = async () => {
   const docs = await getAllDocs();
@@ -81,16 +86,18 @@ const getAllDocsWithMetadata = async () => {
     const current = acc[key];
     return { ...acc, [key]: Array.isArray(current) ? [...current, doc] : [doc] };
   }, {});
-  return Object.keys(groups).map((group) => ({
-    name: group,
-    items: groups[group].sort((a, b) => a.order - b.order),
-    sidebar: Math.max(...groups[group].map((x) => x.sidebar)),
-  }));
+  return Object.keys(groups)
+    .map((group) => ({
+      name: group,
+      sidebar: sidebarOrder(groups[group]),
+      items: groups[group].sort((a, b) => a.order - b.order),
+    }))
+    .sort((a, b) => a.sidebar - b.sidebar);
 };
 
 export const getStaticProps: GetStaticProps = async (props) => {
   const queryPath = props.params?.name;
-  const path = Array.isArray(queryPath) ? Strings.concatUrl("/", queryPath.join("/")) : queryPath;
+  const path = Array.isArray(queryPath) ? Strings.concatUrl(queryPath.join("/")) : queryPath;
   const doc = Path.resolve(process.cwd(), "pages", "docs", `${path}.mdx`);
   try {
     const source = await Fs.readFile(doc, "utf-8");

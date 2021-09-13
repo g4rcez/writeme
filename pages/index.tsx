@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <main>
@@ -5,8 +7,8 @@ export default function Home() {
         <div className="mx-auto container px-36 text-center flex items-center flex-col gap-y-4">
           <h2 className="text-4xl font-extrabold text-center">Write docs and forget configuration</h2>
           <div className="flex gap-x-4 flex-row text-center items-center">
-            <a>View all features</a>
-            <a>View Example</a>
+            <Link href="/docs/project/getting-started">Getting Started</Link>
+            <Link href="/docs/example">View all features</Link>
           </div>
         </div>
       </section>

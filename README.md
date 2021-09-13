@@ -18,7 +18,9 @@ Write docs like [docusaurus](https://docusaurus.io/) with:
 - [x] Group docs by project
 - [x] Order docs by key in header (parsed by [gray-matter](https://github.com/jonschlinkert/gray-matter))
 - [ ] Better layout for sidebar
+- [ ] Add puppeteer to create opengraph images
 - [ ] Create `before` and `next` link at end of docs
+- [ ] Add shortcuts support with [shortcut-keys](https://github.com/leoavelino7/shortcut-keys)
 - [ ] Support `/blog`. Organize blog posts by `/blog/year/month/day/post-name`
 - [ ] Support style customization (using design tokens)
 - [ ] create-next-app example (for alpha/beta versions)

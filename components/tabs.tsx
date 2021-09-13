@@ -69,7 +69,7 @@ export const Tab: React.FC<TabProps> = (props) => (
     id={props.id}
     aria-selected={props.isActive ? "true" : "false"}
     onClick={props.onClick}
-    className="flex flex-grow-0 flex-shrink-0 outline-none focus:outline-none px-4 m-0"
+    className="flex flex-grow-0 flex-shrink-0 outline-none focus:outline-none px-4 m-0 py-2"
   >
     <button
       role="link"

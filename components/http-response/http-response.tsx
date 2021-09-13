@@ -10,7 +10,7 @@ export const HttpResponse: React.VFC = () => {
     const urlParts = new URL(response.url);
     const headers = response.headers || {};
     const httpHeadersString = Object.keys(headers).map((key) => `${key}: ${headers[key]}`);
-    const httpResponse = [`${response.method} ${urlParts.pathname}`];
+    const httpResponse = [`${response.method} ${urlParts.pathname} HTTP/1.1`];
     httpResponse.push(...httpHeadersString);
     httpResponse.push("");
     httpResponse.push(JSON.stringify(response.body, null, 4));

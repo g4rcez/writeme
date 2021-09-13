@@ -52,5 +52,5 @@ export const MdPre = (props: any) => {
         <code>{componentProps.children}</code>
       </pre>
     );
-  return <CodeHighlight code={componentProps.children} language={language} />;
+  return <CodeHighlight code={componentProps.children.replace(/\n$/, "").replace(/^\n/, "")} language={language} />;
 };

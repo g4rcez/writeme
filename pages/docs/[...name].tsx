@@ -1,17 +1,20 @@
-import { HttpRequest } from "components/http-request/http-request";
-import { CodeResponse } from "components/http-response/code-response";
-import { HttpResponse } from "components/http-response/http-response";
-import { HttpContext } from "components/http.context";
-import { MdPre } from "components/md-pre";
-import { MdxDocsProvider } from "components/mdx-docs.context";
-import { Playground } from "components/playground";
-import { CodeHighlight } from "components/prism";
-import { Sidebar } from "components/sidebar";
-import { TableOfContent } from "components/table-of-content";
-import { Tab, Tabs } from "components/tabs";
-import { Heading } from "components/text";
+import {
+  CodeHighlight,
+  CodeResponse,
+  Heading,
+  HttpContext,
+  HttpRequest,
+  HttpResponse,
+  MdPre,
+  MdxDocsProvider,
+  Playground,
+  Sidebar,
+  Tab,
+  TableOfContent,
+  Tabs,
+} from "components/";
+import { Container } from "components/container";
 import Fs from "fs/promises";
-import GlobCallback from "glob";
 import matter from "gray-matter";
 import { Dates } from "lib/dates";
 import { httpClient } from "lib/http-client";
@@ -30,6 +33,8 @@ import remarkGfm from "remark-gfm";
 import remarkGithub from "remark-github";
 import { promisify } from "util";
 
+const Glob = promisify(require("glob"));
+
 type Metadata = {
   title: string;
   description: string;
@@ -47,12 +52,10 @@ type Metadata = {
 
 type Docs = Record<string, Metadata[]>;
 
-const Glob = promisify(GlobCallback);
-
 const router = {
   path: ["pages", "docs"],
   fromFile: (name: string) => name.replace("pages/docs/", "").replace(/\.mdx?$/gi, ""),
-};
+} as const;
 
 const docFromExt = (ext: string) => Path.join(...router.path, "**", `*${ext}`);
 
@@ -84,7 +87,6 @@ const getAllDocsWithMetadata = async () => {
         } as never)
     )
   );
-  console.log(JSON.stringify(metadata, null, 4));
   const groups = metadata.reduce<Docs>((acc, doc) => {
     const key = doc.project;
     const current = acc[key];
@@ -104,7 +106,6 @@ export const getStaticProps: GetStaticProps = async (props) => {
   const path = Array.isArray(queryPath) ? Strings.concatUrl(queryPath.join("/")) : queryPath;
   const doc = Path.resolve(process.cwd(), ...router.path, `${path}.mdx`);
   try {
-    console.log(JSON.stringify(doc, null, 4));
     const source = await Fs.readFile(doc, "utf-8");
     const { content, data } = matter(source);
     const remarkPlugins: any[] = [
@@ -195,10 +196,6 @@ export default function Docs({ source, data, notFound, docs }: Props) {
     window.addEventListener("resize", onResize);
   }, []);
 
-  if (notFound) {
-    return;
-  }
-
   return (
     <Fragment>
       <Head>
@@ -206,8 +203,8 @@ export default function Docs({ source, data, notFound, docs }: Props) {
           {providerValue.titlePrefix} | {data.project} {data.title}
         </title>
       </Head>
-      <Sidebar ref={sidebar} className="fixed top-16 left-0 w-56" items={docs} />
-      <main className="w-auto container top-16 mx-auto markdown absolute left-56 px-8" ref={main}>
+      <Sidebar ref={sidebar} className="fixed top-16 left-0 w-56 ml-4" items={docs} />
+      <Container className="top-16 mx-auto markdown absolute left-56 px-16" ref={main}>
         {(notFound && <h1>Not found</h1>) || (
           <Fragment>
             <header className="mb-4">
@@ -225,7 +222,7 @@ export default function Docs({ source, data, notFound, docs }: Props) {
             </HttpContext>
           </Fragment>
         )}
-      </main>
+      </Container>
     </Fragment>
   );
 }

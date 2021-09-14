@@ -1,5 +1,6 @@
+import { SearchBar } from "components/search-bar";
 import type { AppProps } from "next/app";
-import { FormEvent, Fragment, useCallback, useEffect, useRef } from "react";
+import { FormEvent, Fragment, useCallback, useEffect, useRef, useState } from "react";
 import Colors from "../styles/colors.json";
 import "../styles/globals.css";
 
@@ -20,6 +21,7 @@ const setCssVars = (colors: Styles, element: HTMLElement) =>
 
 export default function App({ Component, pageProps }: AppProps) {
   const input = useRef<HTMLInputElement>(null);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     setCssVars(Colors, document.documentElement);
@@ -32,6 +34,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <Fragment>
       <header id="writeme-header" className="flex fixed z-10 top-0 justify-between w-full text-white bg-gray-700">
+        <SearchBar show={show} />
         <nav className="w-full container mx-auto p-4 flex flex-nowrap items-baseline justify-between">
           <section className="flex items-baseline gap-x-8">
             <h1 className="font-extrabold text-lg">WriteMe</h1>

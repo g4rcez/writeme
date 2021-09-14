@@ -14,6 +14,7 @@ import {
   Tabs,
 } from "components/";
 import { Container } from "components/container";
+import { Metadata, OrderDoc } from "components/order-doc";
 import Fs from "fs/promises";
 import matter from "gray-matter";
 import { Dates } from "lib/dates";
@@ -34,21 +35,6 @@ import remarkGithub from "remark-github";
 import { promisify } from "util";
 
 const Glob = promisify(require("glob"));
-
-type Metadata = {
-  title: string;
-  description: string;
-  project: string;
-  repository: string;
-  order: number;
-  sidebar: number;
-  tags: string[];
-  section: string;
-  createdAt: string;
-  updatedAt: string;
-  readingTime: string;
-  link: string;
-};
 
 type Docs = Record<string, Metadata[]>;
 
@@ -93,11 +79,14 @@ const getAllDocsWithMetadata = async () => {
     return { ...acc, [key]: Array.isArray(current) ? [...current, doc] : [doc] };
   }, {});
   return Object.keys(groups)
-    .map((group) => ({
-      name: group,
-      sidebar: sidebarOrder(groups[group]),
-      items: groups[group].sort((a, b) => a.order - b.order),
-    }))
+    .map((group) => {
+      const items = groups[group];
+      return {
+        name: group,
+        sidebar: sidebarOrder(items),
+        items: items.sort((a, b) => a.order - b.order),
+      };
+    })
     .sort((a, b) => a.sidebar - b.sidebar);
 };
 
@@ -118,13 +107,22 @@ export const getStaticProps: GetStaticProps = async (props) => {
     ];
     const stat = await Fs.stat(doc);
     const mdxSource = await serialize(content, { scope: data, mdxOptions: { remarkPlugins } });
+    const docs = await getAllDocsWithMetadata();
+    const currentGroup = docs.find((x) => x.sidebar === data.sidebar) ?? null;
+    const order = data.order - 1;
+    const next = currentGroup?.items[order + 1] ?? null;
+    const prev = currentGroup?.items[order - 1] ?? null;
+
+    console.log({ order, next, prev, currentGroup, sidebar: data.sidebar, docs });
     return {
       revalidate: process.env.NODE_ENV === "development" ? 1 : undefined,
       props: {
         source: mdxSource,
-        docs: await getAllDocsWithMetadata(),
+        docs,
         data: {
           ...data,
+          next,
+          prev,
           updatedAt: stat.mtime.toISOString(),
           createdAt: stat.birthtime.toISOString(),
           readingTime: Math.ceil(content.split(" ").length / 250),
@@ -223,6 +221,10 @@ export default function Docs({ source, data, notFound, docs }: Props) {
             </HttpContext>
           </Fragment>
         )}
+        <div className="flex w-full justify-between my-4">
+          {data.prev !== null && <OrderDoc {...data.prev} direction="prev" />}
+          {data.next !== null && <OrderDoc {...data.next} direction="next" />}
+        </div>
       </Container>
     </Fragment>
   );

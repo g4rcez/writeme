@@ -1,5 +1,6 @@
 import { Container } from "components/container";
 import Link from "next/link";
+import { SearchBar } from "components/search-bar";
 
 export default function Home() {
   return (

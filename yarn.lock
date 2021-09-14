@@ -5191,10 +5191,10 @@ shell-quote@1.7.2:
   resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.7.2.tgz#67a7d02c76c9da24f99d20808fcaded0e0e04be2"
   integrity sha512-mRz/m/JVscCrkMyPqHc/bczi3OQHkLTqXHEFu0zDhK/qfv3UcOA4SVmRCLmos4bhjr9ekVQubj/R7waKapmiQg==
 
-shortcut-keys@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/shortcut-keys/-/shortcut-keys-0.0.1.tgz#0e471f26b8226c008a930c0817fd839a65b35613"
-  integrity sha512-ag1OPWW3hN78uoINfqMr4spTn0hP2Mpb25jwrPRUlMwN7nIVKiOplKj+wRlWXAgHC+Fwtwh0lmWR+59UkiuEKg==
+shortcut-keys@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/shortcut-keys/-/shortcut-keys-0.1.0.tgz#923f3e660cc4c201abe4eac802e31cef08caee8b"
+  integrity sha512-i6AJTD63mMARUaISr7ITLpvwUYVPiWuOtRV0vluNG3PMEt8F1lSs0T28y0SSClUN26kL1ABJu71xQcVZkS414w==
 
 side-channel@^1.0.4:
   version "1.0.4"

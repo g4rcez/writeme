@@ -1,3 +1,5 @@
+const Colors = require("./styles/colors.json");
+
 module.exports = {
   mode: "jit",
   purge: [
@@ -9,6 +11,7 @@ module.exports = {
   darkMode: "media", // or 'media' or 'class'
   theme: {
     extend: {
+      colors: Colors,
       screens: {
         big: "1900px",
       },

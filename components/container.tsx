@@ -9,5 +9,5 @@ type Props = {
 // eslint-disable-next-line react/display-name
 export const Container: React.FC<Props> = React.forwardRef<HTMLDivElement, Props>(
   ({ className = "", tag = "section", children }, externalRef) =>
-    React.createElement(tag, { className: `mx-auto container w-full px-4 ${className}`, ref: externalRef }, children)
+    React.createElement(tag, { className: `mx-auto container w-full ${className}`, ref: externalRef }, children)
 ) as any;

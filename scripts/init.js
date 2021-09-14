@@ -1,6 +1,6 @@
-import { promisify } from "util";
-import Path from "path";
-import { rmSync } from "fs";
+const { promisify } = require("util");
+const Path = require("path");
+const { rmSync } = require("fs");
 const glob = promisify(require("glob"));
 
 const mdPath = Path.resolve(process.cwd(), "pages", "docs", "**", "*.md");

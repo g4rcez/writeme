@@ -1,10 +1,10 @@
 //@ts-ignore
 import Highlight, { defaultProps } from "@g4rcez/prism-react-renderer";
-//@ts-ignore
-import theme from "@g4rcez/prism-react-renderer/themes/dracula";
-import { copyToClipboard } from "lib/copy-tco-clipboard";
-import React, { useMemo } from "react";
+import { copyToClipboard } from "lib/copy-to-clipboard";
+import React, { useMemo, useState } from "react";
 import { BsClipboard } from "react-icons/bs";
+import { FaCheck } from "react-icons/fa";
+import { draculaTheme } from "styles/code-highlight-theme";
 
 type Props = {
   code: string;
@@ -12,17 +12,26 @@ type Props = {
 };
 
 export const CodeHighlight: React.VFC<Props> = ({ code = "", language }) => {
+  const [copied, setCopied] = useState(false);
   const convertLang = useMemo(() => (language === "node" ? "javascript" : language), [language]);
+
+  const copy = () => {
+    copyToClipboard(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 3000);
+  };
+
   return (
     <div className="code-highlight relative">
       <button
         title="Copy to clipboard"
-        onClick={() => copyToClipboard(code)}
-        className="text-gray-200 absolute top-0 right-0 p-4"
+        onClick={copy}
+        className={`absolute top-0 right-0 p-4 ${copied ? "text-green-400" : "text-gray-200"}`}
       >
-        <BsClipboard className="select-none pointer-events-none" />
+        {!copied && <BsClipboard className="select-none pointer-events-none" />}
+        {copied && <FaCheck className="select-none pointer-events-none" />}
       </button>
-      <Highlight {...defaultProps} theme={theme} code={code} language={convertLang}>
+      <Highlight {...defaultProps} theme={draculaTheme} code={code} language={convertLang}>
         {({ className, style, tokens, getLineProps, getTokenProps }: any) => (
           <pre className={`${className} text-left mx-4 p-4 overflow-scroll`} style={style}>
             {tokens.map((line: any[], i: number) => {

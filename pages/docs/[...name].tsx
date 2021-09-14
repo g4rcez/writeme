@@ -119,6 +119,7 @@ export const getStaticProps: GetStaticProps = async (props) => {
     const stat = await Fs.stat(doc);
     const mdxSource = await serialize(content, { scope: data, mdxOptions: { remarkPlugins } });
     return {
+      revalidate: process.env.NODE_ENV === "development" ? 1 : undefined,
       props: {
         source: mdxSource,
         docs: await getAllDocsWithMetadata(),
@@ -133,7 +134,7 @@ export const getStaticProps: GetStaticProps = async (props) => {
   } catch (error) {
     console.error(error);
     if (process.env.NODE_ENV === "development") throw error;
-    return { props: { notFound: true } };
+    return { notFound: true };
   }
 };
 
@@ -203,8 +204,8 @@ export default function Docs({ source, data, notFound, docs }: Props) {
           {providerValue.titlePrefix} | {data.project} {data.title}
         </title>
       </Head>
-      <Sidebar ref={sidebar} className="fixed top-16 left-0 w-56 ml-4" items={docs} />
-      <Container className="top-16 mx-auto markdown absolute left-56 px-16" ref={main}>
+      <Sidebar ref={sidebar} className="fixed top-16 left-0 w-56 ml-6" items={docs} />
+      <Container className="top-16 mx-auto markdown absolute left-56 px-20" ref={main}>
         {(notFound && <h1>Not found</h1>) || (
           <Fragment>
             <header className="mb-4">

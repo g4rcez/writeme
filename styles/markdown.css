@@ -41,10 +41,22 @@
   @apply my-4 pt-2;
 }
 
+.markdown dl {
+  @apply my-1;
+}
+
 .markdown dt {
   @apply font-bold;
 }
 
 .markdown dd {
-  @apply font-thin italic ml-4;
+  @apply font-thin italic ml-4 mb-2;
+}
+
+.markdown code:not([class]) {
+  @apply bg-code text-word px-1 py-0.5 rounded font-extrabold italic;
+}
+
+.markdown .code-highlight {
+  @apply mb-4;
 }

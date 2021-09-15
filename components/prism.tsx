@@ -22,7 +22,7 @@ export const CodeHighlight: React.VFC<Props> = ({ code = "", language }) => {
   };
 
   return (
-    <div className="code-highlight relative">
+    <div className="code-highlight relative w-full mx-auto container">
       <button
         title="Copy to clipboard"
         onClick={copy}

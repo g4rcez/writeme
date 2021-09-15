@@ -6,6 +6,11 @@
 @import "./codemirror.css";
 @import "./components.css";
 
+html,
+body {
+  height: 100%;
+}
+
 html {
   font-family: "Inter", sans-serif;
 }
@@ -16,3 +21,5 @@ pre.prism-code > * {
   font-size: 13px;
   font-family: "Fira Code", monospace;
 }
+
+

@@ -13,7 +13,6 @@ import {
   TableOfContent,
   Tabs,
 } from "components/";
-import { Container } from "components/container";
 import { Metadata, OrderDoc } from "components/order-doc";
 import Fs from "fs/promises";
 import matter from "gray-matter";
@@ -26,7 +25,7 @@ import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import Head from "next/head";
 import Path from "path";
-import { Fragment, useEffect, useRef } from "react";
+import { Fragment } from "react";
 import remarkDef from "remark-deflist";
 import remarkFootnotes from "remark-footnotes";
 import remarkGemoji from "remark-gemoji";
@@ -173,27 +172,17 @@ const components = {
 };
 
 type Props = {
-  source: MDXRemoteSerializeResult<Record<string, unknown>>;
   data: Metadata;
   docs: any;
   notFound?: boolean;
+  source: MDXRemoteSerializeResult<Record<string, unknown>>;
 };
 
 const providerValue = { theme: "light", titlePrefix: "WriteMe" };
 
 export default function Docs({ source, data, notFound, docs }: Props) {
-  const sidebar = useRef<HTMLDivElement>(null);
-  const main = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const onResize = () => {
-      if (sidebar.current === null || main.current === null) return;
-      const sidebarWidth = sidebar.current.getBoundingClientRect().width;
-      main.current.style.width = `${window.innerWidth - sidebarWidth}px`;
-    };
-    onResize();
-    window.addEventListener("resize", onResize);
-  }, []);
+  const hasPrev = data.prev !== null;
+  const hasNext = data.next !== null;
 
   return (
     <Fragment>
@@ -202,30 +191,43 @@ export default function Docs({ source, data, notFound, docs }: Props) {
           {providerValue.titlePrefix} | {data.project} {data.title}
         </title>
       </Head>
-      <Sidebar ref={sidebar} className="fixed top-16 left-0 w-56 ml-6" items={docs} />
-      <Container className="top-16 mx-auto markdown absolute left-56 px-20" ref={main}>
-        {(notFound && <h1>Not found</h1>) || (
-          <Fragment>
-            <header className="mb-4">
-              <h1 className="text-5xl leading-tight lining-nums font-extrabold text-gray-600">{data.title}</h1>
-              <h2 className="text-sm text-gray-500">
-                {Dates.localeDate(data.createdAt)} - Reading time: {data.readingTime}min
-              </h2>
-            </header>
-            <HttpContext>
-              <MdxDocsProvider value={providerValue}>
-                <section className="flex flex-col flex-wrap" id="document-root">
-                  <MDXRemote {...source} components={components} />
-                </section>
-              </MdxDocsProvider>
-            </HttpContext>
-          </Fragment>
-        )}
-        <div className="flex w-full justify-between my-4">
-          {data.prev !== null && <OrderDoc {...data.prev} direction="prev" />}
-          {data.next !== null && <OrderDoc {...data.next} direction="next" />}
-        </div>
-      </Container>
+      <main className="flex flex-row align-baseline justify-between gap-x-4">
+        <Sidebar className="hidden md:block markdown-side-item md:w-48 max-w-xs mt-4" items={docs} />
+        <section className="w-full flex-auto flex-grow-0 border-l border-gray-300 pl-4">
+          <article className="markdown">
+            {(notFound && <h1>Not found</h1>) || (
+              <Fragment>
+                <header className="my-4">
+                  <h1 className="text-5xl leading-tight lining-nums font-extrabold text-gray-700">{data.title}</h1>
+                  <h4 className="text-base text-gray-600 mb-2">{data.description}</h4>
+                  <h2 className="text-sm text-gray-500">
+                    {Dates.localeDate(data.createdAt)} - Reading time: {data.readingTime}min
+                  </h2>
+                </header>
+                <HttpContext>
+                  <MdxDocsProvider value={providerValue}>
+                    <section className="flex flex-col flex-wrap" id="document-root">
+                      <MDXRemote {...source} components={components} />
+                    </section>
+                  </MdxDocsProvider>
+                </HttpContext>
+              </Fragment>
+            )}
+          </article>
+          <div
+            className={`flex my-4 gap-x-4 ${
+              hasPrev && hasNext ? "justify-between" : hasNext ? "justify-end" : "justify-start"
+            }`}
+          >
+            {hasPrev && <OrderDoc {...data.prev!} direction="prev" />}
+            {hasNext && <OrderDoc {...data.next!} direction="next" />}
+          </div>
+        </section>
+        <aside className="markdown-side-item md:w-36 text-gray-500 mt-4">
+          <span className="font-bold">In this Page:</span>
+          <TableOfContent />
+        </aside>
+      </main>
     </Fragment>
   );
 }

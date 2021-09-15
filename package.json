@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@g4rcez/httpsnippet": "1.24.4",
+    "@g4rcez/httpsnippet": "1.24.5",
     "@g4rcez/prism-react-renderer": "0.0.1",
     "@tailwindcss/forms": "0.3.3",
     "@tailwindcss/typography": "0.4.1",

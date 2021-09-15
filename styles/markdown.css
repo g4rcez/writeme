@@ -1,5 +1,16 @@
+.markdown-side-item {
+  position: sticky;
+  top: 3.75rem;
+  will-change: transform;
+  height: fit-content;
+}
+
+.markdown {
+  @apply text-gray-600;
+}
+
 .markdown p {
-  @apply mt-1 mb-2 antialiased text-gray-600 lining-nums whitespace-pre-wrap break-words w-full container mx-auto leading-relaxed;
+  @apply mt-1 mb-2 antialiased lining-nums whitespace-pre-wrap break-words w-full container mx-auto leading-relaxed;
 }
 
 .markdown a {

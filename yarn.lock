@@ -281,10 +281,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@g4rcez/httpsnippet@1.24.4":
-  version "1.24.4"
-  resolved "https://registry.yarnpkg.com/@g4rcez/httpsnippet/-/httpsnippet-1.24.4.tgz#0f2d311eb1e1fd9a4d4e81190b53ad6e20579af3"
-  integrity sha512-3CPKlBz0uuZdvJnLHGqTocfxknLd10oJWfaeJF+B1D8OiIEq/jQCbBcHDTh8Pa2tj7SMbpV0TN2nuyWEfL2zjA==
+"@g4rcez/httpsnippet@1.24.5":
+  version "1.24.5"
+  resolved "https://registry.yarnpkg.com/@g4rcez/httpsnippet/-/httpsnippet-1.24.5.tgz#31ec8c77bc1cd86458f9f42f6a588660eaf4e987"
+  integrity sha512-TWEH1CbyOrdPgHB64uVtyjfH5c12GYn1mHPobpc47ATn7KX2MP7vBz4puQA0C6c2VwFaJjRk+uDqBQoQ1+jgBw==
   dependencies:
     chalk "^1.1.1"
     commander "^2.9.0"

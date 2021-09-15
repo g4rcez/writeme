@@ -1,4 +1,4 @@
-import { Container } from "components/container";
+import { SiteContainer } from "components/container";
 import Link from "next/link";
 import { SearchBar } from "components/search-bar";
 
@@ -6,13 +6,13 @@ export default function Home() {
   return (
     <main>
       <section className="w-full bg-gray-500 text-white py-36">
-        <Container className="px-36 text-center flex items-center flex-col gap-y-4">
+        <SiteContainer className="px-36 text-center flex items-center flex-col gap-y-4">
           <h2 className="text-4xl font-extrabold text-center">Write docs and forget configuration</h2>
           <div className="flex gap-x-4 flex-row text-center items-center">
             <Link href="/docs/project/getting-started">Getting Started</Link>
             <Link href="/docs/example">View all features</Link>
           </div>
-        </Container>
+        </SiteContainer>
       </section>
       <section className="my-12 w-full container mx-auto flex flex-row justify-center text-center gap-x-8 flex-1">
         <article className="flex flex-col prose lg:prose-lg">

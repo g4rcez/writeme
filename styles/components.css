@@ -5,7 +5,7 @@
 @layer components {
   /* order docs */
   .order-doc {
-    @apply p-4 border border-gray-100 rounded-lg;
+    @apply p-4 border border-gray-100 hover:border-blue-400 hover:bg-blue-50 rounded-lg;
   }
 
   /* Search bar */

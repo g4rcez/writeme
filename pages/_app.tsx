@@ -2,7 +2,10 @@ import { SearchBar } from "components/search-bar";
 import type { AppProps } from "next/app";
 import { FormEvent, Fragment, useCallback, useEffect, useRef, useState } from "react";
 import Colors from "../styles/colors.json";
+import Link from "next/link";
 import "../styles/globals.css";
+import { FaSearch } from "react-icons/fa";
+import { SiteContainer } from "components/container";
 
 const setColor = (varName: string, color: string, root: HTMLElement) => root.style.setProperty(varName, color);
 
@@ -23,6 +26,8 @@ export default function App({ Component, pageProps }: AppProps) {
   const input = useRef<HTMLInputElement>(null);
   const [show, setShow] = useState(false);
 
+  const toggleSearchBar = useCallback(() => setShow((p) => !p), []);
+
   useEffect(() => {
     setCssVars(Colors, document.documentElement);
   }, []);
@@ -33,30 +38,35 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <Fragment>
-      <header id="writeme-header" className="flex fixed z-10 top-0 justify-between w-full text-white bg-gray-700">
+      <header id="writeme-header" className="flex sticky z-10 top-0 justify-between w-full text-white bg-gray-700">
         <SearchBar show={show} />
-        <nav className="w-full container mx-auto p-4 flex flex-nowrap items-baseline justify-between">
+        <SiteContainer tag="nav" className="py-4 flex flex-nowrap items-center justify-between">
           <section className="flex items-baseline gap-x-8">
             <h1 className="font-extrabold text-lg">WriteMe</h1>
             <ul className="flex gap-x-4 list-none">
-              <li>Docs</li>
+              <li>
+                <Link href="/docs/">Docs</Link>
+              </li>
               <li>Blog</li>
             </ul>
           </section>
-          <form onSubmit={submit} className="flex gap-x-4 align-middle self-center items-baseline">
+          <form onSubmit={submit} className="flex gap-x-4 justify-between align-middle self-center items-center">
             <h2>☀️</h2>
             <input
               ref={input}
-              className="bg-gray-800 px-2 py-0.5 placeholder-shown:text-white rounded-lg text-base"
+              className="bg-gray-800 px-2 py-0.5 placeholder-shown:text-white rounded-lg text-base hidden md:block"
               placeholder="Search...CTRL+K"
               type="text"
             />
+            <button onClick={toggleSearchBar} className="bg-gray-800 p-2 rounded-full text-base block md:hidden">
+              <FaSearch />
+            </button>
           </form>
-        </nav>
+        </SiteContainer>
       </header>
-      <section className="overflow-x-hidden">
+      <SiteContainer tag="section">
         <Component {...pageProps} />
-      </section>
+      </SiteContainer>
     </Fragment>
   );
 }

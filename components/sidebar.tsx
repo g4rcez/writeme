@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { Fragment } from "react";
+import React, { CSSProperties, Fragment } from "react";
 
 type Props = {
   Render?: React.FC<{ title: string; props: unknown }>;
@@ -13,14 +13,15 @@ type Props = {
     >;
   }>;
   className?: string;
+  style?: CSSProperties;
 };
 
 export const Sidebar = React.forwardRef<HTMLDivElement, Props>(function Sidebar(
-  { items, className = "" }: Props,
+  { items, className = "", style }: Props,
   externalRef
 ) {
   return (
-    <aside className={`${className} mx-2 h-full border-r border-gray-300`} ref={externalRef}>
+    <aside style={style} className={`${className} text-gray-600`} ref={externalRef}>
       {items.map((x) => {
         return (
           <Fragment key={x.name}>

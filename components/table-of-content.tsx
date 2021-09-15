@@ -5,8 +5,8 @@ const Tags = {
   H2: "ml-0",
   H3: "ml-4",
   H4: "ml-8",
-  H5: "ml-16",
-  H6: "ml-24",
+  H5: "ml-12",
+  H6: "ml-16",
 };
 
 type Tag = keyof typeof Tags;

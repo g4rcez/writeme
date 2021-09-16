@@ -16,12 +16,6 @@ export default async function proxyHandler(req: NextApiRequest, res: NextApiResp
     });
 
     const end = Date.now();
-
-    Object.keys(response.headers)
-      .filter((x) => x.toLowerCase() !== "content-type")
-      .map((x) => {
-        res.setHeader(x, response.headers[x]);
-      });
     return res.status(response.status).send({
       timeElapsed: end - init,
       body: response.data,

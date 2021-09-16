@@ -27,6 +27,7 @@ You can see the [Getting Started](https://writeme.vercel.app/docs/project/gettin
 - Parse HTTP request from `curl` command
 - Support OpenGraph images
 - **NEW** Support youtube opengraph videos
+- **NEW** Support FlowChart using [flowchart.js](https://flowchart.js.org/)
 
 ### Remark plugins
 

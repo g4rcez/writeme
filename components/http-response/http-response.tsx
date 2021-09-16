@@ -101,3 +101,5 @@ export const HttpResponse: React.VFC = () => {
     </section>
   );
 };
+
+export default HttpResponse;

@@ -1,7 +1,10 @@
-import { HttpRequest } from "./http-request/http-request";
-import { HttpResponse } from "./http-response/http-response";
-import { OpenGraph } from "./open-graph";
-import { CodeHighlight } from "./prism";
+import dynamic from "next/dynamic";
+import Flowchart from "./flowchart";
+
+const HttpRequest = dynamic(() => import("./http-request/http-request"));
+const HttpResponse = dynamic(() => import("./http-response/http-response"));
+const OpenGraph = dynamic(() => import("./open-graph"));
+const CodeHighlight = dynamic(() => import("./prism"));
 
 const re = /((\w+)=(\w+|"[\w+ -]+"))/gi;
 
@@ -27,6 +30,10 @@ export const MdPre = (props: any) => {
   const language = /\w+-(\w+)/.exec(componentProps.className)?.[1];
   const metaProps = parseMetaString(componentProps.metastring);
   const type = metaProps.type;
+
+  if (language === "chart") {
+    return <Flowchart code={componentProps.children} />;
+  }
 
   if (type === "ogp" && language === "ogp") {
     return (
@@ -54,3 +61,5 @@ export const MdPre = (props: any) => {
     );
   return <CodeHighlight code={componentProps.children.replace(/\n$/, "").replace(/^\n/, "")} language={language} />;
 };
+
+export default MdPre;

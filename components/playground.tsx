@@ -24,3 +24,5 @@ export const Playground: React.FC<Props> = (props) => {
     </div>
   );
 };
+
+export default Playground;

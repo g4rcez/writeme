@@ -144,3 +144,5 @@ export const HttpRequest: React.VFC<Props> = ({ curl }) => {
     </section>
   );
 };
+
+export default HttpRequest;

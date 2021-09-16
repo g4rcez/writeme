@@ -49,7 +49,6 @@ export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
     };
     req();
   }, [url]);
-  console.log(ogp);
 
   const width = useMemo(() => {
     if (ogp === null) return "";
@@ -101,3 +100,5 @@ export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
     </Fragment>
   );
 };
+
+export default OpenGraph;

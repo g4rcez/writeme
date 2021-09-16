@@ -53,3 +53,5 @@ export const CodeHighlight: React.VFC<Props> = ({ code = "", language }) => {
     </div>
   );
 };
+
+export default CodeHighlight

@@ -131,12 +131,32 @@ Support [Github Flavored Markdown](https://www.markdownguide.org/extended-syntax
 ## OpenGraph Support
 
 - Github Repo
+
 ```ogp type=ogp className="justify-center text-center"
 https://github.com/octocat/Hello-World
 ```
 
-
 - Youtube Video
+
 ```ogp type=ogp className="justify-center text-center"
 https://www.youtube.com/watch?v=rt-2cxAiPJk
+```
+
+## FlowChart
+
+```chart
+st=>start: Start:>http://www.google.com[blank]
+e=>end:>http://www.google.com
+op1=>operation: My Operation
+sub1=>subroutine: My Subroutine
+cond=>condition: Yes
+or No?:>http://www.google.com
+io=>inputoutput: catch something...
+para=>parallel: parallel tasks
+
+st->op1->cond
+cond(yes)->io->e
+cond(no)->para
+para(path1, bottom)->sub1(right)->op1
+para(path2, top)->op1
 ```

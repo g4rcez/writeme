@@ -1,18 +1,4 @@
-import {
-  CodeHighlight,
-  CodeResponse,
-  Heading,
-  HttpContext,
-  HttpRequest,
-  HttpResponse,
-  MdPre,
-  MdxDocsProvider,
-  Playground,
-  Sidebar,
-  Tab,
-  TableOfContent,
-  Tabs,
-} from "components/";
+import { CodeResponse, Heading, HttpContext, MdxDocsProvider, Sidebar, Tab, TableOfContent, Tabs } from "components/";
 import { SiteContainer } from "components/container";
 import { Metadata, OrderDoc } from "components/order-doc";
 import Fs from "fs/promises";
@@ -22,7 +8,7 @@ import { httpClient } from "lib/http-client";
 import { remarkTabs } from "lib/remark-tabs";
 import { Strings } from "lib/strings";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import Head from "next/head";
 import Path from "path";
@@ -33,6 +19,15 @@ import remarkGemoji from "remark-gemoji";
 import remarkGfm from "remark-gfm";
 import remarkGithub from "remark-github";
 import { promisify } from "util";
+import dynamic from "next/dynamic";
+
+const CodeHighlight = dynamic(() => import("components/prism"));
+const MDXRemote = dynamic(() => import("components/mdx-remote"));
+const MdPre = dynamic(() => import("components/md-pre"));
+const Playground = dynamic(() => import("components/playground"));
+const HttpRequest = dynamic(() => import("components/http-request/http-request"));
+const HttpResponse = dynamic(() => import("components/http-response/http-response"));
+const Flowchart = dynamic(() => import("components/flowchart"));
 
 const Glob = promisify(require("glob"));
 
@@ -192,7 +187,10 @@ export default function Docs({ source, data, notFound, docs }: Props) {
         </title>
       </Head>
       <main className="flex flex-row align-baseline justify-between gap-x-6">
-        <Sidebar className="hidden md:block markdown-side-item border-r border-gray-300 md:w-48 max-w-xs mt-4" items={docs} />
+        <Sidebar
+          className="hidden md:block markdown-side-item border-r border-gray-300 md:w-48 max-w-xs mt-4"
+          items={docs}
+        />
         <section className="w-full flex-auto flex-grow-0 pl-4">
           <article className="markdown">
             {(notFound && <h1>Not found</h1>) || (

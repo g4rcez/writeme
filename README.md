@@ -26,6 +26,7 @@ You can see the [Getting Started](https://writeme.vercel.app/docs/project/gettin
 - Proxy frontend requests
 - Parse HTTP request from `curl` command
 - Support OpenGraph images
+- **NEW** Support youtube opengraph videos
 
 ### Remark plugins
 

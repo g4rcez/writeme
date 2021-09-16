@@ -10,15 +10,20 @@ type Props = {
 };
 
 type OpenGraphAttrs = Partial<{
+  "image:alt": string;
   description: string;
   image: string;
-  "image:alt": string;
   "image:height": string;
   "image:width": string;
   site_name: string;
   title: string;
   type: string;
   url: string;
+  "video:height": string;
+  "video:secure_url": string;
+  "video:tag": string;
+  "video:type": string;
+  "video:url": string;
 }>;
 
 export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
@@ -44,6 +49,7 @@ export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
     };
     req();
   }, [url]);
+  console.log(ogp);
 
   const width = useMemo(() => {
     if (ogp === null) return "";
@@ -58,6 +64,26 @@ export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
   }, [props.height, ogp]);
 
   if (ogp === null) return null;
+
+  if (ogp["video:url"] || ogp["video:secure_url"]) {
+    return (
+      <Fragment>
+        <section className={`block w-full h-auto ${props.className}`}>
+          <iframe
+            width={width}
+            height={height}
+            style={{ height }}
+            className="block max-w-full align-middle w-full h-auto"
+            src={ogp["video:secure_url"] ?? ogp["video:url"]}
+            title={`${ogp.site_name} video player`}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </section>
+      </Fragment>
+    );
+  }
 
   return (
     <Fragment>

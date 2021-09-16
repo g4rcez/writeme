@@ -9,6 +9,7 @@
 html,
 body {
   height: 100%;
+  scroll-padding: 4rem;
 }
 
 html {

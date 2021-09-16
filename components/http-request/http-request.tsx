@@ -93,16 +93,20 @@ export const HttpRequest: React.VFC<Props> = ({ curl }) => {
     [onRequest, req?.body, req?.url, req?.method, headers]
   );
 
+  const onlyPathApi = useMemo(() => (req?.url ? new URL(req.url).pathname : ""), [req?.url]);
+
   return (
     <section className="http-request">
       <section className="w-full">
         <header className="my-4">
-          <h2 className="text-xs" data-text={`Request - ${req?.method} ${req?.url}`}>
-            <HttpMethod method={req?.method} /> <span className="text-sm">{req?.url}</span>
+          <h2 className="text-xs" data-text={`${req?.method} ${onlyPathApi}`}>
+            <HttpMethod method={req?.method} /> <span className="text-sm">{onlyPathApi}</span>
           </h2>
         </header>
         <div className="my-2">
-          <MiniTitle data-text={`Request Headers`}>Headers</MiniTitle>
+          <p className="mini-title" data-text="Request Headers">
+            Headers
+          </p>
           <Headers headers={headers} onChange={onChangeRequestHeaders} />
         </div>
         <div className="my-2">

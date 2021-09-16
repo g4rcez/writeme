@@ -64,9 +64,7 @@ export default function App({ Component, pageProps }: AppProps) {
           </form>
         </SiteContainer>
       </header>
-      <SiteContainer tag="section">
-        <Component {...pageProps} />
-      </SiteContainer>
+      <Component {...pageProps} />
     </Fragment>
   );
 }

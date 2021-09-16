@@ -19,15 +19,17 @@ type Heading = {
 
 type Props = {
   id?: string;
+  className?: string;
+  observeHash?: boolean;
 };
 
-export const TableOfContent: VFC<Props> = ({ id = "document-root" }) => {
+export const TableOfContent: VFC<Props> = ({ id = "document-root", observeHash = false, className = "" }) => {
   const [titles, setTitles] = useState<Heading[]>([]);
+  const [hash, setHash] = useState("");
 
   useEffect(() => {
     const root = document.getElementById(id);
     if (root === null) return;
-
     const createTableContent = () => {
       if (root === null) return;
       const headers: HTMLHeadingElement[] = Array.from(root.querySelectorAll("h2, h3, h4, h5, h6"));
@@ -45,7 +47,6 @@ export const TableOfContent: VFC<Props> = ({ id = "document-root" }) => {
         })
       );
     };
-
     createTableContent();
     const observer = new MutationObserver(createTableContent);
     observer.observe(root, { subtree: true, childList: true });
@@ -54,12 +55,24 @@ export const TableOfContent: VFC<Props> = ({ id = "document-root" }) => {
     };
   }, [id]);
 
+  useEffect(() => {
+    if (!observeHash) return;
+    const onChangeHash = () => setHash((window.location.hash ?? "").replace(/^#/, ""));
+    window.addEventListener("hashchange", onChangeHash);
+    return () => window.removeEventListener("hashchange", onChangeHash);
+  }, [observeHash]);
+
   return (
-    <header className="table-of-content">
+    <header className={`table-of-content ${className}`}>
       <nav>
         <ul className="list-inside">
           {titles.map((x) => (
-            <li key={x.id} className={`table-of-content-item ${Tags[x.tag]}`}>
+            <li
+              key={x.id}
+              className={`table-of-content-item ${hash === x.id && observeHash ? "text-blue-600 font-extrabold" : ""} ${
+                Tags[x.tag]
+              }`}
+            >
               <a className="w-fit hover:underline" href={`#${x.id}`}>
                 {x.text}
               </a>

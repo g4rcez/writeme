@@ -7,24 +7,39 @@ export default async function proxyHandler(req: NextApiRequest, res: NextApiResp
   const init = Date.now();
 
   const body: Types.BodyProxy = req.body;
-  const response = await httpClient({
-    url: body.url,
-    method: body.method ?? "GET",
-    data: body.body,
-    headers: body.headers,
-  });
+  try {
+    const response = await httpClient({
+      url: body.url,
+      method: body.method ?? "GET",
+      data: body.body,
+      headers: body.headers,
+    });
 
-  const end = Date.now();
+    const end = Date.now();
 
-  Object.keys(response.headers).map((x) => {
-    res.setHeader(x, response.headers[x]);
-  });
-  return res.status(response.status).send({
-    timeElapsed: end - init,
-    body: response.data,
-    headers: response.headers,
-    statusCode: response.status,
-    url: body.url,
-    method: body.method,
-  });
+    Object.keys(response.headers)
+      .filter((x) => x.toLowerCase() !== "content-type")
+      .map((x) => {
+        res.setHeader(x, response.headers[x]);
+      });
+    return res.status(response.status).send({
+      timeElapsed: end - init,
+      body: response.data,
+      headers: response.headers,
+      statusCode: response.status,
+      url: body.url,
+      method: body.method,
+    });
+  } catch (error: any) {
+    const end = Date.now();
+
+    return res.status(500).send({
+      timeElapsed: end - init,
+      body: error.response.data ?? null,
+      headers: {},
+      statusCode: error.response.status ?? 500,
+      url: body.url,
+      method: body.method,
+    });
+  }
 }

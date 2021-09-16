@@ -13,6 +13,7 @@ import {
   TableOfContent,
   Tabs,
 } from "components/";
+import { SiteContainer } from "components/container";
 import { Metadata, OrderDoc } from "components/order-doc";
 import Fs from "fs/promises";
 import matter from "gray-matter";
@@ -112,7 +113,6 @@ export const getStaticProps: GetStaticProps = async (props) => {
     const next = currentGroup?.items[order + 1] ?? null;
     const prev = currentGroup?.items[order - 1] ?? null;
 
-    console.log({ order, next, prev, currentGroup, sidebar: data.sidebar, docs });
     return {
       revalidate: process.env.NODE_ENV === "development" ? 1 : undefined,
       props: {
@@ -185,15 +185,15 @@ export default function Docs({ source, data, notFound, docs }: Props) {
   const hasNext = data.next !== null;
 
   return (
-    <Fragment>
+    <SiteContainer tag="section">
       <Head>
         <title>
           {providerValue.titlePrefix} | {data.project} {data.title}
         </title>
       </Head>
-      <main className="flex flex-row align-baseline justify-between gap-x-4">
-        <Sidebar className="hidden md:block markdown-side-item md:w-48 max-w-xs mt-4" items={docs} />
-        <section className="w-full flex-auto flex-grow-0 border-l border-gray-300 pl-4">
+      <main className="flex flex-row align-baseline justify-between gap-x-6">
+        <Sidebar className="hidden md:block markdown-side-item border-r border-gray-300 md:w-48 max-w-xs mt-4" items={docs} />
+        <section className="w-full flex-auto flex-grow-0 pl-4">
           <article className="markdown">
             {(notFound && <h1>Not found</h1>) || (
               <Fragment>
@@ -223,11 +223,11 @@ export default function Docs({ source, data, notFound, docs }: Props) {
             {hasNext && <OrderDoc {...data.next!} direction="next" />}
           </div>
         </section>
-        <aside className="markdown-side-item md:w-36 text-gray-500 mt-4">
+        <aside className="markdown-side-item md:w-48 text-sm text-gray-500 mt-4">
           <span className="font-bold">In this Page:</span>
-          <TableOfContent />
+          <TableOfContent className="table-of-content-target" observeHash />
         </aside>
       </main>
-    </Fragment>
+    </SiteContainer>
   );
 }

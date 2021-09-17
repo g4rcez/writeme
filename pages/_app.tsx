@@ -47,7 +47,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </h1>
             <ul className="flex gap-x-4 list-none">
               <li>
-                <Link href="/docs/project/playground/">Docs</Link>
+                <Link href="/docs/project/getting-started/">Docs</Link>
               </li>
               <li>
                 <Link href="/blog/">Blog</Link>

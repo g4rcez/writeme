@@ -29,9 +29,9 @@ export default async function proxyHandler(req: NextApiRequest, res: NextApiResp
 
     return res.status(500).send({
       timeElapsed: end - init,
-      body: error.response.data ?? null,
+      body: error?.response?.data ?? null,
       headers: {},
-      statusCode: error.response.status ?? 500,
+      statusCode: error?.response?.status ?? 500,
       url: body.url,
       method: body.method,
     });

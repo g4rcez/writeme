@@ -6,6 +6,9 @@ import Colors from "../styles/colors.json";
 import "../styles/globals.css";
 import { FaSearch, FaSun } from "react-icons/fa";
 import { SiteContainer } from "components/container";
+import { Router } from "next/dist/client/router";
+import ProgressBar from "@badrap/bar-of-progress";
+import Head from "next/head";
 
 const setColor = (varName: string, color: string, root: HTMLElement) => root.style.setProperty(varName, color);
 
@@ -21,6 +24,16 @@ const setCssVars = (colors: Styles, element: HTMLElement) =>
       });
     }
   });
+
+const progress = new ProgressBar({
+  size: 3,
+  color: "#3B82F6",
+  className: "bar-of-progress",
+  delay: 50,
+});
+Router.events.on("routeChangeStart", () => progress.start);
+Router.events.on("routeChangeError", () => progress.finish());
+Router.events.on("routeChangeComplete", () => progress.finish());
 
 export default function App({ Component, pageProps }: AppProps) {
   const input = useRef<HTMLInputElement>(null);
@@ -42,6 +55,11 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <Fragment>
+      <Head>
+        <meta key="og:description" property="og:description" content="Write docs without effort" />
+        <meta key="og:type" property="og:type" content="article" />
+        <meta key="twitter:description" name="twitter:description" content="Write docs without effort" />
+      </Head>
       <header id="writeme-header" className="flex sticky z-10 top-0 justify-between w-full text-white bg-gray-700">
         <SearchBar show={show} />
         <SiteContainer tag="nav" className="py-4 flex flex-nowrap items-center justify-between">

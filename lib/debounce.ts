@@ -1,8 +1,10 @@
-export const debounce = (fn: Function, ms = 2000) => {
-  let timeoutId: NodeJS.Timeout;
-  return function (...args: any[]) {
-    clearTimeout(timeoutId);
+export type Fn = (...a: any[]) => any;
+
+export function debounce<T extends Fn>(fn: T, ms = 2000) {
+  let id: NodeJS.Timeout;
+  return (...args: any[]) => {
+    clearTimeout(id);
     //@ts-ignore
-    timeoutId = setTimeout(() => fn.apply(this, args), ms);
+    id = setTimeout(() => fn.apply(this, args), ms);
   };
-};
+}

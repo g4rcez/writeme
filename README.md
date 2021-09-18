@@ -42,15 +42,16 @@ You can see the [Getting Started](https://writeme.vercel.app/docs/project/gettin
 - [x] Implement Github PR/issues opengraph style
 - [x] Group docs by project
 - [x] Order docs by key in header (parsed by [gray-matter](https://github.com/jonschlinkert/gray-matter))
+- [x] Create `before` and `next` link at end of docs
+- [x] create-next-app example (for alpha/beta versions)
+- [ ] ScrollSpy for side Table of Content
 - [ ] Better layout for sidebar
 - [ ] Integration with [shields.io](https://shields.io)
 - [ ] Add puppeteer to create opengraph images
-- [ ] Create `before` and `next` link at end of docs
 - [ ] Add shortcuts support with [shortcut-keys](https://github.com/leoavelino7/shortcut-keys)
 - [ ] Create `writemerc.json` for global config
 - [ ] Support `/blog`. Organize blog posts by `/blog/year/month/day/post-name`
 - [ ] Support style customization (using design tokens)
-- [ ] create-next-app example (for alpha/beta versions)
 - [ ] Add Dark Mode
 - [ ] Deploy as lib
 - [ ] i18n

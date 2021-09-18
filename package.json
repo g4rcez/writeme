@@ -11,6 +11,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@badrap/bar-of-progress": "0.1.2",
     "@g4rcez/httpsnippet": "1.24.5",
     "@g4rcez/prism-react-renderer": "0.0.1",
     "@tailwindcss/forms": "0.3.3",

@@ -43,7 +43,7 @@ export namespace Docs {
     );
 
     const groups = metadata.reduce<Data>((acc, doc) => {
-      const key = doc.project;
+      const key = doc.section;
       const current = acc[key];
       return { ...acc, [key]: Array.isArray(current) ? [...current, doc] : [doc] };
     }, {});

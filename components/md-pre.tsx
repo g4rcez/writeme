@@ -1,10 +1,10 @@
 import dynamic from "next/dynamic";
-import Flowchart from "./flowchart";
 
 const HttpRequest = dynamic(() => import("./http-request/http-request"));
 const HttpResponse = dynamic(() => import("./http-response/http-response"));
 const OpenGraph = dynamic(() => import("./open-graph"));
 const CodeHighlight = dynamic(() => import("./prism"));
+const Flowchart = dynamic(() => import("./flowchart"));
 
 const re = /((\w+)=(\w+|"[\w+ -]+"))/gi;
 
@@ -16,12 +16,14 @@ const parseMetaString = (str: string | undefined): Types.Dict => {
       return acc;
     }
     const [property, ...values] = el.split("=");
-    const strTrim = values
-      .join()
-      .replace(/^("|')/, "")
-      .replace(/("|')$/, "")
-      .trim();
-    return { ...acc, [property]: strTrim };
+    return {
+      ...acc,
+      [property]: values
+        .join()
+        .replace(/^("|')/, "")
+        .replace(/("|')$/, "")
+        .trim(),
+    };
   }, {});
 };
 
@@ -31,11 +33,20 @@ export const MdPre = (props: any) => {
   const metaProps = parseMetaString(componentProps.metastring);
   const type = metaProps.type;
 
-  if (language === "chart") {
-    return <Flowchart code={componentProps.children} />;
-  }
+  if (language === undefined)
+    return (
+      <pre className="block w-full border border-gray-100">
+        <code>{componentProps.children}</code>
+      </pre>
+    );
 
-  if (type === "ogp" && language === "ogp") {
+  if (language === "chart") return <Flowchart code={componentProps.children} />;
+
+  if (type === "request") return <HttpRequest curl={componentProps.children} />;
+
+  if (type === "response") return <HttpResponse />;
+
+  if (type === "ogp" && language === "ogp")
     return (
       <OpenGraph
         {...metaProps}
@@ -43,22 +54,7 @@ export const MdPre = (props: any) => {
         url={`${componentProps.children.replace("\n", "").trim()}`}
       />
     );
-  }
 
-  if (type === "request") {
-    return <HttpRequest curl={componentProps.children} />;
-  }
-
-  if (type === "response") {
-    return <HttpResponse />;
-  }
-
-  if (language === undefined)
-    return (
-      <pre className="block w-full border border-gray-100">
-        <code>{componentProps.children}</code>
-      </pre>
-    );
   return <CodeHighlight code={componentProps.children.replace(/\n$/, "").replace(/^\n/, "")} language={language} />;
 };
 

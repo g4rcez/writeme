@@ -1,7 +1,8 @@
 {
   "name": "writeme",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.0.1",
+  "private": false,
+  "license": "MIT",
   "scripts": {
     "init": "node scripts/init",
     "dev": "next dev",

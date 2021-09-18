@@ -3,4 +3,5 @@ module.exports = {
   reactStrictMode: true,
   compress: true,
   poweredByHeader: false,
+  experimental: { esmExternals: true },
 };

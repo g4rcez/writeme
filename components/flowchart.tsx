@@ -11,7 +11,7 @@ export const Flowchart: VFC<{ code: string }> = ({ code }) => {
         const chart = FlowChart.parse(code);
         chart.drawSVG(ref.current);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
     mount();

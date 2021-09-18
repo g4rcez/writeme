@@ -34,17 +34,19 @@ export const TableOfContent: VFC<Props> = ({ id = "document-root", observeHash =
       if (root === null) return;
       const headers: HTMLHeadingElement[] = Array.from(root.querySelectorAll("h2, h3, h4, h5, h6"));
       setTitles(
-        headers.map((x) => {
-          const textContent = x.textContent!;
-          const text = x.dataset.text ?? textContent;
-          const id = Strings.slug(textContent);
-          x.id = id;
-          return {
-            text,
-            id,
-            tag: x.tagName as Tag,
-          };
-        })
+        headers
+          .filter((x) => x.dataset.toc !== "false")
+          .map((x) => {
+            const textContent = x.textContent!;
+            const text = x.dataset.text ?? textContent;
+            const id = Strings.slug(textContent);
+            x.id = id;
+            return {
+              text,
+              id,
+              tag: x.tagName as Tag,
+            };
+          })
       );
     };
     createTableContent();

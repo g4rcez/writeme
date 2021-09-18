@@ -4,12 +4,14 @@ import { Metadata, OrderDoc } from "components/order-doc";
 import Fs from "fs/promises";
 import matter from "gray-matter";
 import { Dates } from "lib/dates";
+import { Docs } from "lib/docs";
 import { httpClient } from "lib/http-client";
 import { remarkTabs } from "lib/remark-tabs";
 import { Strings } from "lib/strings";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import Path from "path";
 import { Fragment } from "react";
@@ -18,8 +20,6 @@ import remarkFootnotes from "remark-footnotes";
 import remarkGemoji from "remark-gemoji";
 import remarkGfm from "remark-gfm";
 import remarkGithub from "remark-github";
-import { promisify } from "util";
-import dynamic from "next/dynamic";
 
 const CodeHighlight = dynamic(() => import("components/prism"));
 const MDXRemote = dynamic(() => import("components/mdx-remote"));
@@ -29,66 +29,18 @@ const HttpRequest = dynamic(() => import("components/http-request/http-request")
 const HttpResponse = dynamic(() => import("components/http-response/http-response"));
 const Flowchart = dynamic(() => import("components/flowchart"));
 
-const Glob = promisify(require("glob"));
-
-type Docs = Record<string, Metadata[]>;
-
-const router = {
-  path: ["pages", "docs"],
-  fromFile: (name: string) => name.replace("pages/docs/", "").replace(/\.mdx?$/gi, ""),
-} as const;
-
-const docFromExt = (ext: string) => Path.join(...router.path, "**", `*${ext}`);
-
-const getAllDocs = async (): Promise<string[]> => {
-  const filesMd = await Glob(docFromExt(".md"));
-  const filesMdx = await Glob(docFromExt(".mdx"));
-  return [...filesMd, ...filesMdx];
-};
-
 export const getStaticPaths: GetStaticPaths = async () => {
-  const docs = await getAllDocs();
+  const docs = await Docs.getAllDocs();
   return {
     fallback: "blocking",
-    paths: await Promise.all(docs.map(async (file) => ({ params: { name: router.fromFile(file).split("/") } }))),
+    paths: await Promise.all(docs.map(async (file) => ({ params: { name: Docs.parseFile(file).split("/") } }))),
   };
-};
-
-const sidebarOrder = (items: Metadata[]) =>
-  Math.max(...items.map((x) => x.sidebar).filter((x) => !Number.isNaN(x) && typeof x === "number"));
-
-const getAllDocsWithMetadata = async () => {
-  const docs = await getAllDocs();
-  const metadata = await Promise.all(
-    docs.map(
-      async (x): Promise<Metadata> =>
-        ({
-          ...matter(await Fs.readFile(x, "utf-8")).data,
-          link: Strings.concatUrl("/docs", router.fromFile(x)),
-        } as never)
-    )
-  );
-  const groups = metadata.reduce<Docs>((acc, doc) => {
-    const key = doc.project;
-    const current = acc[key];
-    return { ...acc, [key]: Array.isArray(current) ? [...current, doc] : [doc] };
-  }, {});
-  return Object.keys(groups)
-    .map((group) => {
-      const items = groups[group];
-      return {
-        name: group,
-        sidebar: sidebarOrder(items),
-        items: items.sort((a, b) => a.order - b.order),
-      };
-    })
-    .sort((a, b) => a.sidebar - b.sidebar);
 };
 
 export const getStaticProps: GetStaticProps = async (props) => {
   const queryPath = props.params?.name;
   const path = Array.isArray(queryPath) ? Strings.concatUrl(queryPath.join("/")) : queryPath;
-  const doc = Path.resolve(process.cwd(), ...router.path, `${path}.mdx`);
+  const doc = Path.resolve(process.cwd(), ...Docs.path, `${path}.mdx`);
   try {
     const source = await Fs.readFile(doc, "utf-8");
     const { content, data } = matter(source);
@@ -102,7 +54,7 @@ export const getStaticProps: GetStaticProps = async (props) => {
     ];
     const stat = await Fs.stat(doc);
     const mdxSource = await serialize(content, { scope: data, mdxOptions: { remarkPlugins } });
-    const docs = await getAllDocsWithMetadata();
+    const docs = await Docs.getAllMetadataDocs();
     const currentGroup = docs.find((x) => x.sidebar === data.sidebar) ?? null;
     const order = data.order - 1;
     const next = currentGroup?.items[order + 1] ?? null;
@@ -149,6 +101,7 @@ const components = {
   pre: MdPre,
   HttpRequest,
   CodeResponse,
+  Flowchart,
   Tab,
   TableOfContent,
   CodeHighlight,
@@ -175,7 +128,7 @@ type Props = {
 
 const providerValue = { theme: "light", titlePrefix: "WriteMe" };
 
-export default function Docs({ source, data, notFound, docs }: Props) {
+export default function Component({ source, data, notFound, docs }: Props) {
   const hasPrev = data.prev !== null;
   const hasNext = data.next !== null;
 

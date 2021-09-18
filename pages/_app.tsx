@@ -6,6 +6,8 @@ import { FormEvent, Fragment, useCallback, useEffect, useRef, useState } from "r
 import { FaSearch } from "react-icons/fa";
 import Colors from "../styles/colors.json";
 import "../styles/globals.css";
+import { FaSearch, FaSun } from "react-icons/fa";
+import { SiteContainer } from "components/container";
 
 const setColor = (varName: string, color: string, root: HTMLElement) => root.style.setProperty(varName, color);
 
@@ -36,6 +38,10 @@ export default function App({ Component, pageProps }: AppProps) {
     e.preventDefault();
   }, []);
 
+  const onToggleDarkMode = () => {
+    alert("Dark mode is coming");
+  };
+
   return (
     <Fragment>
       <header id="writeme-header" className="flex sticky z-10 top-0 justify-between w-full text-white bg-gray-700">
@@ -55,7 +61,9 @@ export default function App({ Component, pageProps }: AppProps) {
             </ul>
           </section>
           <form onSubmit={submit} className="flex gap-x-4 justify-between align-middle self-center items-center">
-            <h2 className="cursor-pointer">☀️</h2>
+            <button className="bg-transparent p-0 m-0" onClick={onToggleDarkMode}>
+              <FaSun />
+            </button>
             <input
               ref={input}
               className="bg-gray-800 px-2 py-0.5 placeholder-shown:text-white rounded-lg text-base hidden md:block"

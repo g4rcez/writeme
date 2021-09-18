@@ -1,4 +1,3 @@
-import { CodeHighlight } from "../prism";
 import HttpSnippet from "@g4rcez/httpsnippet";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Body } from "./body";
@@ -10,6 +9,9 @@ import { HttpMethod } from "./http-method";
 import { Select } from "components/select";
 import { useHttpContext } from "components/http.context";
 import { Is } from "lib/is";
+import dynamic from "next/dynamic";
+
+const CodeHighlight = dynamic(() => import("../prism"));
 
 type Props = {
   curl: string;
@@ -99,18 +101,16 @@ export const HttpRequest: React.VFC<Props> = ({ curl }) => {
     <section className="http-request">
       <section className="w-full">
         <header className="my-4">
-          <h2 className="text-xs" data-text={`${req?.method} ${onlyPathApi}`}>
+          <h3 data-toc="false" className="text-xs" data-text={`${req?.method} ${onlyPathApi}`}>
             <HttpMethod method={req?.method} /> <span className="text-sm">{onlyPathApi}</span>
-          </h2>
+          </h3>
         </header>
         <div className="my-2">
-          <p className="mini-title" data-text="Request Headers">
-            Headers
-          </p>
+          <MiniTitle data-toc="false">Headers</MiniTitle>
           <Headers headers={headers} onChange={onChangeRequestHeaders} />
         </div>
         <div className="my-2">
-          <MiniTitle data-text={`Request Body`}>Body</MiniTitle>
+          <MiniTitle data-toc="false">Body</MiniTitle>
           <Body onChange={onChangeRequestBody} text={(req?.body as any).text ?? ""} />
         </div>
       </section>

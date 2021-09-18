@@ -6,7 +6,7 @@ export * from "./input";
 export * from "./md-pre";
 export * from "./mdx-docs.context";
 export * from "./mini-title";
-export * from "./open-graph";
+export * from "./open-graph/open-graph";
 export * from "./playground";
 export * from "./prism";
 export * from "./select";

@@ -5,12 +5,11 @@ import { BsChevronDoubleLeft, BsChevronDoubleRight } from "react-icons/bs";
 export type Metadata = {
   title: string;
   description: string;
-  project: string;
+  section: string;
   repository: string;
   order: number;
   sidebar: number;
   tags: string[];
-  section: string;
   createdAt: string;
   updatedAt: string;
   readingTime: string;

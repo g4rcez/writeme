@@ -5,7 +5,7 @@ import React, { Fragment } from "react";
 const HttpRequest = dynamic(() => import("./http-request/http-request"));
 const HttpContext = dynamic(() => import("./http.context") as any);
 const HttpResponse = dynamic(() => import("./http-response/http-response"));
-const OpenGraph = dynamic(() => import("./open-graph"));
+const OpenGraph = dynamic(() => import("./open-graph/open-graph"));
 const CodeHighlight = dynamic(() => import("./prism"));
 const Flowchart = dynamic(() => import("./flowchart"));
 
@@ -62,7 +62,7 @@ export const MdPre = (props: any) => {
       </HttpContext>
     );
 
-  if (type === "ogp" && language === "ogp")
+  if (language === "ogp")
     return (
       <OpenGraph
         {...metaProps}

@@ -28,24 +28,30 @@ type OpenGraphAttrs = Partial<{
 
 export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
   const [ogp, setOgp] = useState<Types.Nullable<OpenGraphAttrs>>(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const req = async () => {
-      const response = await httpClient.post("/proxy", {
-        body: undefined,
-        url,
-      });
-      const parser = new DOMParser();
-      const htmlDoc = parser.parseFromString(response.data.body, "text/html");
-      const metaTags = Array.from(htmlDoc.querySelector("head")?.querySelectorAll("meta[property^=og]") ?? []);
-      setOgp(
-        metaTags.reduce((acc, x) => {
-          const property = x.getAttribute("property");
-          const content = x.getAttribute("content");
-          const name = property?.replace(/^og:/, "") ?? "";
-          return { ...acc, [name]: content };
-        }, {})
-      );
+      try {
+        const response = await httpClient.post("/proxy", {
+          body: undefined,
+          url,
+        });
+        const parser = new DOMParser();
+        const htmlDoc = parser.parseFromString(response.data.body, "text/html");
+        const metaTags = Array.from(htmlDoc.querySelector("head")?.querySelectorAll("meta[property^=og]") ?? []);
+        setError("");
+        setOgp(
+          metaTags.reduce((acc, x) => {
+            const property = x.getAttribute("property");
+            const content = x.getAttribute("content");
+            const name = property?.replace(/^og:/, "") ?? "";
+            return { ...acc, [name]: content };
+          }, {})
+        );
+      } catch (error: any) {
+        setError(error.message);
+      }
     };
     req();
   }, [url]);
@@ -64,10 +70,12 @@ export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
 
   if (ogp === null) return null;
 
+  if (error !== "") return <span className="italic font-thin text-red-500">{error}</span>;
+
   if (ogp["video:url"] || ogp["video:secure_url"]) {
     return (
       <Fragment>
-        <section className={`block w-full h-auto ${props.className}`}>
+        <section className={`mb-4 block w-full h-auto ${props.className}`}>
           <iframe
             width={width}
             height={height}
@@ -87,7 +95,7 @@ export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
   return (
     <Fragment>
       {ogp.image && (
-        <section className={`flex w-full ${props.className}`}>
+        <section className={`mb-4 flex w-full ${props.className}`}>
           <img
             className="max-w-full align-middle"
             alt={ogp["image:alt"] ?? ogp.description}

@@ -14,10 +14,11 @@ type Props = {
   }>;
   className?: string;
   style?: CSSProperties;
+  active: string;
 };
 
 export const Sidebar = React.forwardRef<HTMLDivElement, Props>(function Sidebar(
-  { items, className = "", style }: Props,
+  { items, className = "", style, active }: Props,
   externalRef
 ) {
   return (
@@ -28,7 +29,7 @@ export const Sidebar = React.forwardRef<HTMLDivElement, Props>(function Sidebar(
             <header className="my-2 leading-tight font-bold">{x.name}</header>
             <section className="text-sm ml-4 flex flex-col">
               {x.items.map((x) => (
-                <header key={x.title} className="mb-1 hover:underline">
+                <header key={x.title} className={`mb-1 hover:underline ${x.link === active ? "text-blue-500 font-bold" : ""}`}>
                   <Link href={x.link}>{x.title}</Link>
                 </header>
               ))}

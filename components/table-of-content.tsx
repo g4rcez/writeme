@@ -15,16 +15,24 @@ type Heading = {
   text: string;
   id: string;
   tag: Tag;
+  top: number;
 };
 
 type Props = {
+  markHighlight?: boolean;
   id?: string;
   className?: string;
   observeHash?: boolean;
 };
 
-export const TableOfContent: VFC<Props> = ({ id = "document-root", observeHash = false, className = "" }) => {
+export const TableOfContent: VFC<Props> = ({
+  id = "document-root",
+  observeHash = false,
+  className = "",
+  markHighlight = false,
+}) => {
   const [titles, setTitles] = useState<Heading[]>([]);
+  const [highlight, setHighlight] = useState("");
   const [hash, setHash] = useState("");
 
   useEffect(() => {
@@ -36,26 +44,46 @@ export const TableOfContent: VFC<Props> = ({ id = "document-root", observeHash =
       setTitles(
         headers
           .filter((x) => x.dataset.toc !== "false")
-          .map((x) => {
+          .map((x, index) => {
             const textContent = x.textContent!;
             const text = x.dataset.text ?? textContent;
-            const id = Strings.slug(textContent);
+            const id = Strings.slug(textContent) + "-" + index;
             x.id = id;
-            return {
-              text,
-              id,
-              tag: x.tagName as Tag,
-            };
+            return { id, text, tag: x.tagName as Tag, top: x.getBoundingClientRect().top };
           })
       );
     };
     createTableContent();
     const observer = new MutationObserver(createTableContent);
     observer.observe(root, { subtree: true, childList: true });
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, [id]);
+
+  useEffect(() => {
+    if (!markHighlight || titles.length === 0) return;
+    const scroll = () => {
+      const axisY = Math.max(window.pageYOffset, 0);
+      let current = titles[0].id;
+      const innerHeight = window.innerHeight;
+      if (axisY === 0) {
+        return setHighlight(current);
+      }
+      if (axisY + innerHeight >= document.body.scrollHeight) {
+        return setHighlight(titles[titles.length - 1].id);
+      }
+      const len = titles.length;
+      for (let i = 0; i < len; i++) {
+        if (axisY + innerHeight / 2 >= titles[i].top) {
+          current = titles[i].id;
+        }
+      }
+      setHighlight(current);
+    };
+    const options = { capture: true } as const;
+    scroll();
+    window.addEventListener("scroll", scroll, options);
+    return () => window.removeEventListener("scroll", scroll, options);
+  }, [titles, markHighlight]);
 
   useEffect(() => {
     if (!observeHash) return;
@@ -71,9 +99,11 @@ export const TableOfContent: VFC<Props> = ({ id = "document-root", observeHash =
           {titles.map((x) => (
             <li
               key={x.id}
-              className={`table-of-content-item ${hash === x.id && observeHash ? "text-blue-600 font-extrabold" : ""} ${
-                Tags[x.tag]
-              }`}
+              className={`table-of-content-item ${
+                (hash === x.id && observeHash) || (highlight === x.id && markHighlight)
+                  ? "text-blue-600 font-extrabold"
+                  : ""
+              } ${Tags[x.tag]}`}
             >
               <a className="w-fit hover:underline" href={`#${x.id}`}>
                 {x.text}

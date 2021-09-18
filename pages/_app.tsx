@@ -1,8 +1,8 @@
 import { SearchBar } from "components/search-bar";
 import type { AppProps } from "next/app";
+import Link from "next/link";
 import { FormEvent, Fragment, useCallback, useEffect, useRef, useState } from "react";
 import Colors from "../styles/colors.json";
-import Link from "next/link";
 import "../styles/globals.css";
 import { FaSearch, FaSun } from "react-icons/fa";
 import { SiteContainer } from "components/container";
@@ -46,12 +46,16 @@ export default function App({ Component, pageProps }: AppProps) {
         <SearchBar show={show} />
         <SiteContainer tag="nav" className="py-4 flex flex-nowrap items-center justify-between">
           <section className="flex items-baseline gap-x-8">
-            <h1 className="font-extrabold text-lg">WriteMe</h1>
+            <h1 className="font-extrabold text-lg">
+              <Link href="/">WriteMe</Link>
+            </h1>
             <ul className="flex gap-x-4 list-none">
               <li>
-                <Link href="/docs/">Docs</Link>
+                <Link href="/docs/project/getting-started/">Docs</Link>
               </li>
-              <li>Blog</li>
+              <li>
+                <Link href="/blog/">Blog</Link>
+              </li>
             </ul>
           </section>
           <form onSubmit={submit} className="flex gap-x-4 justify-between align-middle self-center items-center">

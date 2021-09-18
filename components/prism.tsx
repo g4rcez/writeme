@@ -11,6 +11,8 @@ type Props = {
   language: string;
 };
 
+const coptyToClipboardClass = "absolute right-0 mx-4 my-5 select-none";
+
 export const CodeHighlight: React.VFC<Props> = ({ code = "", language }) => {
   const [copied, setCopied] = useState(false);
   const convertLang = useMemo(() => (language === "node" ? "javascript" : language), [language]);
@@ -18,19 +20,20 @@ export const CodeHighlight: React.VFC<Props> = ({ code = "", language }) => {
   const copy = () => {
     copyToClipboard(code);
     setCopied(true);
-    setTimeout(() => setCopied(false), 3000);
+    setTimeout(() => setCopied(false), 1000);
   };
 
   return (
     <div className="code-highlight relative w-full mx-auto container">
-      <button
-        title="Copy to clipboard"
-        onClick={copy}
-        className={`absolute top-0 right-0 p-4 ${copied ? "text-green-400" : "text-gray-200"}`}
-      >
-        {!copied && <BsClipboard className="select-none pointer-events-none" />}
-        {copied && <FaCheck className="select-none pointer-events-none" />}
-      </button>
+      {copied ? (
+        <FaCheck className={`${coptyToClipboardClass} animate-bounce pointer-events-none text-green-400`} />
+      ) : (
+        <BsClipboard
+          onClick={copy}
+          title="Copy to clipboard"
+          className={`${coptyToClipboardClass} text-gray-200 cursor-pointer transition-opacity duration-1000 ease-out opacity-100 hover:opacity-60`}
+        />
+      )}
       <Highlight {...defaultProps} theme={draculaTheme} code={code} language={convertLang}>
         {({ className, style, tokens, getLineProps, getTokenProps }: any) => (
           <pre className={`${className} text-left mx-4 p-4 overflow-scroll`} style={style}>
@@ -54,4 +57,4 @@ export const CodeHighlight: React.VFC<Props> = ({ code = "", language }) => {
   );
 };
 
-export default CodeHighlight
+export default CodeHighlight;

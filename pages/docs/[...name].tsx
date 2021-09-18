@@ -11,6 +11,7 @@ import { Strings } from "lib/strings";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
+import { useRouter } from "next/dist/client/router";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import Path from "path";
@@ -28,6 +29,8 @@ const Playground = dynamic(() => import("components/playground"));
 const HttpRequest = dynamic(() => import("components/http-request/http-request"));
 const HttpResponse = dynamic(() => import("components/http-response/http-response"));
 const Flowchart = dynamic(() => import("components/flowchart"));
+const GithubOgp = dynamic(() => import("components/open-graph/github-ogp"));
+const YoutubeOgp = dynamic(() => import("components/open-graph/youtube-ogp"));
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const docs = await Docs.getAllDocs();
@@ -91,7 +94,7 @@ const playgroundScope = {
   CodeHighlight,
 };
 
-const components = {
+const defaultComponents = {
   h1: (props: any) => <Heading {...props} tag="h2" size="text-3xl" />,
   h2: (props: any) => <Heading {...props} tag="h2" size="text-3xl" />,
   h3: (props: any) => <Heading {...props} tag="h3" size="text-2xl" />,
@@ -99,14 +102,14 @@ const components = {
   h5: (props: any) => <Heading {...props} tag="h5" size="text-lg" />,
   h6: (props: any) => <Heading {...props} tag="h6" size="text-base" />,
   pre: MdPre,
-  HttpRequest,
+  CodeHighlight,
   CodeResponse,
   Flowchart,
+  HttpRequest,
+  HttpResponse,
   Tab,
   TableOfContent,
-  CodeHighlight,
   Tabs,
-  HttpResponse,
   ul: (props: any) => <ul {...props} className={props.className ?? "mt-2 mb-4"} />,
   Playground: function Component(props: any) {
     return <Playground {...props} scope={playgroundScope} />;
@@ -119,6 +122,12 @@ const components = {
   },
 };
 
+const components = {
+  ...defaultComponents,
+  GithubOgp,
+  YoutubeOgp,
+};
+
 type Props = {
   data: Metadata;
   docs: any;
@@ -129,6 +138,7 @@ type Props = {
 const providerValue = { theme: "light", titlePrefix: "WriteMe" };
 
 export default function Component({ source, data, notFound, docs }: Props) {
+  const { asPath } = useRouter();
   const hasPrev = data.prev !== null;
   const hasNext = data.next !== null;
 
@@ -136,11 +146,12 @@ export default function Component({ source, data, notFound, docs }: Props) {
     <SiteContainer tag="section">
       <Head>
         <title>
-          {providerValue.titlePrefix} | {data.project} {data.title}
+          {providerValue.titlePrefix} | {data.section} {data.title}
         </title>
       </Head>
       <main className="flex flex-row align-baseline justify-between gap-x-6">
         <Sidebar
+          active={asPath}
           className="hidden md:block markdown-side-item border-r border-gray-300 md:w-48 max-w-xs mt-4"
           items={docs}
         />
@@ -176,7 +187,7 @@ export default function Component({ source, data, notFound, docs }: Props) {
         </section>
         <aside className="markdown-side-item md:w-48 text-sm text-gray-500 mt-4">
           <span className="font-bold">In this Page:</span>
-          <TableOfContent className="table-of-content-target" observeHash />
+          <TableOfContent className="table-of-content-target" observeHash markHighlight />
         </aside>
       </main>
     </SiteContainer>

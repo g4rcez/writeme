@@ -1,4 +1,3 @@
-import { SiteContainer } from "components/container";
 import { SearchBar } from "components/search-bar";
 import type { AppProps } from "next/app";
 import Link from "next/link";

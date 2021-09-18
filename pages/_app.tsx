@@ -2,7 +2,6 @@ import { SearchBar } from "components/search-bar";
 import type { AppProps } from "next/app";
 import Link from "next/link";
 import { FormEvent, Fragment, useCallback, useEffect, useRef, useState } from "react";
-import { FaSearch } from "react-icons/fa";
 import Colors from "../styles/colors.json";
 import "../styles/globals.css";
 import { FaSearch, FaSun } from "react-icons/fa";

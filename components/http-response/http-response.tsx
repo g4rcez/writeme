@@ -1,4 +1,4 @@
-import { MiniTitle } from "components";
+import { HttpResponseProps, MiniTitle } from "components";
 import { HttpCircleStatus } from "components/circle";
 import { useHttpContext } from "components/http.context";
 import { CodeHighlight } from "components/prism";
@@ -62,9 +62,9 @@ const MessageFromStatus: Record<number, string> = {
   511: "Network Authentication Required",
 };
 
-export const HttpResponse: React.VFC = () => {
-  const { response, loading } = useHttpContext();
+type Props = { response: HttpResponseProps; loading: boolean };
 
+export const HttpResponse: React.VFC<Props> = ({ loading, response }) => {
   const httpResponseText: string = useMemo(() => {
     if (response === null) return "";
     const urlParts = new URL(response.url);
@@ -80,7 +80,11 @@ export const HttpResponse: React.VFC = () => {
   if (loading) return <span className="http-response-loading">Loading...</span>;
 
   if (response === null) {
-    return null;
+    return (
+      <h3 data-toc="false" className="italic font-thin mb-6 underline">
+        No response. Click in Request API to view your response
+      </h3>
+    );
   }
 
   return (

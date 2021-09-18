@@ -1,6 +1,9 @@
+import { useHttpContext } from "components";
 import dynamic from "next/dynamic";
+import React, { Fragment } from "react";
 
 const HttpRequest = dynamic(() => import("./http-request/http-request"));
+const HttpContext = dynamic(() => import("./http.context") as any);
 const HttpResponse = dynamic(() => import("./http-response/http-response"));
 const OpenGraph = dynamic(() => import("./open-graph"));
 const CodeHighlight = dynamic(() => import("./prism"));
@@ -27,6 +30,16 @@ const parseMetaString = (str: string | undefined): Types.Dict => {
   }, {});
 };
 
+const ConnectedHttp: React.FC<{ code: string }> = ({ code }) => {
+  const { response, loading } = useHttpContext();
+  return (
+    <Fragment>
+      <HttpRequest curl={code} />
+      <HttpResponse response={response} loading={loading} />
+    </Fragment>
+  );
+};
+
 export const MdPre = (props: any) => {
   const componentProps = props.children.props;
   const language = /\w+-(\w+)/.exec(componentProps.className)?.[1];
@@ -42,9 +55,12 @@ export const MdPre = (props: any) => {
 
   if (language === "chart") return <Flowchart code={componentProps.children} />;
 
-  if (type === "request") return <HttpRequest curl={componentProps.children} />;
-
-  if (type === "response") return <HttpResponse />;
+  if (type === "request")
+    return (
+      <HttpContext>
+        <ConnectedHttp code={componentProps.children} />
+      </HttpContext>
+    );
 
   if (type === "ogp" && language === "ogp")
     return (

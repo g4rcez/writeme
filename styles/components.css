@@ -75,7 +75,7 @@
   }
 
   .http-request-code {
-    @apply border-t border-b border-gray-200 my-4 py-2;
+    @apply my-2;
   }
 
   /* Http Response */

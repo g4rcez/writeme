@@ -4,12 +4,12 @@ import { createContext, useCallback, useContext, useState } from "react";
 
 type Http = Types.Nullable<Types.BodyProxy>;
 
-type Response = (Types.BodyProxy & { statusCode: number; isError: boolean }) | null;
+export type HttpResponseProps = (Types.BodyProxy & { statusCode: number; isError: boolean }) | null;
 
 type HttpContext = {
   request: Http;
   loading: boolean;
-  response: Response;
+  response: HttpResponseProps;
   onRequest: (data: Types.BodyProxy) => Promise<void>;
 };
 
@@ -17,7 +17,7 @@ const Context = createContext<HttpContext>({} as never);
 
 export const HttpContext: React.FC = ({ children }) => {
   const [request, setRequest] = useState<Http>(null);
-  const [response, setResponse] = useState<Response>(null);
+  const [response, setResponse] = useState<HttpResponseProps>(null);
   const [loading, setLoading] = useState(false);
 
   const onRequest = useCallback(async (data: Types.BodyProxy) => {
@@ -59,3 +59,5 @@ export const HttpContext: React.FC = ({ children }) => {
 };
 
 export const useHttpContext = () => useContext(Context);
+
+export default HttpContext;

@@ -11,7 +11,26 @@
   /* Search bar */
   .wall-overlay {
     @apply h-screen w-screen z-20;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.45);
+  }
+
+  .wall-content-container {
+    @apply fixed flex flex-col w-full max-w-xl h-full max-h-96 rounded-sm shadow-2xl p-3 bg-gray-50 text-gray-600;
+  }
+
+  .wall-content-center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Shortcut */
+  .shortcut {
+    @apply text-xs px-2 py-1 rounded-md w-min font-medium bg-gray-300 bg-opacity-50 text-gray-800;
+  }
+
+  .shortcut-group {
+    @apply flex gap-2 items-center;
   }
 
   /* Input */

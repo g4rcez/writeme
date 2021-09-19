@@ -1,6 +1,5 @@
 import { SiteContainer } from "components/container";
 import Link from "next/link";
-import { SearchBar } from "components/search-bar";
 
 export default function Home() {
   return (
@@ -9,7 +8,7 @@ export default function Home() {
         <SiteContainer className="px-36 text-center flex items-center flex-col gap-y-4">
           <h2 className="text-4xl font-extrabold text-center">Write docs and forget configuration</h2>
           <div className="flex gap-x-4 flex-row text-center items-center">
-            <Link href="/docs/project/getting-started">Getting Started</Link>
+            <Link href="/docs/getting-started">Getting Started</Link>
             <Link href="/docs/example">View all features</Link>
           </div>
         </SiteContainer>

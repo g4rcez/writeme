@@ -48,7 +48,7 @@ You can see the [Getting Started](https://writeme.vercel.app/docs/project/gettin
 - [ ] Better layout for sidebar
 - [ ] Integration with [shields.io](https://shields.io)
 - [ ] Add puppeteer to create opengraph images
-- [ ] Add shortcuts support with [shortcut-keys](https://github.com/leoavelino7/shortcut-keys)
+- [x] Add shortcuts support with [shortcut-keys](https://github.com/leoavelino7/shortcut-keys)
 - [ ] Create `writemerc.json` for global config
 - [ ] Support `/blog`. Organize blog posts by `/blog/year/month/day/post-name`
 - [ ] Support style customization (using design tokens)

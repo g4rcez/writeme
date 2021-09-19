@@ -1,14 +1,15 @@
-import { SearchBar } from "components/search-bar";
+import { SearchBar, ShortcutItem } from "components/search-bar";
 import type { AppProps } from "next/app";
 import Link from "next/link";
-import { FormEvent, Fragment, useCallback, useEffect, useRef, useState } from "react";
+import { FormEvent, Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Colors from "../styles/colors.json";
 import "../styles/globals.css";
 import { FaSearch, FaSun } from "react-icons/fa";
 import { SiteContainer } from "components/container";
-import { Router } from "next/dist/client/router";
+import { Router, useRouter } from "next/router";
 import ProgressBar from "@badrap/bar-of-progress";
 import Head from "next/head";
+import { shortcutKeys } from "shortcut-keys";
 
 const setColor = (varName: string, color: string, root: HTMLElement) => root.style.setProperty(varName, color);
 
@@ -36,14 +37,39 @@ Router.events.on("routeChangeError", () => progress.finish());
 Router.events.on("routeChangeComplete", () => progress.finish());
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   const input = useRef<HTMLInputElement>(null);
   const [show, setShow] = useState(false);
 
-  const toggleSearchBar = useCallback(() => setShow((p) => !p), []);
+  const goToPage = useCallback(
+    (path: string) => {
+      setShow(false);
+      router.push(path);
+    },
+    [router]
+  );
 
-  useEffect(() => {
-    setCssVars(Colors, document.documentElement);
-  }, []);
+  const shortcutsList = useMemo(
+    (): ShortcutItem[] => [
+      {
+        category: "Pages",
+        items: [
+          { name: "Home", shortcuts: [["Ctrl", "H"]], target: () => goToPage("/") },
+          { name: "Getting Started", shortcuts: [["Ctrl", "P"]], target: () => goToPage("/docs/getting-starte/d/") },
+        ],
+      },
+      {
+        category: "Themes",
+        items: [
+          { name: "Dark mode", shortcuts: [["Ctrl", "D"]], target: () => {} },
+          { name: "Light mode", shortcuts: [["Ctrl", "L"]], target: () => {} },
+        ],
+      },
+    ],
+    [goToPage]
+  );
+
+  const toggleSearchBar = useCallback(() => setShow((p) => !p), []);
 
   const submit = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -53,6 +79,24 @@ export default function App({ Component, pageProps }: AppProps) {
     alert("Dark mode is coming");
   };
 
+  useEffect(() => {
+    setCssVars(Colors, document.documentElement);
+  }, []);
+
+  useEffect(() => {
+    const windowElement = shortcutKeys(window);
+
+    windowElement.add("control+k", toggleSearchBar, true);
+    windowElement.add("control+h", () => goToPage("/"), true);
+    windowElement.add("control+p", () => goToPage("/docs/getting-started/"), true);
+
+    return () => {
+      windowElement.remove("control+k");
+      windowElement.remove("control+h");
+      windowElement.remove("control+p");
+    };
+  }, [goToPage, toggleSearchBar]);
+
   return (
     <Fragment>
       <Head>
@@ -61,7 +105,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta key="twitter:description" name="twitter:description" content="Write docs without effort" />
       </Head>
       <header id="writeme-header" className="flex sticky z-10 top-0 justify-between w-full text-white bg-gray-700">
-        <SearchBar show={show} />
+        <SearchBar show={show} onChange={setShow} onOverlayClick={toggleSearchBar} shortcutList={shortcutsList} />
         <SiteContainer tag="nav" className="py-4 flex flex-nowrap items-center justify-between">
           <section className="flex items-baseline gap-x-8">
             <h1 className="font-extrabold text-lg">
@@ -69,7 +113,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </h1>
             <ul className="flex gap-x-4 list-none">
               <li>
-                <Link href="/docs/project/getting-started/">Docs</Link>
+                <Link href="/docs/getting-starte/d/">Docs</Link>
               </li>
               <li>
                 <Link href="/blog/">Blog</Link>

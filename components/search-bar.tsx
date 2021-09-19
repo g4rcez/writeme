@@ -45,13 +45,17 @@ export const SearchBar: React.VFC<SearchBarProps> = ({ show, onChange, onOverlay
     target();
   };
 
+  const clearSearch = () => {
+    setFilteredShortcutList(unfilteredShortcutList.current);
+  };
+
   useEffect(() => {
     handleSearch(search);
   }, [handleSearch, search]);
 
-  const clearSearch = () => {
-    setFilteredShortcutList(unfilteredShortcutList.current);
-  };
+  useEffect(() => {
+    clearSearch();
+  }, []);
 
   if (!show) return null;
 
@@ -69,6 +73,7 @@ export const SearchBar: React.VFC<SearchBarProps> = ({ show, onChange, onOverlay
               className="bg-transparent text-lg outline-none w-full"
               type="text"
               placeholder="What do you need?"
+              value={search}
               onChange={(e) => setSearch(e.target.value.toLowerCase().trim())}
               autoFocus
             />

@@ -55,7 +55,7 @@ export default function App({ Component, pageProps }: AppProps) {
         category: "Pages",
         items: [
           { name: "Home", shortcuts: [["Ctrl", "H"]], target: () => goToPage("/") },
-          { name: "Getting Started", shortcuts: [["Ctrl", "P"]], target: () => goToPage("/docs/getting-starte/d/") },
+          { name: "Getting Started", shortcuts: [["Ctrl", "P"]], target: () => goToPage("/docs/getting-started/") },
         ],
       },
       {

@@ -44,7 +44,7 @@ You can see the [Getting Started](https://writeme.vercel.app/docs/project/gettin
 - [x] Order docs by key in header (parsed by [gray-matter](https://github.com/jonschlinkert/gray-matter))
 - [x] Create `before` and `next` link at end of docs
 - [x] create-next-app example (for alpha/beta versions)
-- [ ] ScrollSpy for side Table of Content
+- [x] ScrollSpy for side Table of Content
 - [ ] Better layout for sidebar
 - [ ] Integration with [shields.io](https://shields.io)
 - [ ] Add puppeteer to create opengraph images

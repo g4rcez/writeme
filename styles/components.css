@@ -10,18 +10,18 @@
 
   /* Search bar */
   .wall-overlay {
-    @apply h-screen w-screen z-20;
-    background-color: rgba(0, 0, 0, 0.45);
+    @apply absolute top-0 left-0 h-screen w-screen z-20;
+    background-color: rgba(0, 0, 0, 0.9);
   }
 
   .wall-content-container {
-    @apply fixed flex flex-col w-full max-w-xl h-full max-h-96 rounded-sm shadow-2xl p-3 bg-gray-50 text-gray-600;
+    @apply fixed flex z-20 flex-col w-full max-w-xl h-full max-h-96 rounded-lg;
+    @apply shadow-2xl p-3 bg-white text-gray-700;
   }
 
   .wall-content-center {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 10%;
+    margin: auto;
   }
 
   /* Shortcut */

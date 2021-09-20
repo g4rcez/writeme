@@ -32,6 +32,7 @@ const progress = new ProgressBar({
   className: "bar-of-progress",
   delay: 50,
 });
+
 Router.events.on("routeChangeStart", () => progress.start);
 Router.events.on("routeChangeError", () => progress.finish());
 Router.events.on("routeChangeComplete", () => progress.finish());
@@ -85,15 +86,18 @@ export default function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     const windowElement = shortcutKeys(window);
-
     windowElement.add("control+k", toggleSearchBar, true);
     windowElement.add("control+h", () => goToPage("/"), true);
     windowElement.add("control+p", () => goToPage("/docs/getting-started/"), true);
+    window.addEventListener("keydown", (e: KeyboardEvent) =>
+      e.key.toLowerCase() === "escape" ? setShow(false) : undefined
+    );
 
     return () => {
       windowElement.remove("control+k");
       windowElement.remove("control+h");
       windowElement.remove("control+p");
+      window.removeEventListener("keydown", close);
     };
   }, [goToPage, toggleSearchBar]);
 
@@ -113,7 +117,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </h1>
             <ul className="flex gap-x-4 list-none">
               <li>
-                <Link href="/docs/getting-starte/d/">Docs</Link>
+                <Link href="/docs/getting-started/">Docs</Link>
               </li>
               <li>
                 <Link href="/blog/">Blog</Link>

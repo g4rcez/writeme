@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 type fallback = (overTop: number, overBottom: number, parent: HTMLElement, parentBorderTopWidth: number) => any;
 
@@ -10,7 +10,7 @@ declare global {
 }
 
 // https://gist.github.com/hsablonniere/2581101
-function scrollIfNeeded(element: HTMLElement, centerIfNeeded?: boolean, scrollTop?: boolean) {
+export function scrollIfNeeded(element: HTMLElement, centerIfNeeded?: boolean, scrollTop?: boolean) {
   centerIfNeeded = arguments.length === 0 ? true : !!centerIfNeeded;
 
   var parent = element.parentNode! as HTMLElement,

@@ -44,8 +44,9 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const goToPage = useCallback(
     (path: string) => {
-      setShow(false);
+      console.log({ path });
       router.push(path);
+      setShow(false);
     },
     [router]
   );

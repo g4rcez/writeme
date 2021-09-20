@@ -1,10 +1,11 @@
 import { scrollIfNeeded } from "components";
 import { Is } from "lib/is";
-import { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState, VFC } from "react";
+import React, { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState, VFC } from "react";
 import { Shortcut } from "./shortcut";
 import { useBlockScroll } from "../hooks/use-block-scroll";
+import { head, last } from "ramda";
 
-export const PolyfillsSearchSelect = () => {
+const PolyfillsSearchSelect = () => {
   if (!Element.prototype.scrollSelectIntoView) {
     Element.prototype.scrollSelectIntoView = function (this: HTMLElement, centerIfNeeded?: boolean) {
       scrollIfNeeded(this, centerIfNeeded, true);
@@ -34,13 +35,63 @@ type SearchBarProps = {
 
 const mainShortCut = [["Ctrl", "K"]];
 
+const arrows = ["ArrowDown", "ArrowUp"];
+
 const mapItems = (items: ShortcutItem[]): Item[] =>
   items.flatMap((x) => [{ category: x.category }, x.items as never]).flat(1);
+
+const getNodes = (ul: HTMLElement | null) => Array.from(ul?.childNodes ?? []) as HTMLElement[];
+
+const getFirstItemSelect = (ul: HTMLElement[]) => ul.find((li) => !!li.dataset?.select) ?? null;
+
+const isGroup = (children: HTMLElement) => children?.dataset.group === "true";
+
+const getWhileNotGroup = (
+  fallback: HTMLElement,
+  element: HTMLElement | null,
+  mode: "nextSibling" | "previousSibling"
+): HTMLElement => {
+  if (element === null) return fallback;
+  return isGroup(element) ? getWhileNotGroup(fallback, (element[mode] as HTMLElement) ?? null, mode) : element;
+};
+
+const modes = (
+  ul: HTMLElement[],
+  element: HTMLElement | null,
+  mode: "previousSibling" | "nextSibling",
+  getter: (list: HTMLElement[]) => HTMLElement
+): HTMLElement => {
+  const indexedItem = getter(ul)!;
+  return element === null ? indexedItem : getWhileNotGroup(indexedItem, element[mode] as HTMLElement, mode);
+};
+
+const keyEffect = (
+  keys: string[],
+  pressedKey: string,
+  ulNoGroup: HTMLElement[],
+  setActive: (s: string) => void,
+  current: HTMLElement | null
+) => {
+  if (!keys.some((x) => x === pressedKey)) {
+    return;
+  }
+  const children =
+    pressedKey === "ArrowUp"
+      ? modes(ulNoGroup, current, "previousSibling", last)
+      : modes(ulNoGroup, current, "nextSibling", head);
+  if (children) {
+    children.scrollSelectIntoView();
+    children.focus();
+    const sel = children?.dataset.select ?? "";
+    setActive(sel);
+  }
+};
 
 export const SearchBar: VFC<SearchBarProps> = ({ show, onChange, onOverlayClick, shortcutList }) => {
   useBlockScroll(show);
   const ul = useRef<HTMLUListElement>(null);
   const input = useRef<HTMLInputElement>(null);
+  const header = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState("");
 
   const [search, setSearch] = useState("");
@@ -65,7 +116,7 @@ export const SearchBar: VFC<SearchBarProps> = ({ show, onChange, onOverlayClick,
             mapItems(
               unfilteredShortcutList.current.reduce<ShortcutItem[]>((acc, info) => {
                 const items = info.items.filter((item) => item.name.toLowerCase().includes(textToSearch));
-                return items.length > 0 ? [...acc, { ...info, items }] : acc;
+                return Is.Empty(items) ? [...acc, { ...info, items }] : acc;
               }, [])
             )
           ),
@@ -97,57 +148,38 @@ export const SearchBar: VFC<SearchBarProps> = ({ show, onChange, onOverlayClick,
     if (show) input.current.focus();
   }, [show]);
 
+  const onNextKeyUp = useCallback((e: React.KeyboardEvent) => {
+    const pressedKey = e.key;
+    const ulNoGroup = getNodes(ul.current).filter((x) => !isGroup(x));
+    const children = e.currentTarget as HTMLElement;
+    keyEffect(arrows, pressedKey, ulNoGroup, setActive, children);
+    if (e.key === "Enter" || e.key === " ") {
+      (document.activeElement as HTMLButtonElement).click();
+    }
+  }, []);
+
   useEffect(() => {
     try {
       PolyfillsSearchSelect();
     } catch (error) {}
-    if (ul.current === null && input.current === null) return;
+    if (ul.current === null && header.current === null) return;
     let children: HTMLElement | null = null;
-    const currentInput = input.current;
+    const currentInput = header.current;
 
-    const isGroup = (children: any) => children?.dataset.group === "true";
+    const ulNoGroup = getNodes(ul.current).filter((x) => !isGroup(x));
 
-    const reassing = (element: HTMLElement, mode: "next" | "prev", fn?: () => void): void => {
-      if (isGroup(element) && element !== null) {
-        const el = mode === "next" ? (element.nextSibling as HTMLElement) : (element.previousSibling as HTMLElement);
-        children = el;
-        if (isGroup(el)) {
-          return reassing(el, mode, fn);
-        }
-      }
-      if (element === null || children === null) fn?.();
-    };
     const keyup = (e: KeyboardEvent) => {
-      const acts = {
-        ArrowUp: () => {
-          children =
-            children === null ? (ul.current?.lastChild as HTMLElement) : (children?.previousSibling as HTMLElement);
-          reassing(children, "prev", () => reassing(ul.current?.lastChild! as HTMLElement, "prev"));
-        },
-        ArrowDown: () => {
-          children =
-            children === null ? (ul.current?.firstChild as HTMLElement) : (children?.nextSibling as HTMLElement);
-          reassing(children, "next", () => reassing(ul.current?.firstChild! as HTMLElement, "next"));
-        },
-      };
-      if (e.key === "Enter" && children !== null) {
+      const pressedKey = e.key;
+      if (pressedKey === "Enter") {
         e.preventDefault();
-        if (ul.current?.childElementCount === 1) children = ul.current.firstChild as HTMLElement;
-        reassing(children, "next");
-        input.current?.blur();
-        const sel = children.dataset.select ?? "";
+        children = children ?? getFirstItemSelect(ulNoGroup);
+        if (children === null) return;
+        const sel = children?.dataset.select ?? "";
         setActive(sel);
         const currentItem = refs.get(sel);
         if (currentItem) handleEvent(currentItem);
       }
-      if (Is.Keyof(acts, e.key)) {
-        e.preventDefault();
-        acts[e.key as keyof typeof acts]();
-        children?.scrollSelectIntoView();
-        children?.focus();
-        const sel = children?.dataset.select ?? "";
-        setActive(sel);
-      }
+      keyEffect(arrows, pressedKey, ulNoGroup, setActive, children);
     };
     const setNullChild = () => (children = null);
     currentInput?.addEventListener("focus", setNullChild);
@@ -163,7 +195,7 @@ export const SearchBar: VFC<SearchBarProps> = ({ show, onChange, onOverlayClick,
       <div className="relative flex flex-col items-center">
         <div className="wall-overlay" onClick={onOverlayClick}></div>
         <div className="wall-content-container wall-content-center">
-          <header className="flex flex-col gap-3 mb-2">
+          <header ref={header} className="flex flex-col gap-3 mb-2">
             <div className="flex items-center gap-2">
               <Shortcut keys={mainShortCut} />
               or
@@ -190,18 +222,24 @@ export const SearchBar: VFC<SearchBarProps> = ({ show, onChange, onOverlayClick,
                 );
               }
               const group = item as ShortcutItemCategory;
+              const isActive = group.name === active;
               return (
                 <li
-                  className={`p-2 transition-colors duration-300 cursor-pointer ease-linear hover:bg-gray-100 ${
-                    group.name === active ? "bg-gray-100 border-l-4 border-black font-extrabold" : ""
-                  }`}
+                  className={`p-2 ring-transparent outline-none transition-colors duration-300 cursor-pointer ease-linear ${
+                    isActive ? "bg-gray-100 border-l-4 border-black font-extrabold" : ""
+                  } focus:bg-gray-100 focus:border-l-4 focus:border-black focus:font-extrabold
+                  hover:bg-gray-100 hover:bg-border-l-4 hover:border-black hover:font-extrabold`}
+                  role="button"
+                  tabIndex={0}
                   key={group.name}
+                  onKeyUp={onNextKeyUp}
                   data-select={group.name}
+                  onClick={() => handleEvent(group.target)}
                 >
-                  <button onClick={() => handleEvent(group.target)} className="flex justify-between w-full">
+                  <div className="flex justify-between w-full">
                     {group.name}
                     <Shortcut keys={group.shortcuts} />
-                  </button>
+                  </div>
                 </li>
               );
             })}

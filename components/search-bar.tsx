@@ -194,7 +194,7 @@ export const SearchBar: VFC<SearchBarProps> = ({ show, onChange, onOverlayClick,
     <aside hidden={!show} className="wall fixed top-0 left-0 bg-transparent h-screen w-screen z-20">
       <div className="relative flex flex-col items-center">
         <div className="wall-overlay" onClick={onOverlayClick}></div>
-        <div className="wall-content-container wall-content-center">
+        <div className="wall-content-container min-w-[390px]">
           <header ref={header} className="flex flex-col gap-3 mb-2">
             <div className="flex items-center gap-2">
               <Shortcut keys={mainShortCut} />

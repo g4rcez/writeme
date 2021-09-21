@@ -13,7 +13,7 @@ export default function Home() {
           </div>
         </SiteContainer>
       </section>
-      <section className="my-12 w-full container mx-auto flex flex-row justify-center text-center gap-x-8 flex-1">
+      <section className="my-12 w-full container mx-auto flex flex-row flex-wrap justify-center text-center gap-x-8 flex-1">
         <article className="flex flex-col prose lg:prose-lg">
           <h2 className="text-2xl text-gray-600 font-extrabold leading-relaxed">Write Markdown or MDX</h2>
           <ul className="list-inside list-disc ml-4">

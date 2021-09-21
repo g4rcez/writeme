@@ -73,7 +73,7 @@ export const TableOfContent: VFC<Props> = ({
       }
       const len = titles.length;
       for (let i = 0; i < len; i++) {
-        if (axisY + innerHeight / 2 >= titles[i].top) {
+        if (axisY + innerHeight / 5 >= titles[i].top) {
           current = titles[i].id;
         }
       }

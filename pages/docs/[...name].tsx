@@ -185,7 +185,7 @@ export default function Component({ source, data, notFound, docs }: Props) {
             {hasNext && <OrderDoc {...data.next!} direction="next" />}
           </div>
         </section>
-        <aside className="markdown-side-item md:w-48 text-sm text-gray-500 mt-4">
+        <aside className="markdown-side-item md:w-48 text-sm text-gray-500 mt-4 md:block hidden">
           <span className="font-bold">In this Page:</span>
           <TableOfContent className="table-of-content-target" observeHash markHighlight />
         </aside>

@@ -30,12 +30,12 @@ const progress = new ProgressBar({
   size: 3,
   color: "#3B82F6",
   className: "bar-of-progress",
-  delay: 50,
+  delay: 10,
 });
 
 Router.events.on("routeChangeStart", () => progress.start);
 Router.events.on("routeChangeError", () => progress.finish());
-Router.events.on("routeChangeComplete", () => progress.finish());
+Router.events.on("routeChangeComplete", () => setTimeout(() => progress.finish(), 1000));
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();

@@ -3,6 +3,10 @@
 @import "tailwindcss/utilities";
 
 @layer components {
+  /* Top loadbar */
+  .bar-of-progress {
+    @apply z-50;
+  }
   /* order docs */
   .order-doc {
     @apply p-4 border border-gray-100 hover:border-blue-400 hover:bg-blue-50 rounded-lg;
@@ -15,11 +19,8 @@
   }
 
   .wall-content-container {
-    @apply fixed flex z-20 flex-col w-full max-w-xl h-full max-h-96 rounded-lg;
+    @apply fixed flex z-20 flex-col max-w-xl w-auto max-h-96 rounded-lg;
     @apply shadow-2xl p-3 bg-white text-gray-700;
-  }
-
-  .wall-content-center {
     top: 10%;
     margin: auto;
   }

@@ -26,8 +26,6 @@ type OpenGraphAttrs = Partial<{
   "video:url": string;
 }>;
 
-const height = "auto";
-
 export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
   const [ogp, setOgp] = useState<Types.Nullable<OpenGraphAttrs>>(null);
   const [error, setError] = useState("");
@@ -64,6 +62,12 @@ export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
     return ogp["image:width"] ? ogp["image:width"] + "px" : "100%";
   }, [props.width, ogp]);
 
+  const height = useMemo(() => {
+    if (ogp === null) return "auto";
+    if (props.height) return props.height;
+    return ogp["image:height"] ? ogp["image:height"] + "px" : "100%";
+  }, [props.height, ogp]);
+
   if (ogp === null) return null;
 
   if (error !== "") return <span className="italic font-thin text-red-500">{error}</span>;
@@ -75,7 +79,7 @@ export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
           <iframe
             width={width}
             height={height}
-            style={{ height: "auto" }}
+            style={{ height }}
             className="block max-w-full align-middle w-full h-auto"
             src={ogp["video:secure_url"] ?? ogp["video:url"]}
             title={`${ogp.site_name} video player`}

@@ -44,7 +44,7 @@ export type Cookie = {
 export type Header = Comment & {
   name: "Cookie" | "Content-Type" | string;
   disabled?: boolean;
-  value: any;
+  value: string;
 };
 
 export type PostData = {

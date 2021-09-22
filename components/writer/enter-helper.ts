@@ -8,7 +8,7 @@ export const EnterHelper = (textarea: HTMLTextAreaElement, event: any) => {
   let first: string;
   let input: string;
   let label: string = "";
-  let lines: any;
+  let lines: string[];
   let prior: string;
   let range: any;
   let start: number;

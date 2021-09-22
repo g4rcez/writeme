@@ -30,6 +30,7 @@ export namespace Docs {
     sidebar: number;
     items: Metadata[];
   }>;
+
   export const getAllMetadataDocs = async () => {
     const docs = await getAllDocs();
     const metadata = await Promise.all(

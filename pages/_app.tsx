@@ -20,7 +20,7 @@ const setCssVars = (colors: Styles, element: HTMLElement) =>
     if (typeof value === "string") {
       setColor(`--${key}`, value, element);
     } else if (typeof value === "object") {
-      Object.entries(value).forEach(([secKey, secVal]: any) => {
+      Object.entries(value).forEach(([secKey, secVal]: [string, string]) => {
         setColor(`--${key}-${secKey}`, secVal, element);
       });
     }
@@ -44,7 +44,6 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const goToPage = useCallback(
     (path: string) => {
-      console.log({ path });
       router.push(path);
       setShow(false);
     },

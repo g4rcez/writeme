@@ -8,7 +8,7 @@ export default function YoutubeOgp() {
 
   useEffect(() => {
     if (input.current === null) return;
-    const handler = debounce((e: any) => setLink(e.target.value), 1500);
+    const handler = debounce((e: Event) => setLink((e.target as HTMLInputElement).value), 1500);
     input.current.addEventListener("input", handler);
   }, []);
 

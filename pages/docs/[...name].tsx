@@ -1,6 +1,16 @@
-import { CodeResponse, Heading, HttpContext, MdxDocsProvider, Sidebar, Tab, TableOfContent, Tabs } from "components/";
-import { SiteContainer } from "components/container";
-import { Metadata, OrderDoc } from "components/order-doc";
+import {
+  CodeResponse,
+  Heading,
+  HttpContext,
+  MdxDocsProvider,
+  Metadata,
+  OrderDoc,
+  Sidebar,
+  SiteContainer,
+  Tab,
+  TableOfContent,
+  Tabs,
+} from "components/";
 import Fs from "fs/promises";
 import matter from "gray-matter";
 import { Dates } from "lib/dates";
@@ -47,16 +57,20 @@ export const getStaticProps: GetStaticProps = async (props) => {
   try {
     const source = await Fs.readFile(doc, "utf-8");
     const { content, data } = matter(source);
-    const remarkPlugins: any[] = [
-      remarkTabs,
-      remarkGemoji,
-      remarkGfm,
-      remarkDef,
-      remarkFootnotes,
-      [remarkGithub, { repository: data.repository ?? "" }],
-    ];
     const stat = await Fs.stat(doc);
-    const mdxSource = await serialize(content, { scope: data, mdxOptions: { remarkPlugins } });
+    const mdxSource = await serialize(content, {
+      scope: data,
+      mdxOptions: {
+        remarkPlugins: [
+          remarkTabs,
+          remarkGemoji,
+          remarkGfm,
+          remarkDef,
+          remarkFootnotes,
+          [remarkGithub, { repository: data.repository ?? "" }],
+        ],
+      },
+    });
     const docs = await Docs.getAllMetadataDocs();
     const currentGroup = docs.find((x) => x.sidebar === data.sidebar) ?? null;
     const order = data.order - 1;
@@ -130,7 +144,7 @@ const components = {
 
 type Props = {
   data: Metadata;
-  docs: any;
+  docs: Docs.DocMetadata;
   notFound?: boolean;
   source: MDXRemoteSerializeResult<Record<string, unknown>>;
 };

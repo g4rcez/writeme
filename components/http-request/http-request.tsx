@@ -1,7 +1,7 @@
 import HttpSnippet from "@g4rcez/httpsnippet";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Body } from "./body";
-import { convert } from "./curl-parser";
+import { convert, Header } from "./curl-parser";
 import { Headers } from "./headers";
 import { HttpDefault, HttpLanguages } from "./languages";
 import { MiniTitle } from "components/mini-title";
@@ -26,7 +26,7 @@ const convertRequest = (curl: string) => {
 };
 
 export const HttpRequest: React.VFC<Props> = ({ curl }) => {
-  const [language, setLanguage] = useState(HttpDefault.language);
+  const [language, setLanguage] = useState<HttpSnippet.Languages>(HttpDefault.language as HttpSnippet.Languages);
   const [framework, setFramework] = useState(HttpDefault.framework);
   const [req, setReq] = useState(() => convertRequest(curl));
   const { onRequest } = useHttpContext();
@@ -40,7 +40,7 @@ export const HttpRequest: React.VFC<Props> = ({ curl }) => {
         ...req,
         postData: req.body,
       });
-      const text = snippet.convert(language as any, framework as any) || "";
+      const text = snippet.convert(language, framework as never) || "";
       return text
         .replace(/(\r?\n)+/g, "\n")
         .replace(/^[ \t]\+/, "")
@@ -51,7 +51,7 @@ export const HttpRequest: React.VFC<Props> = ({ curl }) => {
   }, [language, framework, req]);
 
   const onChangeLang = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    const val = e.target.value;
+    const val = e.target.value as HttpSnippet.Languages;
     setLanguage(val);
     const lang = HttpLanguages.find((x) => x.value === val)!;
     setFramework(lang.frameworks[0].value);
@@ -75,7 +75,7 @@ export const HttpRequest: React.VFC<Props> = ({ curl }) => {
   }, []);
 
   const onChangeRequestHeaders = useCallback(
-    (headers: any) => setReq((prev) => (prev === null ? prev : { ...prev, headers })),
+    (headers: Header[]) => setReq((prev) => (prev === null ? prev : { ...prev, headers })),
     []
   );
 

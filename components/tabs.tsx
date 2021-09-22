@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
-type fallback = (overTop: number, overBottom: number, parent: HTMLElement, parentBorderTopWidth: number) => any;
+type fallback = (overTop: number, overBottom: number, parent: HTMLElement, parentBorderTopWidth: number) => void;
 
 declare global {
   interface Element {

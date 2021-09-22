@@ -1,9 +1,9 @@
 import { scrollIfNeeded } from "components";
 import { Is } from "lib/is";
-import React, { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState, VFC } from "react";
-import { Shortcut } from "./shortcut";
-import { useBlockScroll } from "../hooks/use-block-scroll";
 import { head, last } from "ramda";
+import React, { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState, VFC } from "react";
+import { useBlockScroll } from "../hooks/use-block-scroll";
+import { Shortcut } from "./shortcut";
 
 const PolyfillsSearchSelect = () => {
   if (!Element.prototype.scrollSelectIntoView) {
@@ -226,9 +226,9 @@ export const SearchBar: VFC<SearchBarProps> = ({ show, onChange, onOverlayClick,
               return (
                 <li
                   className={`p-2 ring-transparent outline-none transition-colors duration-300 cursor-pointer ease-linear ${
-                    isActive ? "bg-gray-100 border-l-4 border-black font-extrabold" : ""
-                  } focus:bg-gray-100 focus:border-l-4 focus:border-black focus:font-extrabold
-                  hover:bg-gray-100 hover:bg-border-l-4 hover:border-black hover:font-extrabold`}
+                    isActive ? "bg-neutral-dim border-l-4 border-black font-extrabold" : ""
+                  } focus:bg-neutral-dim focus:border-l-4 focus:border-black focus:font-extrabold
+                  hover:bg-neutral-dim hover:bg-border-l-4 hover:border-black hover:font-extrabold`}
                   role="button"
                   tabIndex={0}
                   key={group.name}

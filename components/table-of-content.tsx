@@ -101,7 +101,7 @@ export const TableOfContent: VFC<Props> = ({
               key={x.id}
               className={`table-of-content-item ${
                 (hash === x.id && observeHash) || (highlight === x.id && markHighlight)
-                  ? "text-blue-600 font-extrabold"
+                  ? "text-main-normal font-extrabold"
                   : ""
               } ${Tags[x.tag]}`}
             >

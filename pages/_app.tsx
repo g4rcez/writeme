@@ -1,36 +1,26 @@
-import "../styles/globals.css";
-import { FormEvent, Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import ProgressBar from "@badrap/bar-of-progress";
+import { SiteContainer } from "components/container";
+import { SearchBar, ShortcutItem } from "components/search-bar";
+//@ts-ignore
+import { useRemoteRefresh } from "next-remote-refresh/hook";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Link from "next/link";
 import { Router, useRouter } from "next/router";
+import { FormEvent, Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FaSearch, FaSun } from "react-icons/fa";
 import { shortcutKeys } from "shortcut-keys";
-import ProgressBar from "@badrap/bar-of-progress";
-import { SearchBar, ShortcutItem } from "../components/search-bar";
-import { SiteContainer } from "../components/container";
-import Colors from "../styles/colors.json";
-//@ts-ignore
-import { useRemoteRefresh } from "next-remote-refresh/hook";
+import { setCssVars } from "styles/themes/themes";
+import Colors from "../styles/themes/colors.json";
+import "../styles/globals.css";
 
 const setColor = (varName: string, color: string, root: HTMLElement) => root.style.setProperty(varName, color);
 
 type Styles = typeof Colors;
 
-const setCssVars = (colors: Styles, element: HTMLElement) =>
-  Object.entries(colors).forEach(([key, value]) => {
-    if (typeof value === "string") {
-      setColor(`--${key}`, value, element);
-    } else if (typeof value === "object") {
-      Object.entries(value).forEach(([secKey, secVal]: [string, string]) => {
-        setColor(`--${key}-${secKey}`, secVal, element);
-      });
-    }
-  });
-
 const progress = new ProgressBar({
   size: 3,
-  color: "#3B82F6",
+  color: Colors.main.normal,
   className: "bar-of-progress",
   delay: 10,
 });
@@ -92,8 +82,7 @@ export default function App({ Component, pageProps }: AppProps) {
   };
 
   useEffect(() => {
-    console.log(Colors);
-    setCssVars(Colors, document.documentElement);
+    setCssVars(document.documentElement, Colors);
   }, []);
 
   useEffect(() => {
@@ -115,7 +104,10 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta key="og:type" property="og:type" content="article" />
         <meta key="twitter:description" name="twitter:description" content="Write docs without effort" />
       </Head>
-      <header id="writeme-header" className="flex sticky z-10 top-0 justify-between w-full text-white bg-gray-700">
+      <header
+        id="writeme-header"
+        className="flex sticky z-10 top-0 justify-between w-full text-main-accent bg-text-paragraph"
+      >
         <SearchBar show={show} onChange={setShow} onOverlayClick={toggleSearchBar} shortcutList={shortcutsList} />
         <SiteContainer tag="nav" className="py-4 flex flex-nowrap items-center justify-between">
           <section className="flex items-baseline gap-x-8">
@@ -137,11 +129,11 @@ export default function App({ Component, pageProps }: AppProps) {
             </button>
             <input
               ref={input}
-              className="bg-gray-800 px-2 py-0.5 placeholder-shown:text-white rounded-lg text-base hidden md:block"
+              className="bg-transparent px-2 py-0.5 placeholder-shown:text-main-accent border-neutral-slight border rounded border-opacity-20 text-base hidden md:block"
               placeholder="Search...CTRL+K"
               type="text"
             />
-            <button onClick={toggleSearchBar} className="bg-gray-800 p-2 rounded-full text-base block md:hidden">
+            <button onClick={toggleSearchBar} className="bg-transparent p-2 rounded-full text-base block md:hidden">
               <FaSearch />
             </button>
           </form>

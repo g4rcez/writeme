@@ -1,5 +1,5 @@
 .CodeMirror {
-  @apply text-base text-black;
+  @apply text-base text-text-paragraph;
   width: 100%;
   font-family: "Fira Code", monospace;
   height: 300px;
@@ -7,7 +7,7 @@
 }
 
 .CodeMirror-focused {
-  @apply border border-solid border-gray-300 rounded;
+  @apply border border-solid border-border-neutral rounded;
 }
 
 /* PADDING */
@@ -641,9 +641,9 @@ li.CodeMirror-hint-active {
 }
 
 .special-hint::before {
-  @apply text-lg mr-2 text-yellow-500;
+  @apply text-lg mr-2 text-text-warn;
   padding: -1rem;
-  content: "🟠";
+  content: "- ";
   width: 9px;
   user-select: none;
 }
@@ -653,5 +653,5 @@ li.CodeMirror-hint-active {
 }
 
 pre.CodeMirror-placeholder.CodeMirror-line-like {
-  @apply text-gray-300;
+  @apply text-text-dim;
 }

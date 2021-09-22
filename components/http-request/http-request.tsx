@@ -1,15 +1,15 @@
 import HttpSnippet from "@g4rcez/httpsnippet";
+import { useHttpContext } from "components/http.context";
+import { MiniTitle } from "components/mini-title";
+import { Select } from "components/select";
+import { Is } from "lib/is";
+import dynamic from "next/dynamic";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Body } from "./body";
 import { convert, Header } from "./curl-parser";
 import { Headers } from "./headers";
-import { HttpDefault, HttpLanguages } from "./languages";
-import { MiniTitle } from "components/mini-title";
 import { HttpMethod } from "./http-method";
-import { Select } from "components/select";
-import { useHttpContext } from "components/http.context";
-import { Is } from "lib/is";
-import dynamic from "next/dynamic";
+import { HttpDefault, HttpLanguages } from "./languages";
 
 const CodeHighlight = dynamic(() => import("../prism"));
 
@@ -134,7 +134,7 @@ export const HttpRequest: React.VFC<Props> = ({ curl }) => {
           )}
           <button
             type="submit"
-            className="px-4 py-3 my-0 leading-3 text-sm bg-blue-400 transition-colors duration-300 ease-out hover:bg-blue-500 active:bg-blue-500 text-white rounded-lg"
+            className="px-4 py-3 my-0 leading-3 text-sm bg-main-normal transition-colors duration-300 ease-out hover:bg-main-hover-border active:bg-main-hover-border text-main-accent rounded-lg"
           >
             Request API
           </button>

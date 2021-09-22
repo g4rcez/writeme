@@ -1,4 +1,48 @@
 {
+    "transparent": "transparent",
+    "fail": {
+        "normal": "#EF4444"
+    },
+    "success": {
+        "normal": "#34D399"
+    },
+    "http": {
+        "get": "#64d2ff",
+        "post": "#6EE7B7",
+        "patch": "#A78BFA",
+        "put": "#F472B6",
+        "delete": "#EF4444",
+        "info": "#64d2ff",
+        "success": "#6EE7B7",
+        "redirect": "#A78BFA",
+        "client": "#ffcc00",
+        "server": "#EF4444"
+    },
+    "text": {
+        "paragraph": "#3d3f4a",
+        "title": "#181920",
+        "normal": "#6B7280",
+        "dim": "#aeaeb2",
+        "slight": "#D1D5DB",
+        "warn": "#ffcc00"
+    },
+    "border": {
+        "strong": "#8e8e93",
+        "slight": "#e5e5ea",
+        "neutral": "#d1d1d6"
+    },
+    "neutral": {
+        "normal": "#c7c7cc",
+        "dim": "#d1d1d6",
+        "slight": "#e5e5ea"
+    },
+    "main": {
+        "normal": "#3a9cff",
+        "hover-border": "#0a84ff",
+        "dim": "#6cb5ff",
+        "slight": "#e6f2ff",
+        "accent": "#fff"
+    },
     "code": "#282A36",
     "word": "#F8F8F2",
     "cm": {

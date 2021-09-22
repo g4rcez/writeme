@@ -6,7 +6,7 @@
 }
 
 .markdown {
-  @apply text-gray-600;
+  @apply text-text-paragraph;
 }
 
 .markdown p {
@@ -14,15 +14,15 @@
 }
 
 .markdown a {
-  @apply hover:underline no-underline text-blue-400;
+  @apply hover:underline no-underline text-main-normal;
 }
 
 .markdown table {
-  @apply table table-fixed border-collapse border border-gray-300 mb-4;
+  @apply table table-fixed border-collapse border border-border-neutral mb-4;
 }
 
 .markdown tr {
-  @apply border-b border-gray-200 p-2;
+  @apply border-b border-border-neutral p-2;
 }
 
 .markdown tr:last-child {

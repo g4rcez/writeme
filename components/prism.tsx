@@ -11,7 +11,7 @@ type Props = {
   language: string;
 };
 
-const coptyToClipboardClass = "absolute right-0 mx-4 my-5 select-none";
+const copyToClipboardClass = "absolute right-0 mx-4 my-5 select-none";
 
 export const CodeHighlight: React.VFC<Props> = ({ code = "", language }) => {
   const [copied, setCopied] = useState(false);
@@ -26,12 +26,12 @@ export const CodeHighlight: React.VFC<Props> = ({ code = "", language }) => {
   return (
     <div className="code-highlight relative w-full mx-auto container">
       {copied ? (
-        <FaCheck className={`${coptyToClipboardClass} animate-bounce pointer-events-none text-green-400`} />
+        <FaCheck className={`${copyToClipboardClass} animate-bounce pointer-events-none text-success-normal`} />
       ) : (
         <BsClipboard
           onClick={copy}
           title="Copy to clipboard"
-          className={`${coptyToClipboardClass} text-gray-200 cursor-pointer transition-opacity duration-1000 ease-out opacity-100 hover:opacity-60`}
+          className={`${copyToClipboardClass} text-text-dim cursor-pointer transition-opacity duration-1000 ease-out opacity-100 hover:opacity-60`}
         />
       )}
       <Highlight {...defaultProps} theme={draculaTheme} code={code} language={convertLang}>

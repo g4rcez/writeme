@@ -26,7 +26,7 @@ export default function DocsIndex({ docs }: { docs: Docs.DocMetadata }) {
               <Link passHref href={item.link} key={item.title}>
                 <a
                   href=""
-                  className="hover:underline hover:text-blue-600 border border-gray-200 hover:border-blue-600 transition-colors duration-500 ease-out p-4 rounded-lg min-w-[250px] max-w-xs"
+                  className="hover:underline hover:text-main-normal border border-border-neutral hover:border-main-hover-border transition-colors duration-500 ease-out p-4 rounded-lg min-w-[250px] max-w-xs"
                 >
                   <section>
                     <h3 className="text-lg">{item.title}</h3>

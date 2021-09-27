@@ -1,15 +1,16 @@
-import { SearchBar, ShortcutItem } from "components/search-bar";
-import type { AppProps } from "next/app";
-import Link from "next/link";
-import { FormEvent, Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Colors from "../styles/colors.json";
+
 import "../styles/globals.css";
-import { FaSearch, FaSun } from "react-icons/fa";
-import { SiteContainer } from "components/container";
-import { Router, useRouter } from "next/router";
-import ProgressBar from "@badrap/bar-of-progress";
+import { FormEvent, Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { AppProps } from "next/app";
 import Head from "next/head";
+import Link from "next/link";
+import { Router, useRouter } from "next/router";
+import { FaSearch, FaSun } from "react-icons/fa";
 import { shortcutKeys } from "shortcut-keys";
+import ProgressBar from "@badrap/bar-of-progress";
+import { SearchBar, ShortcutItem } from "../components/search-bar";
+import { SiteContainer } from "../components/container";
+import Colors from "../styles/colors.json";
 
 const setColor = (varName: string, color: string, root: HTMLElement) => root.style.setProperty(varName, color);
 
@@ -81,23 +82,19 @@ export default function App({ Component, pageProps }: AppProps) {
   };
 
   useEffect(() => {
+    console.log(Colors);
     setCssVars(Colors, document.documentElement);
   }, []);
 
   useEffect(() => {
     const windowElement = shortcutKeys(window);
-    windowElement.add("control+k", toggleSearchBar, true);
-    windowElement.add("control+h", () => goToPage("/"), true);
-    windowElement.add("control+p", () => goToPage("/docs/getting-started/"), true);
-    window.addEventListener("keydown", (e: KeyboardEvent) =>
-      e.key.toLowerCase() === "escape" ? setShow(false) : undefined
-    );
+    windowElement.add("control+k", toggleSearchBar);
+    windowElement.add("control+h", () => goToPage("/"));
+    windowElement.add("control+p", () => goToPage("/docs/getting-started/"));
+    windowElement.add("escape", () => setShow(false));
 
     return () => {
-      windowElement.remove("control+k");
-      windowElement.remove("control+h");
-      windowElement.remove("control+p");
-      window.removeEventListener("keydown", close);
+      windowElement.remove();
     };
   }, [goToPage, toggleSearchBar]);
 

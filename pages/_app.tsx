@@ -1,4 +1,3 @@
-
 import "../styles/globals.css";
 import { FormEvent, Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { AppProps } from "next/app";
@@ -11,6 +10,8 @@ import ProgressBar from "@badrap/bar-of-progress";
 import { SearchBar, ShortcutItem } from "../components/search-bar";
 import { SiteContainer } from "../components/container";
 import Colors from "../styles/colors.json";
+//@ts-ignore
+import { useRemoteRefresh } from "next-remote-refresh/hook";
 
 const setColor = (varName: string, color: string, root: HTMLElement) => root.style.setProperty(varName, color);
 
@@ -42,6 +43,15 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const input = useRef<HTMLInputElement>(null);
   const [show, setShow] = useState(false);
+
+  useRemoteRefresh({
+    shouldRefresh: (path: string) => {
+      if (process.env.NODE_ENV === "development") {
+        if (path.includes("docs/") && /\.mdx?$/.test(path)) return true;
+      }
+      return false;
+    },
+  });
 
   const goToPage = useCallback(
     (path: string) => {

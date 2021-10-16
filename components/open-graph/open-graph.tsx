@@ -33,7 +33,7 @@ export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
   useEffect(() => {
     const req = async () => {
       try {
-        const response = await httpClient.post("/proxy", {
+        const response = await httpClient.post<any>("/proxy", {
           body: undefined,
           url,
         });

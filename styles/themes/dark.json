@@ -11,8 +11,8 @@
         "normal": "#34D399"
     },
     "form": {
-        "text-input": "#282A36",
-        "bg-input": "#ffffff"
+        "bg-input": "#282A36",
+        "text-input": "#ffffff"
     },
     "http": {
         "get": "#64d2ff",
@@ -27,9 +27,9 @@
         "server": "#EF4444"
     },
     "text": {
-        "paragraph": "#3d3f4a",
-        "title": "#181920",
-        "normal": "#6B7280",
+        "paragraph": "#D1D5DB",
+        "title": "#e5e5ea",
+        "normal": "#D1D5DB",
         "dim": "#aeaeb2",
         "slight": "#D1D5DB",
         "warn": "#ffcc00"
@@ -49,8 +49,8 @@
         "hover-border": "#0a84ff",
         "dim": "#6cb5ff",
         "slight": "#e6f2ff",
-        "accent": "#ffffff",
-        "bg": "#ffffff"
+        "accent": "#fff",
+        "bg": "#181920"
     },
     "code": "#282A36",
     "word": "#F8F8F2",

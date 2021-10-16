@@ -20,14 +20,14 @@
 
   .wall-content-container {
     @apply fixed flex z-20 flex-col max-w-xl w-auto max-h-96 rounded-lg;
-    @apply shadow-2xl p-3 bg-main-accent text-text-title;
+    @apply shadow-2xl p-3 bg-main-bg text-text-normal;
     top: 10%;
     margin: auto;
   }
 
   /* Shortcut */
   .shortcut {
-    @apply text-xs px-2 py-1 rounded-md w-min font-medium bg-neutral-normal text-text-title;
+    @apply text-xs px-2 py-1 rounded-md w-min font-medium bg-main-bg text-text-normal border border-separate;
   }
 
   .shortcut-group {

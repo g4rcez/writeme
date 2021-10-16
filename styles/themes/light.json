@@ -1,18 +1,10 @@
 {
     "transparent": "transparent",
-    "navbar": {
-        "bg": "#282A36",
-        "text": "#d1d5db"
-    },
     "fail": {
         "normal": "#EF4444"
     },
     "success": {
         "normal": "#34D399"
-    },
-    "form": {
-        "text-input": "#282A36",
-        "bg-input": "#ffffff"
     },
     "http": {
         "get": "#64d2ff",
@@ -49,8 +41,7 @@
         "hover-border": "#0a84ff",
         "dim": "#6cb5ff",
         "slight": "#e6f2ff",
-        "accent": "#ffffff",
-        "bg": "#ffffff"
+        "accent": "#fff"
     },
     "code": "#282A36",
     "word": "#F8F8F2",

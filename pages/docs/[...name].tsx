@@ -9,7 +9,7 @@ import {
   SiteContainer,
   Tab,
   TableOfContent,
-  Tabs
+  Tabs,
 } from "components/";
 import Fs from "fs/promises";
 import matter from "gray-matter";
@@ -163,7 +163,7 @@ export default function Component({ source, data, notFound, docs }: Props) {
           {providerValue.titlePrefix} | {data.section} {data.title}
         </title>
       </Head>
-      <main className="flex flex-row align-baseline justify-between gap-x-6">
+      <main className="lg:px-0 px-4 flex flex-row align-baseline justify-between gap-x-6">
         <Sidebar
           active={asPath}
           className="hidden md:block markdown-side-item border-r border-border-neutral md:w-48 max-w-xs mt-4"
@@ -180,13 +180,11 @@ export default function Component({ source, data, notFound, docs }: Props) {
                     {Dates.localeDate(data.createdAt)} - Reading time: {data.readingTime}min
                   </h2>
                 </header>
-                <HttpContext>
-                  <MdxDocsProvider value={providerValue}>
-                    <section className="flex flex-col flex-wrap" id="document-root">
-                      <MDXRemote {...source} components={components} />
-                    </section>
-                  </MdxDocsProvider>
-                </HttpContext>
+                <MdxDocsProvider value={providerValue}>
+                  <section className="flex flex-col flex-wrap" id="document-root">
+                    <MDXRemote {...source} components={components} />
+                  </section>
+                </MdxDocsProvider>
               </Fragment>
             )}
           </article>

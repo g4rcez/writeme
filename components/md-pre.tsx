@@ -48,7 +48,7 @@ export const MdPre = (props: any) => {
 
   if (language === undefined)
     return (
-      <pre className="block w-full border border-gray-100">
+      <pre className="block w-full border border-border-slight">
         <code>{componentProps.children}</code>
       </pre>
     );

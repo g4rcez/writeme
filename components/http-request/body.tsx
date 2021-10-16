@@ -11,7 +11,7 @@ type FieldProps = {
   onChangeInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Type: React.FC = ({ children }) => <small className="italic font-thin text-gray-400">{children}</small>;
+const Type: React.FC = ({ children }) => <small className="italic font-thin text-text-slight">{children}</small>;
 
 const Field: React.VFC<FieldProps> = ({ item: x, onChangeInput }) => {
   const firstPrototype = useRef(Is.Prototype(x.value));

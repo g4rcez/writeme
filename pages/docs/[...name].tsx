@@ -45,7 +45,7 @@ const YoutubeOgp = dynamic(() => import("components/open-graph/youtube-ogp"));
 export const getStaticPaths: GetStaticPaths = async () => {
   const docs = await Docs.getAllDocs();
   return {
-    fallback: "blocking",
+    fallback: false,
     paths: await Promise.all(docs.map(async (file) => ({ params: { name: Docs.parseFile(file).split("/") } }))),
   };
 };
@@ -78,7 +78,7 @@ export const getStaticProps: GetStaticProps = async (props) => {
     const prev = currentGroup?.items[order - 1] ?? null;
 
     return {
-      revalidate: process.env.NODE_ENV === "development" ? 1 : undefined,
+      revalidate: false,
       props: {
         source: mdxSource,
         docs,
@@ -163,10 +163,10 @@ export default function Component({ source, data, notFound, docs }: Props) {
           {providerValue.titlePrefix} | {data.section} {data.title}
         </title>
       </Head>
-      <main className="flex flex-row align-baseline justify-between gap-x-6">
+      <main className="lg:px-0 px-4 flex flex-row align-baseline justify-between gap-x-6">
         <Sidebar
           active={asPath}
-          className="hidden md:block markdown-side-item border-r border-gray-300 md:w-48 max-w-xs mt-4"
+          className="hidden md:block markdown-side-item border-r border-border-neutral md:w-48 max-w-xs mt-4"
           items={docs}
         />
         <section className="w-full flex-auto flex-grow-0 pl-4">
@@ -174,19 +174,17 @@ export default function Component({ source, data, notFound, docs }: Props) {
             {(notFound && <h1>Not found</h1>) || (
               <Fragment>
                 <header className="my-4">
-                  <h1 className="text-5xl leading-tight lining-nums font-extrabold text-gray-700">{data.title}</h1>
-                  <h4 className="text-base text-gray-600 mb-2">{data.description}</h4>
-                  <h2 className="text-sm text-gray-500">
+                  <h1 className="text-5xl leading-tight lining-nums font-extrabold text-text-title">{data.title}</h1>
+                  <h4 className="text-base text-text-paragraph mb-2">{data.description}</h4>
+                  <h2 className="text-sm text-text-text-normal">
                     {Dates.localeDate(data.createdAt)} - Reading time: {data.readingTime}min
                   </h2>
                 </header>
-                <HttpContext>
-                  <MdxDocsProvider value={providerValue}>
-                    <section className="flex flex-col flex-wrap" id="document-root">
-                      <MDXRemote {...source} components={components} />
-                    </section>
-                  </MdxDocsProvider>
-                </HttpContext>
+                <MdxDocsProvider value={providerValue}>
+                  <section className="flex flex-col flex-wrap" id="document-root">
+                    <MDXRemote {...source} components={components} />
+                  </section>
+                </MdxDocsProvider>
               </Fragment>
             )}
           </article>
@@ -199,7 +197,7 @@ export default function Component({ source, data, notFound, docs }: Props) {
             {hasNext && <OrderDoc {...data.next!} direction="next" />}
           </div>
         </section>
-        <aside className="markdown-side-item md:w-48 text-sm text-gray-500 mt-4 md:block hidden">
+        <aside className="markdown-side-item md:w-48 text-sm text-text-text-normal mt-4 md:block hidden">
           <span className="font-bold">In this Page:</span>
           <TableOfContent className="table-of-content-target" observeHash markHighlight />
         </aside>

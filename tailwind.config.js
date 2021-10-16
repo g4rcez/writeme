@@ -1,4 +1,21 @@
-const Colors = require("./styles/colors.json");
+const Colors = require("./styles/themes/colors.json");
+
+function remap(colors, prefix) {
+  const newColors = {};
+  for (const key in colors) {
+    const prefixColor = prefix !== undefined ? `${prefix}-` : "";
+    const colorKey = `--${prefixColor}${key}`;
+    const value = colors[key];
+    if (typeof value === "string") newColors[key] = `var(${colorKey})`;
+    if (typeof value === "object") {
+      const objectPrefix = prefix === undefined ? `${key}` : prefixColor;
+      newColors[key] = remap(value, objectPrefix);
+    }
+  }
+  return newColors;
+}
+
+const colorsMap = remap(Colors);
 
 module.exports = {
   mode: "jit",
@@ -10,8 +27,8 @@ module.exports = {
   ],
   darkMode: "media", // or 'media' or 'class'
   theme: {
+    colors: colorsMap,
     extend: {
-      colors: Colors,
       screens: {
         big: "1900px",
       },

@@ -8,11 +8,11 @@ export default async function proxyHandler(req: NextApiRequest, res: NextApiResp
 
   const body: Types.BodyProxy = req.body;
   try {
-    const response = await httpClient({
+    const response = await httpClient(body.url, {
       url: body.url,
       method: body.method ?? "GET",
       data: body.body,
-      headers: body.headers,
+      headers: body.headers as never,
     });
 
     const end = Date.now();

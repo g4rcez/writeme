@@ -1,36 +1,24 @@
-import "../styles/globals.css";
-import { FormEvent, Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import ProgressBar from "@badrap/bar-of-progress";
+import { SiteContainer } from "components/container";
+import { SearchBar, ShortcutItem } from "components/search-bar";
+//@ts-ignore
+import { useRemoteRefresh } from "next-remote-refresh/hook";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Link from "next/link";
 import { Router, useRouter } from "next/router";
+import { FormEvent, Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FaSearch, FaSun } from "react-icons/fa";
 import { shortcutKeys } from "shortcut-keys";
-import ProgressBar from "@badrap/bar-of-progress";
-import { SearchBar, ShortcutItem } from "../components/search-bar";
-import { SiteContainer } from "../components/container";
-import Colors from "../styles/colors.json";
-//@ts-ignore
-import { useRemoteRefresh } from "next-remote-refresh/hook";
-
-const setColor = (varName: string, color: string, root: HTMLElement) => root.style.setProperty(varName, color);
-
-type Styles = typeof Colors;
-
-const setCssVars = (colors: Styles, element: HTMLElement) =>
-  Object.entries(colors).forEach(([key, value]) => {
-    if (typeof value === "string") {
-      setColor(`--${key}`, value, element);
-    } else if (typeof value === "object") {
-      Object.entries(value).forEach(([secKey, secVal]: [string, string]) => {
-        setColor(`--${key}-${secKey}`, secVal, element);
-      });
-    }
-  });
+import { setCssVars } from "styles/themes/themes";
+import Light from "../styles/themes/colors.json";
+import Dark from "../styles/themes/dark.json";
+import "../styles/globals.css";
+import { useDarkMode } from "hooks/use-dark-mode";
 
 const progress = new ProgressBar({
   size: 3,
-  color: "#3B82F6",
+  color: Light.main.normal,
   className: "bar-of-progress",
   delay: 10,
 });
@@ -43,6 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const input = useRef<HTMLInputElement>(null);
   const [show, setShow] = useState(false);
+  const { setMode, onToggleMode } = useDarkMode();
 
   useRemoteRefresh({
     shouldRefresh: (path: string) => {
@@ -73,12 +62,12 @@ export default function App({ Component, pageProps }: AppProps) {
       {
         category: "Themes",
         items: [
-          { name: "Dark mode", shortcuts: [["Ctrl", "D"]], target: () => {} },
-          { name: "Light mode", shortcuts: [["Ctrl", "L"]], target: () => {} },
+          { name: "Dark mode", shortcuts: [["Ctrl", "z"]], target: () => setMode("dark") },
+          { name: "Light mode", shortcuts: [["Ctrl", "x"]], target: () => setMode("light") },
         ],
       },
     ],
-    [goToPage]
+    [goToPage, setMode]
   );
 
   const toggleSearchBar = useCallback(() => setShow((p) => !p), []);
@@ -87,17 +76,9 @@ export default function App({ Component, pageProps }: AppProps) {
     e.preventDefault();
   }, []);
 
-  const onToggleDarkMode = () => {
-    alert("Dark mode is coming");
-  };
-
-  useEffect(() => {
-    console.log(Colors);
-    setCssVars(Colors, document.documentElement);
-  }, []);
-
   useEffect(() => {
     const windowElement = shortcutKeys(window);
+    windowElement.add("control+z", onToggleMode);
     windowElement.add("control+k", toggleSearchBar);
     windowElement.add("control+h", () => goToPage("/"));
     windowElement.add("control+p", () => goToPage("/docs/getting-started/"));
@@ -106,7 +87,7 @@ export default function App({ Component, pageProps }: AppProps) {
     return () => {
       windowElement.remove();
     };
-  }, [goToPage, toggleSearchBar]);
+  }, [goToPage, toggleSearchBar, onToggleMode]);
 
   return (
     <Fragment>
@@ -115,7 +96,10 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta key="og:type" property="og:type" content="article" />
         <meta key="twitter:description" name="twitter:description" content="Write docs without effort" />
       </Head>
-      <header id="writeme-header" className="flex sticky z-10 top-0 justify-between w-full text-white bg-gray-700">
+      <header
+        id="writeme-header"
+        className="flex sticky z-10 top-0 justify-between w-full text-navbar-text bg-navbar-bg"
+      >
         <SearchBar show={show} onChange={setShow} onOverlayClick={toggleSearchBar} shortcutList={shortcutsList} />
         <SiteContainer tag="nav" className="py-4 flex flex-nowrap items-center justify-between">
           <section className="flex items-baseline gap-x-8">
@@ -132,16 +116,16 @@ export default function App({ Component, pageProps }: AppProps) {
             </ul>
           </section>
           <form onSubmit={submit} className="flex gap-x-4 justify-between align-middle self-center items-center">
-            <button className="bg-transparent p-0 m-0" onClick={onToggleDarkMode}>
+            <button className="bg-transparent p-0 m-0" onClick={onToggleMode}>
               <FaSun />
             </button>
             <input
               ref={input}
-              className="bg-gray-800 px-2 py-0.5 placeholder-shown:text-white rounded-lg text-base hidden md:block"
+              className="bg-transparent px-2 py-0.5 placeholder-shown:text-main-accent border-neutral-slight border rounded border-opacity-20 text-base hidden md:block"
               placeholder="Search...CTRL+K"
               type="text"
             />
-            <button onClick={toggleSearchBar} className="bg-gray-800 p-2 rounded-full text-base block md:hidden">
+            <button onClick={toggleSearchBar} className="bg-transparent p-2 rounded-full text-base block md:hidden">
               <FaSearch />
             </button>
           </form>

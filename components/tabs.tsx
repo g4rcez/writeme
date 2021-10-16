@@ -74,7 +74,7 @@ export const Tab: React.FC<TabProps> = (props) => (
     <button
       role="link"
       className={`px-4 bg-transparent outline-none m-0 focus:outline-none relative cursor-pointer ${
-        props.isActive ? "text-blue-400" : ""
+        props.isActive ? "text-main-normal" : ""
       }`}
     >
       {props.title ?? props.id}

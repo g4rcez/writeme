@@ -33,7 +33,7 @@ export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
   useEffect(() => {
     const req = async () => {
       try {
-        const response = await httpClient.post("/proxy", {
+        const response = await httpClient.post<any>("/proxy", {
           body: undefined,
           url,
         });
@@ -70,7 +70,7 @@ export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
 
   if (ogp === null) return null;
 
-  if (error !== "") return <span className="italic font-thin text-red-500">{error}</span>;
+  if (error !== "") return <span className="italic font-thin text-fail-normal">{error}</span>;
 
   if (ogp["video:url"] || ogp["video:secure_url"]) {
     return (

@@ -1,0 +1,90 @@
+{
+    "transparent": "transparent",
+    "fail": {
+        "normal": "#EF4444"
+    },
+    "success": {
+        "normal": "#34D399"
+    },
+    "http": {
+        "get": "#64d2ff",
+        "post": "#6EE7B7",
+        "patch": "#A78BFA",
+        "put": "#F472B6",
+        "delete": "#EF4444",
+        "info": "#64d2ff",
+        "success": "#6EE7B7",
+        "redirect": "#A78BFA",
+        "client": "#ffcc00",
+        "server": "#EF4444"
+    },
+    "text": {
+        "paragraph": "#3d3f4a",
+        "title": "#181920",
+        "normal": "#6B7280",
+        "dim": "#aeaeb2",
+        "slight": "#D1D5DB",
+        "warn": "#ffcc00"
+    },
+    "border": {
+        "strong": "#8e8e93",
+        "slight": "#e5e5ea",
+        "neutral": "#d1d1d6"
+    },
+    "neutral": {
+        "normal": "#c7c7cc",
+        "dim": "#d1d1d6",
+        "slight": "#e5e5ea"
+    },
+    "main": {
+        "normal": "#3a9cff",
+        "hover-border": "#0a84ff",
+        "dim": "#6cb5ff",
+        "slight": "#e6f2ff",
+        "accent": "#fff"
+    },
+    "code": "#282A36",
+    "word": "#F8F8F2",
+    "cm": {
+        "bg": "#ffffff",
+        "gutterBg": "#f7f7f7",
+        "gutterBorder": "#dddddd",
+        "numbers": "#999999",
+        "cursor": "#000000",
+        "cursorFat": "#77EE77",
+        "cursorFatMark": "#14FF14",
+        "ruler": "#cccccc",
+        "header": "#0000FF",
+        "quote": "#009900",
+        "negative": "#DD4444",
+        "positive": "#229922",
+        "keyword": "#770088",
+        "atom": "#221199",
+        "number": "#116644",
+        "def": "#0000FF",
+        "var2": "#0055aa",
+        "var3": "#008855",
+        "comment": "#aa5500",
+        "string": "#aa1111",
+        "string2": "#ff5500",
+        "metaQualifier": "#555555",
+        "builtin": "#3300aa",
+        "bracket": "#999977",
+        "tag": "#117700",
+        "attr": "#0000cc",
+        "link": "#0000cc",
+        "hr": "#999999",
+        "error": "#ff0000",
+        "invalidChar": "#ff0000",
+        "matchBracket": "#00bb00",
+        "noMatchBracket": "#aa2222",
+        "matchingTag": "#FF9600",
+        "activeLine": "#e8f2ff",
+        "selected": "#d9d9d9",
+        "focused": "#d7d4f0",
+        "selection": "#d7d4f0",
+        "searchingBg": "#ffff0066",
+        "searchMatch": "#ffd700",
+        "searchMatchBorder": "#ffa500"
+    }
+}

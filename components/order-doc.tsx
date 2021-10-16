@@ -30,13 +30,13 @@ export const OrderDoc: React.FC<Metadata & Extra> = (props) => (
           <h3 className="font-extrabold">{props.title}</h3>
         </div>
         {props.direction === "prev" && (
-          <p className="w-full text-left font-extrabold text-blue-400">
+          <p className="w-full text-left font-extrabold text-main-normal">
             <BsChevronDoubleLeft className="inline-block text mb-1 mr-1" />
             Previous
           </p>
         )}
         {props.direction === "next" && (
-          <p className="w-full text-right font-extrabold text-blue-400">
+          <p className="w-full text-right font-extrabold text-main-normal">
             Next
             <BsChevronDoubleRight className="inline-block mb-1 ml-1" />
           </p>

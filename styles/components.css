@@ -9,7 +9,7 @@
   }
   /* order docs */
   .order-doc {
-    @apply p-4 border border-gray-100 hover:border-blue-400 hover:bg-blue-50 rounded-lg;
+    @apply p-4 border border-border-slight hover:border-main-hover-border hover:bg-main-slight rounded-lg;
   }
 
   /* Search bar */
@@ -20,14 +20,14 @@
 
   .wall-content-container {
     @apply fixed flex z-20 flex-col max-w-xl w-auto max-h-96 rounded-lg;
-    @apply shadow-2xl p-3 bg-white text-gray-700;
+    @apply shadow-2xl p-3 bg-main-bg text-text-normal;
     top: 10%;
     margin: auto;
   }
 
   /* Shortcut */
   .shortcut {
-    @apply text-xs px-2 py-1 rounded-md w-min font-medium bg-gray-300 bg-opacity-50 text-gray-800;
+    @apply text-xs px-2 py-1 rounded-md w-min font-medium bg-main-bg text-text-normal border border-separate;
   }
 
   .shortcut-group {
@@ -36,15 +36,15 @@
 
   /* Input */
   .input {
-    @apply form-input border p-1 border-gray-300 rounded-md;
+    @apply form-input border p-1 border-border-neutral rounded-md;
   }
 
   /* Select */
 
   .select {
-    @apply block form-select mt-1 rounded-md border-gray-300;
-    @apply shadow-sm focus:border-indigo-300 focus:ring;
-    @apply focus:ring-indigo-200 focus:ring-opacity-50;
+    @apply block form-select mt-1 rounded-md border-border-neutral;
+    @apply shadow-sm focus:border-main-dim focus:ring;
+    @apply focus:ring-main-dim focus:ring-opacity-50;
   }
 
   /* Table of content */
@@ -58,10 +58,10 @@
 
   /* Button */
   .button {
-    @apply px-4 py-3 my-0 leading-3 text-sm bg-blue-400;
+    @apply px-4 py-3 my-0 leading-3 text-sm bg-main-normal;
     @apply transition-colors duration-300 ease-out;
-    @apply hover:bg-blue-500 active:bg-blue-500;
-    @apply text-white rounded-lg;
+    @apply hover:bg-main-slight active:bg-main-slight;
+    @apply text-main-accent rounded-lg;
   }
 
   /* HttpRequest */
@@ -71,7 +71,7 @@
   }
 
   .http-body-array-item {
-    @apply pl-4 mt-2 border-l border-gray-200;
+    @apply pl-4 mt-2 border-l border-border-neutral;
   }
 
   .http-headers {
@@ -83,11 +83,11 @@
   }
 
   .http-body-array-item[data-empty="true"] {
-    @apply font-bold text-gray-200 text-sm italic;
+    @apply font-bold text-text-dim text-sm italic;
   }
 
   .http-method {
-    @apply rounded-full text-white px-2 py-1;
+    @apply rounded-full text-main-accent px-2 py-1;
   }
 
   .http-request {
@@ -105,12 +105,12 @@
   }
 
   .http-response-loading {
-    @apply text-lg mt-4 mb-2 italic text-gray-300;
+    @apply text-lg mt-4 mb-2 italic text-text-dim;
   }
 
   /* MiniTitle */
   .mini-title {
-    @apply uppercase mb-2 text-sm font-bold text-gray-500;
+    @apply uppercase mb-2 text-sm font-bold text-text-paragraph;
   }
 
   /* Tabs */
@@ -119,7 +119,7 @@
     @apply block w-full my-4;
   }
   .tab-header {
-    @apply relative w-full tab-container overflow-x-auto flex flex-nowrap pb-2 border-b border-gray-200;
+    @apply relative w-full tab-container overflow-x-auto flex flex-nowrap pb-2 border-b border-border-neutral;
   }
 
   .tab-content {
@@ -149,7 +149,7 @@
   }
 
   .inkbar {
-    @apply bg-blue-400 absolute bottom-0 left-0;
+    @apply bg-main-normal absolute bottom-0 left-0;
     width: fit-content;
     height: 0.2rem;
     transition: all 150ms cubic-bezier(0.28, 0.5, 0.51, 0.87);
@@ -158,7 +158,7 @@
   /* Paragraph */
 
   .text-paragraph {
-    @apply my-2 antialiased text-gray-600 lining-nums;
+    @apply my-2 antialiased text-text-paragraph lining-nums;
     @apply whitespace-pre-wrap break-words w-full container;
     @apply mx-auto leading-relaxed;
   }

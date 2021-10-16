@@ -11,7 +11,7 @@ export const Heading: React.FC<Props> = (props: any) =>
     props.tag,
     {
       ...props,
-      className: `mt-1 tabular-nums antialiased font-bold text-gray-500 leading-relaxed ${props.className ?? ""} ${
+      className: `mt-1 tabular-nums antialiased font-bold text-text-paragraph leading-relaxed ${props.className ?? ""} ${
         props.size
       }`,
     },

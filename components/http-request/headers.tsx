@@ -29,11 +29,11 @@ export const Headers: React.VFC<Props> = ({ headers, onChange }) => {
             className="http-headers-item"
           >
             <label>
-              <span className="text-gray-500 mr-1 italic cursor-text">
+              <span className="text-text-text-normal mr-1 italic cursor-text">
                 {header.name}:{" "}
               </span>
               <Input
-                className="font-bold text-gray-600 p-1"
+                className="font-bold text-text-paragraph p-1"
                 data-index={index}
                 style={{ width: `${header.value.length + 3}ch` }}
                 value={header.value}

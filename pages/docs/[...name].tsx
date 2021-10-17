@@ -1,7 +1,6 @@
 import {
   CodeResponse,
   Heading,
-  HttpContext,
   MdxDocsProvider,
   Metadata,
   OrderDoc,

@@ -133,7 +133,6 @@ export const Tabs: React.FC<TabsProps> = (props) => {
   return (
     <div className="tab">
       <header className="tab-header">
-        <div ref={inkBar} className="inkbar" />
         <ul ref={header} className="tab-container" role="tablist">
           {React.Children.map(props.children, (x: any) => {
             const tabProps: TabProps = x.props;
@@ -141,6 +140,7 @@ export const Tabs: React.FC<TabsProps> = (props) => {
             return <Tab {...tabProps} onClick={onTabClick(tabProps.id)} isActive={isActive} key={`${x}-li-tabs`} />;
           })}
         </ul>
+        <div ref={inkBar} className="inkbar" />
       </header>
       <section className="tab-content" ref={container}>
         {children}

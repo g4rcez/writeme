@@ -26,7 +26,10 @@ export const useDarkMode = () => {
 
   useEffect(() => {
     LocalStorage.set(KEY, mode);
-    setCssVars(document.documentElement, mode === "light" ? Light : Dark);
+    const isLight = mode === "light";
+    if (isLight) document.documentElement.classList.remove("dark");
+    else document.documentElement.classList.add("dark");
+    setCssVars(document.documentElement, isLight ? Light : Dark);
   }, [mode]);
 
   const onToggleMode = useCallback(() => setMode((prev) => (prev === "dark" ? "light" : "dark")), []);

@@ -25,7 +25,7 @@ module.exports = {
     "./blog/**/*.{js,ts,jsx,tsx,mdx,md,html}",
     "./docs/**/*.{js,ts,jsx,tsx,mdx,md,html}",
   ],
-  darkMode: "media", // or 'media' or 'class'
+  darkMode: "class", // or 'media' or 'class'
   theme: {
     colors: colorsMap,
     extend: {

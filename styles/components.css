@@ -9,7 +9,9 @@
   }
   /* order docs */
   .order-doc {
-    @apply p-4 border border-border-slight hover:border-main-hover-border hover:bg-main-slight rounded-lg;
+    @apply p-4 border border-border-slight rounded-lg;
+    @apply hover:border-main-hover-border hover:bg-main-slight;
+    @apply hover:border-main-hover-border dark:hover:bg-navbar-bg;
   }
 
   /* Search bar */
@@ -151,7 +153,7 @@
   .inkbar {
     @apply bg-main-normal absolute bottom-0 left-0;
     width: fit-content;
-    height: 0.2rem;
+    height: 0.25rem;
     transition: all 150ms cubic-bezier(0.28, 0.5, 0.51, 0.87);
   }
 

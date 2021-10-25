@@ -16,7 +16,7 @@
     },
     "http": {
         "get": "#64d2ff",
-        "post": "#6EE7B7",
+        "post": "#58b892",
         "patch": "#A78BFA",
         "put": "#F472B6",
         "delete": "#EF4444",

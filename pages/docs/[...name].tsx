@@ -16,7 +16,9 @@ import { Dates } from "lib/dates";
 import { Docs } from "lib/docs";
 import { httpClient } from "lib/http-client";
 import { remarkTabs } from "lib/remark-tabs";
+import { remarkVariables } from "lib/remark-variables";
 import { Strings } from "lib/strings";
+import { WritemeRc } from "lib/writemerc";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
@@ -53,17 +55,21 @@ export const getStaticProps: GetStaticProps = async (props) => {
   const queryPath = props.params?.name;
   const path = Array.isArray(queryPath) ? Strings.concatUrl(queryPath.join("/")) : queryPath;
   const doc = Path.resolve(process.cwd(), ...Docs.path, `${path}.mdx`);
+  const writemeConfig = await WritemeRc();
+
   try {
-    const source = await Fs.readFile(doc, "utf-8");
-    const { content, data } = matter(source);
+    const fileContent = await Fs.readFile(doc, "utf-8");
+    const { content, data } = matter(fileContent);
     const stat = await Fs.stat(doc);
-    const mdxSource = await serialize(content, {
-      scope: data,
+    const scope = { ...data, ...writemeConfig?.requestVariables, ...writemeConfig };
+    const source = await serialize(content, {
+      scope,
       mdxOptions: {
         remarkPlugins: [
+          remarkGfm,
+          remarkVariables(scope),
           remarkTabs,
           remarkGemoji,
-          remarkGfm,
           remarkDef,
           remarkFootnotes,
           [remarkGithub, { repository: data.repository ?? "" }],
@@ -79,7 +85,7 @@ export const getStaticProps: GetStaticProps = async (props) => {
     return {
       revalidate: false,
       props: {
-        source: mdxSource,
+        source,
         docs,
         data: {
           ...data,

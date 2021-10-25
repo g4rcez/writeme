@@ -40,7 +40,7 @@ const ConnectedHttp: React.FC<{ code: string }> = ({ code }) => {
   );
 };
 
-export const MdPre = (props: any) => {
+export const MdPre = (props: any, otherProps: any) => {
   const componentProps = props.children.props;
   const language = /\w+-(\w+)/.exec(componentProps.className)?.[1];
   const metaProps = parseMetaString(componentProps.metastring);
@@ -54,14 +54,16 @@ export const MdPre = (props: any) => {
     );
 
   if (language === "chart") return <Flowchart code={componentProps.children} />;
-
-  if (type === "request")
+  if (type === "request") {
+    console.log({
+      code: props.children.props.children,
+    });
     return (
       <HttpContext>
-        <ConnectedHttp code={componentProps.children} />
+        <ConnectedHttp code={props.children.props.children ?? ""} />
       </HttpContext>
     );
-
+  }
   if (language === "ogp")
     return (
       <OpenGraph

@@ -1,0 +1,9 @@
+{
+  "tokens": {
+    "colors": {}
+  },
+  "cssWatchDirectories": [],
+  "requestVariables": {
+    "host": "https://writeme.vercel.app"
+  }
+}

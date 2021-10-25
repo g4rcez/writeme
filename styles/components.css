@@ -42,7 +42,6 @@
   }
 
   /* Select */
-
   .select {
     @apply block form-select mt-1 rounded-md border-border-neutral;
     @apply shadow-sm focus:border-main-dim focus:ring;

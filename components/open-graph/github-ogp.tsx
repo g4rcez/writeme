@@ -8,7 +8,11 @@ export default function GithubOgp() {
   useEffect(() => {
     if (input.current === null) return;
 
-    const handler = debounce((e: Event) => setRepo((e.currentTarget as HTMLInputElement).value), 1500);
+    const handler = debounce((e: Event) => {
+      const el = e.target as HTMLInputElement | null;
+      if (el === null) return;
+      setRepo(el.value);
+    }, 1500);
 
     input.current.addEventListener("input", handler);
   }, []);

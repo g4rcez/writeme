@@ -38,14 +38,14 @@ Focus in web API docs, this component receive a `curl` command and transform in 
 
 ````bash
 \```bash type=request
-curl -X POST "http://localhost:3000/api/test" -H "Content-Type: application/json" -d '{"email":"write@me.com"}'
+curl -X POST "{{host}}/api/test" -H "Content-Type: application/json" -d '{"email":"write@me.com"}'
 \```
 ````
 
 \*\*In this example we use the `\` to avoid example parse.
 
 ```bash type=request
-curl -X POST "http://localhost:3000/api/test" -H "Content-Type: application/json" -d '{"email":"write@me.com"}'
+curl -X POST "{{host}}/api/test" -H "Content-Type: application/json" -d '{"email":"write@me.com"}'
 ```
 
 ~~This component is connected to `HttpResponse` using the `HttpContext` and share the state about request/response to create a better experience for readers. This integration may have bugs `Error: Parse Error: Content-Length can't be present with Transfer-Encoding`. If you know how to solve this problem, please open a [Pull Request](https://github.com/g4rcez/writeme/pulls)~~

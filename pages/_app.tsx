@@ -1,6 +1,7 @@
 import ProgressBar from "@badrap/bar-of-progress";
 import { SiteContainer } from "components/container";
 import { SearchBar, ShortcutItem } from "components/search-bar";
+import { useDarkMode } from "hooks/use-dark-mode";
 //@ts-ignore
 import { useRemoteRefresh } from "next-remote-refresh/hook";
 import type { AppProps } from "next/app";
@@ -10,11 +11,8 @@ import { Router, useRouter } from "next/router";
 import { FormEvent, Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FaSearch, FaSun } from "react-icons/fa";
 import { shortcutKeys } from "shortcut-keys";
-import { setCssVars } from "styles/themes/themes";
-import Light from "../styles/themes/colors.json";
-import Dark from "../styles/themes/dark.json";
 import "../styles/globals.css";
-import { useDarkMode } from "hooks/use-dark-mode";
+import Light from "../styles/themes/light.json";
 
 const progress = new ProgressBar({
   size: 3,

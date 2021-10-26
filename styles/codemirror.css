@@ -1,9 +1,16 @@
 .CodeMirror {
-  @apply text-base text-text-paragraph;
+  @apply text-text-paragraph bg-main-bg text-base;
   width: 100%;
   font-family: "Fira Code", monospace;
   height: 300px;
   direction: ltr;
+}
+
+.CodeMirror-empty.CodeMirror-focused {
+  outline: none;
+}
+.CodeMirror pre.CodeMirror-placeholder {
+  color: #999;
 }
 
 .CodeMirror-focused {
@@ -28,17 +35,17 @@
 /* GUTTER */
 
 .CodeMirror-gutters {
+  @apply bg-main-bg;
   border-right: 1px solid var(--cm-gutterBorder);
-  background-color: var(--cm-gutterBg);
   white-space: nowrap;
 }
 .CodeMirror-linenumbers {
 }
 .CodeMirror-linenumber {
+  @apply bg-main-bg;
   padding: 0 3px 0 5px;
   min-width: 20px;
   text-align: right;
-  color: var(--cm-gutterBorder);
   white-space: nowrap;
 }
 
@@ -112,8 +119,9 @@
 }
 
 .cm-s-default .cm-header {
-  color: var(--cm-header);
+  @apply text-text-title;
 }
+
 .cm-s-default .cm-quote {
   color: var(--cm-quote);
 }
@@ -183,7 +191,7 @@
   color: var(--cm-bracket);
 }
 .cm-s-default .cm-tag {
-  color: var(--cm-tag);
+  @apply text-main-normal font-bold;
 }
 .cm-s-default .cm-attribute {
   color: var(--cm-attr);
@@ -227,7 +235,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 .CodeMirror {
   position: relative;
   overflow: hidden;
-  background: var(--cm-bg);
+  /* background: var(--cm-bg); */
 }
 
 .callout-text > .CodeMirror {
@@ -568,8 +576,7 @@ li.CodeMirror-hint-active {
 
 .CodeMirror-foldmarker {
   color: blue;
-  text-shadow: #b9f 1px 1px 2px, #b9f -1px -1px 2px, #b9f 1px -1px 2px,
-    #b9f -1px 1px 2px;
+  text-shadow: #b9f 1px 1px 2px, #b9f -1px -1px 2px, #b9f 1px -1px 2px, #b9f -1px 1px 2px;
   font-family: arial;
   line-height: 0.3;
   cursor: pointer;

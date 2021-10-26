@@ -19,10 +19,3 @@ html.dark,
 html.dark > body {
   color: white;
 }
-
-pre > *,
-textarea.npm__react-simple-code-editor__textarea,
-pre.prism-code > * {
-  font-size: 13px;
-  font-family: "Fira Code", monospace;
-}

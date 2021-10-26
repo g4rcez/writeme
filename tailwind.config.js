@@ -1,5 +1,5 @@
 const WritemeConfig = require("./writeme.json");
-const Colors = require("./styles/themes/colors.json");
+const Colors = require("./styles/themes/light.json");
 
 function remap(colors, prefix) {
   const newColors = {};

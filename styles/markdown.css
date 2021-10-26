@@ -1,6 +1,6 @@
 .markdown-side-item {
   position: sticky;
-  top: 3.75rem;
+  top: 4.75rem;
   will-change: transform;
   height: fit-content;
 }

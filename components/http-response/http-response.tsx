@@ -1,6 +1,5 @@
 import { HttpResponseProps, MiniTitle } from "components";
 import { HttpCircleStatus } from "components/circle";
-import { useHttpContext } from "components/http.context";
 import { CodeHighlight } from "components/prism";
 import React, { useMemo } from "react";
 
@@ -89,7 +88,7 @@ export const HttpResponse: React.VFC<Props> = ({ loading, response }) => {
 
   return (
     <section className="http-response">
-      <MiniTitle>
+      <MiniTitle data-toc="false">
         <span className="flex items-baseline gap-x-2">
           <a
             href={`https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/${response.statusCode}`}

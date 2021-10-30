@@ -14,7 +14,7 @@ export namespace Docs {
 
   export const parseFile = (name: string) => name.replace("pages/docs/", "").replace(/\.mdx?$/gi, "");
 
-  export const docFromExt = (ext: string) => Path.join(...path, "**", `*${ext}`);
+  const docFromExt = (ext: string) => Path.join(...Docs.path, "**", `*${ext}`);
 
   export const getAllDocs = async (): Promise<string[]> => {
     const filesMd = await Glob(docFromExt(".md"));
@@ -32,13 +32,13 @@ export namespace Docs {
   }>;
 
   export const getAllMetadataDocs = async () => {
-    const docs = await getAllDocs();
+    const docs = await Docs.getAllDocs();
     const metadata = await Promise.all(
       docs.map(
         async (x): Promise<Metadata> =>
           ({
             ...matter(await Fs.readFile(x, "utf-8")).data,
-            link: Strings.concatUrl("/docs", parseFile(x)),
+            link: Strings.concatUrl("/docs", Docs.parseFile(x)),
           } as never)
       )
     );
@@ -53,7 +53,7 @@ export namespace Docs {
         const items = groups[group];
         return {
           name: group,
-          sidebar: sidebarOrder(items),
+          sidebar: Docs.sidebarOrder(items),
           items: items.sort((a, b) => a.order - b.order),
         };
       })

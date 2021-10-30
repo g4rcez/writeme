@@ -17,13 +17,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "scripts/init.js"  ],
+    "**/*.tsx",
+    "scripts/init.js"
+  ],
   "exclude": [
     "node_modules"
   ]

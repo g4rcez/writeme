@@ -2,7 +2,7 @@ import ProgressBar from "@badrap/bar-of-progress";
 import { SiteContainer } from "components/container";
 import { SearchBar, ShortcutItem } from "components/search-bar";
 //@ts-ignore
-import { useRemoteRefresh } from "next-remote-refresh/hook";
+// import { useRemoteRefresh } from "next-remote-refresh/hook";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Link from "next/link";
@@ -33,14 +33,14 @@ export default function App({ Component, pageProps }: AppProps) {
   const [show, setShow] = useState(false);
   const { setMode, onToggleMode } = useDarkMode();
 
-  useRemoteRefresh({
-    shouldRefresh: (path: string) => {
-      if (process.env.NODE_ENV === "development") {
-        if (path.includes("docs/") && /\.mdx?$/.test(path)) return true;
-      }
-      return false;
-    },
-  });
+  // useRemoteRefresh({
+  //   shouldRefresh: (path: string) => {
+  //     if (process.env.NODE_ENV === "development") {
+  //       if (path.includes("docs/") && /\.mdx?$/.test(path)) return true;
+  //     }
+  //     return false;
+  //   },
+  // });
 
   const goToPage = useCallback(
     (path: string) => {

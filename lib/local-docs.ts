@@ -1,4 +1,4 @@
-import { Metadata } from "components/order-doc";
+import { DocumentStats } from "components/order-doc";
 import { promisify } from "util";
 import Path from "path";
 import Fs from "fs/promises";
@@ -8,7 +8,7 @@ import { Strings } from "./strings";
 export namespace Docs {
   const Glob = promisify(require("glob"));
 
-  export type Data = Record<string, Metadata[]>;
+  export type Data = Record<string, DocumentStats[]>;
 
   export const path = ["pages", "docs"];
 
@@ -22,20 +22,14 @@ export namespace Docs {
     return [...filesMd, ...filesMdx];
   };
 
-  export const sidebarOrder = (items: Metadata[]) =>
+  export const sidebarOrder = (items: DocumentStats[]) =>
     Math.max(...items.map((x) => x.sidebar).filter((x) => !Number.isNaN(x) && typeof x === "number"));
-
-  export type DocMetadata = Array<{
-    name: string;
-    sidebar: number;
-    items: Metadata[];
-  }>;
 
   export const getAllMetadataDocs = async () => {
     const docs = await getAllDocs();
     const metadata = await Promise.all(
       docs.map(
-        async (x): Promise<Metadata> =>
+        async (x): Promise<DocumentStats> =>
           ({
             ...matter(await Fs.readFile(x, "utf-8")).data,
             link: Strings.concatUrl("/docs", parseFile(x)),

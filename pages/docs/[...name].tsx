@@ -1,8 +1,8 @@
 import {
   CodeResponse,
+  DocumentStats,
   Heading,
   MdxDocsProvider,
-  Metadata,
   OrderDoc,
   Sidebar,
   SiteContainer,
@@ -10,28 +10,15 @@ import {
   TableOfContent,
   Tabs,
 } from "components/";
-import Fs from "fs/promises";
-import matter from "gray-matter";
 import { Dates } from "lib/dates";
-import { Docs } from "lib/docs";
 import { httpClient } from "lib/http-client";
-import { remarkTabs } from "lib/remark-tabs";
-import { remarkVariables } from "lib/remark-variables";
-import { Strings } from "lib/strings";
-import { WritemeRc } from "lib/writemerc";
+import { Writeme } from "lib/writeme";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
-import { serialize } from "next-mdx-remote/serialize";
 import { useRouter } from "next/dist/client/router";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import Path from "path";
 import { Fragment } from "react";
-import remarkDef from "remark-deflist";
-import remarkFootnotes from "remark-footnotes";
-import remarkGemoji from "remark-gemoji";
-import remarkGfm from "remark-gfm";
-import remarkGithub from "remark-github";
 
 const CodeHighlight = dynamic(() => import("components/prism"));
 const MDXRemote = dynamic(() => import("components/mdx-remote"));
@@ -44,61 +31,23 @@ const GithubOgp = dynamic(() => import("components/open-graph/github-ogp"));
 const YoutubeOgp = dynamic(() => import("components/open-graph/youtube-ogp"));
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const docs = await Docs.getAllDocs();
+  const docs = await Writeme.getStaticFiles();
   return {
     fallback: false,
-    paths: await Promise.all(docs.map(async (file) => ({ params: { name: Docs.parseFile(file).split("/") } }))),
+    paths: docs.map((name) => ({ params: { name } })),
   };
 };
 
 export const getStaticProps: GetStaticProps = async (props) => {
   const queryPath = props.params?.name;
-  const path = Array.isArray(queryPath) ? Strings.concatUrl(queryPath.join("/")) : queryPath;
-  const doc = Path.resolve(process.cwd(), ...Docs.path, `${path}.mdx`);
-  const writemeConfig = await WritemeRc();
-
   try {
-    const fileContent = await Fs.readFile(doc, "utf-8");
-    const { content, data } = matter(fileContent);
-    const stat = await Fs.stat(doc);
-    const scope = { ...data, ...writemeConfig?.requestVariables, ...writemeConfig };
-    const source = await serialize(content, {
-      scope,
-      mdxOptions: {
-        remarkPlugins: [
-          remarkGfm,
-          remarkVariables(scope),
-          remarkTabs,
-          remarkGemoji,
-          remarkDef,
-          remarkFootnotes,
-          [remarkGithub, { repository: data.repository ?? "" }],
-        ],
-      },
-    });
-    const docs = await Docs.getAllMetadataDocs();
-    const currentGroup = docs.find((x) => x.sidebar === data.sidebar) ?? null;
-    const order = data.order - 1;
-    const next = currentGroup?.items[order + 1] ?? null;
-    const prev = currentGroup?.items[order - 1] ?? null;
-
+    const staticProps = await Writeme.getStaticProps(queryPath!, Writeme.localFiles);
     return {
+      props: staticProps,
       revalidate: false,
-      props: {
-        source,
-        docs,
-        data: {
-          ...data,
-          next,
-          prev,
-          updatedAt: stat.mtime.toISOString(),
-          createdAt: stat.birthtime.toISOString(),
-          readingTime: Math.ceil(content.split(" ").length / 250),
-        },
-      },
     };
   } catch (error) {
-    console.error(error);
+    console.log(error);
     if (process.env.NODE_ENV === "development") throw error;
     return { notFound: true };
   }
@@ -148,9 +97,9 @@ const components = {
 };
 
 type Props = {
-  data: Metadata;
-  docs: Docs.DocMetadata;
   notFound?: boolean;
+  data: DocumentStats;
+  docs: Writeme.DocumentItem[];
   source: MDXRemoteSerializeResult<Record<string, unknown>>;
 };
 

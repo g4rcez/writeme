@@ -1,6 +1,5 @@
 import { Editor, EditorConfiguration } from "codemirror";
-import { Tab } from "components";
-import React, { KeyboardEvent, useEffect, useRef, useState } from "react";
+import React, { KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
 
 const Textarea = async () => {
   await import("codemirror/addon/comment/comment");
@@ -40,6 +39,10 @@ const Textarea = async () => {
   //@ts-ignore
   await import("codemirror/mode/gfm/gfm");
   //@ts-ignore
+  await import("codemirror/mode/yaml-frontmatter/yaml-frontmatter");
+  //@ts-ignore
+  await import("codemirror/mode/yaml/yaml");
+  //@ts-ignore
   await import("codemirror/mode/htmlmixed/htmlmixed");
   //@ts-ignore
   await import("codemirror/mode/javascript/javascript");
@@ -52,9 +55,13 @@ const Textarea = async () => {
   return import("codemirror");
 };
 
+const Button = (props: React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) => (
+  <button {...props} type="button" />
+);
+
 export const MarkdownMirror: EditorConfiguration = {
   mode: {
-    name: "gfm",
+    name: "yaml-frontmatter",
     xml: true,
     //@ts-ignore
     globalVars: true,
@@ -92,29 +99,13 @@ export const MarkdownMirror: EditorConfiguration = {
   },
 };
 
-export const InsertSpacesOnTab = (t: HTMLTextAreaElement, e: KeyboardEvent<HTMLTextAreaElement>) => {
-  if (e.key === "Tab") {
-    e.preventDefault();
-    const caret = t.selectionStart;
-    const slice = t.value.substr(0, caret);
-    if (slice === "") {
-      t.value = t.value + "  ";
-      return;
-    }
-    const last = t.value.substring(caret);
-    const str = slice + "  " + last;
-    t.value = str;
-    t.selectionEnd = caret + 2;
-    return;
-  }
-};
-
 type Props = {
   markdown?: string;
   mode?: "json" | "md";
+  onChange: (text: string) => void;
 };
 
-export const Writer: React.VFC<Props> = ({ markdown = "", mode = "md" }) => {
+export const Writer: React.VFC<Props> = ({ markdown = "", mode = "md", onChange }) => {
   const div = useRef<HTMLDivElement>(null);
   const code = useRef<Editor | null>(null);
   const [loading, setLoading] = useState(true);
@@ -131,12 +122,16 @@ export const Writer: React.VFC<Props> = ({ markdown = "", mode = "md" }) => {
         value: markdown,
       });
       code.current = mirror;
+      mirror.on("change", (e) => {
+        onChange(e.getValue());
+      });
       return setLoading(false);
     };
     req();
-  }, [markdown, mode]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode, onChange]);
 
-  const insertText = (input: string | string[], breakLine?: boolean) => {
+  const insertText = useCallback((input: string | string[], breakLine?: boolean) => {
     const text = Array.isArray(input) ? input.join("\n") : input;
     const cursor = code.current?.getCursor();
     if (breakLine) {
@@ -155,9 +150,15 @@ export const Writer: React.VFC<Props> = ({ markdown = "", mode = "md" }) => {
     } else code.current?.replaceRange(text, cursor!);
     code.current?.focus();
     if (text.includes("$0")) {
-      const newLine = code.current?.getCursor().line!;
-      const line = code.current?.getLine(newLine);
-      const ch = line?.indexOf("$0");
+      let newLine = 0;
+      let line = code.current?.getLine(newLine);
+      let ch = line?.indexOf("$0");
+      while (ch === -1) {
+        newLine += 1;
+        line = code.current?.getLine(newLine);
+        ch = line?.indexOf("$0");
+        console.log({ ch, line });
+      }
       code.current?.setCursor({
         ch: ch! + 2,
         line: newLine!,
@@ -174,7 +175,9 @@ export const Writer: React.VFC<Props> = ({ markdown = "", mode = "md" }) => {
         }
       );
     }
-  };
+  }, []);
+
+  const onFrontMatter = () => insertText(["---", `title: "Title"`, `slug: example`, "---", "", "$0"], true);
 
   const onHeading = () => insertText("# ", true);
 
@@ -207,27 +210,30 @@ export const Writer: React.VFC<Props> = ({ markdown = "", mode = "md" }) => {
   return (
     <div className="w-full flex flex-col relative">
       <div className="w-full flex gap-x-2 my-2">
-        <button onClick={onHeading} className="bg-transparent opacity-70 hover:opacity-100">
+        <Button onClick={onFrontMatter} className="bg-transparent opacity-70 hover:opacity-100">
+          FrontMatter
+        </Button>
+        <Button onClick={onHeading} className="bg-transparent opacity-70 hover:opacity-100">
           H1
-        </button>
-        <button onClick={onOrderList} className="bg-transparent opacity-70 hover:opacity-100">
+        </Button>
+        <Button onClick={onOrderList} className="bg-transparent opacity-70 hover:opacity-100">
           OL
-        </button>
-        <button onClick={onUnorderedList} className="bg-transparent opacity-70 hover:opacity-100">
+        </Button>
+        <Button onClick={onUnorderedList} className="bg-transparent opacity-70 hover:opacity-100">
           UL
-        </button>
-        <button onClick={onCheckBox} className="bg-transparent opacity-70 hover:opacity-100">
+        </Button>
+        <Button onClick={onCheckBox} className="bg-transparent opacity-70 hover:opacity-100">
           Checkbox
-        </button>
-        <button onClick={onLink} className="bg-transparent opacity-70 hover:opacity-100">
+        </Button>
+        <Button onClick={onLink} className="bg-transparent opacity-70 hover:opacity-100">
           Link
-        </button>
-        <button onClick={onTable} className="bg-transparent opacity-70 hover:opacity-100">
+        </Button>
+        <Button onClick={onTable} className="bg-transparent opacity-70 hover:opacity-100">
           Table
-        </button>
-        <button onClick={onTabs} className="bg-transparent opacity-70 hover:opacity-100">
+        </Button>
+        <Button onClick={onTabs} className="bg-transparent opacity-70 hover:opacity-100">
           Tabs
-        </button>
+        </Button>
       </div>
       {loading && "Loading..."}
       <div className="w-full border border-border-neutral rounded" ref={div}></div>

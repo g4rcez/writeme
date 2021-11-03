@@ -13,7 +13,7 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export default function DocsIndex({ docs }: { docs: Docs.DocMetadata }) {
+export default function DocsIndex({ docs }: { docs: Docs.DocumentsMetadata }) {
   return (
     <SiteContainer>
       {docs.map((document) => (

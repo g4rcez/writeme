@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Section {
+  id        String   @id @db.Uuid @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String   @db.VarChar(255)
+  slug      String
+
+  @@map("section")
+  Document Document[]
+}
+
+model Document {
+  id        String   @id @db.Uuid @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String   @db.VarChar(255)
+  slug      String   @unique
+  content   String
+  published Boolean  @default(false)
+  section   Section  @relation(fields: [sectionId], references: [id])
+
+  @@map("document")
+  sectionId String @db.Uuid
+}

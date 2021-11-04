@@ -9,6 +9,7 @@ export type WritemeRcProps = {
   tokens: {
     colors: RecursiveDict;
   };
+  defaultRepository: string;
   cssWatchDirectories: string[];
   requestVariables: Record<string, string>;
 };

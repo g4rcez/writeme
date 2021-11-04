@@ -2,6 +2,7 @@
   "tokens": {
     "colors": {}
   },
+  "defaultRepository": "https://github.com/g4rcez/writeme",
   "cssWatchDirectories": [],
   "requestVariables": {
     "host": "https://writeme.vercel.app"

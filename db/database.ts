@@ -1,5 +1,7 @@
 import { Document, PrismaClient, Section } from "@prisma/client";
 import { randomUUID } from "crypto";
+import { Strings } from "lib/strings";
+import { Writeme } from "lib/writeme";
 
 const client = new PrismaClient();
 
@@ -72,5 +74,41 @@ export namespace WritemeDoc {
       },
     });
     return documents;
+  };
+
+  export const getDocumentContent = async (path: string) => {
+    const [section, ...slug] = path.split("/");
+    const documentSlug = slug.join("/");
+    const document = await client.document.findFirst({
+      where: {
+        section: {
+          slug: section,
+        },
+        slug: documentSlug,
+      },
+      select: {
+        content: true,
+        updatedAt: true,
+        createdAt: true,
+      },
+    });
+    if (document === null) {
+      throw new Error("Document empty");
+    }
+    return document;
+  };
+
+  export const groups = async (): Promise<Writeme.MetaGroups[]> => {
+    const documents = await client.document.findMany({
+      select: {
+        content: true,
+        slug: true,
+        section: { select: { slug: true } },
+      },
+    });
+    return documents.map((document) => ({
+      path: Strings.concatUrl(document.section.slug, document.slug),
+      content: document.content,
+    }));
   };
 }

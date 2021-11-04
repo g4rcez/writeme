@@ -177,7 +177,23 @@ export const Writer: React.VFC<Props> = ({ markdown = "", mode = "md", onChange 
     }
   }, []);
 
-  const onFrontMatter = () => insertText(["---", `title: "Title"`, `slug: example`, "---", "", "$0"], true);
+  const onFrontMatter = () =>
+    insertText(
+      [
+        "---",
+        `slug: "$0"`,
+        `title: ""`,
+        `description: ""`,
+        `section: ""`,
+        `repository: ""`,
+        `order: 1`,
+        `sidebar: 1`,
+        `tags: [""]`,
+        "---",
+        "",
+      ],
+      true
+    );
 
   const onHeading = () => insertText("# ", true);
 

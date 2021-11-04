@@ -2,12 +2,11 @@ import { DocumentStats } from "components";
 import { WritemeDoc } from "db/database";
 import Fs from "fs/promises";
 import matter from "gray-matter";
-import { Docs } from "lib/local-docs";
+import { Docs as LocalDocs } from "pages/docs/local-docs";
 import { remarkTabs } from "lib/remark-tabs";
 import { remarkVariables } from "lib/remark-variables";
 import { Strings } from "lib/strings";
 import { WritemeRc } from "lib/writemerc";
-import { GetStaticProps } from "next";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import Path from "path";
@@ -26,11 +25,6 @@ export namespace Writeme {
     items: DocumentStats[];
   };
 
-  export const getStaticFiles: StaticPathAdapter = async (): Promise<string[][]> => {
-    const docs = await Docs.getAllDocs();
-    return docs.map((file) => Docs.parseFile(file).split("/"));
-  };
-
   export const getStaticDocuments: StaticPathAdapter = async (): Promise<string[][]> => {
     const docs = await WritemeDoc.getAllForStaticPaths();
     return docs.map((document) => {
@@ -39,6 +33,8 @@ export namespace Writeme {
       return Strings.concatUrl(sectionSlug, documentSlug).split("/");
     });
   };
+
+  const writemeRc = WritemeRc()!;
 
   const markdownConfig = async (content: string, scope: any) => {
     const source = await serialize(content, {
@@ -51,37 +47,87 @@ export namespace Writeme {
           remarkGemoji,
           remarkDef,
           remarkFootnotes,
-          [remarkGithub, { repository: scope.repository ?? "" }],
+          [remarkGithub, { repository: scope.repository || writemeRc.defaultRepository || "" }],
         ],
       },
     });
     return source;
   };
 
-  type ContentAdapter = (path: string) => Promise<string>;
-
-  type StatsAdapter = (path: string) => Promise<{
+  type ContentAdapter = (path: string) => Promise<{
+    content: string;
     updatedAt: Date;
     createdAt: Date;
   }>;
 
   export type DocumentStrategy = {
-    content: ContentAdapter;
-    stats: StatsAdapter;
+    fileInfo: ContentAdapter;
+    paths: StaticPathAdapter;
     groups: () => Promise<DocumentItem[]>;
   };
 
-  export const localFiles: DocumentStrategy = {
-    content: (path: string) => Fs.readFile(Path.resolve(process.cwd(), ...Docs.path, `${path}.mdx`), "utf-8"),
-    stats: async (path: string) => {
-      const fullPath = Path.resolve(process.cwd(), ...Docs.path, `${path}.mdx`);
+  export type MetaGroups = {
+    content: string;
+    path: string;
+  };
+
+  const getMetadataGroups = async (
+    getAll: () => Promise<MetaGroups[]>,
+    parseName: (name: string) => string
+  ): Promise<DocumentItem[]> => {
+    const docs = await getAll();
+    const metadata = await Promise.all(
+      docs.map(
+        async (x): Promise<DocumentStats> =>
+          ({
+            ...matter(x.content).data,
+            link: Strings.concatUrl("/docs", parseName(x.path)),
+          } as never)
+      )
+    );
+
+    const groups = metadata.reduce<LocalDocs.Data>((acc, doc) => {
+      const key = doc.section;
+      const current = acc[key];
+      return { ...acc, [key]: Array.isArray(current) ? [...current, doc] : [doc] };
+    }, {});
+    return Object.keys(groups)
+      .map((group) => {
+        const items = groups[group];
+        return {
+          name: group,
+          sidebar: LocalDocs.sidebarOrder(items),
+          items: items.sort((a, b) => a.order - b.order),
+        };
+      })
+      .sort((a, b) => a.sidebar - b.sidebar);
+  };
+
+  export const localStrategy: DocumentStrategy = {
+    groups: () => getMetadataGroups(LocalDocs.getAll, LocalDocs.parseFile),
+    fileInfo: async (path: string) => {
+      const fullPath = Path.resolve(process.cwd(), ...LocalDocs.path, `${path}.mdx`);
+      const content = await Fs.readFile(fullPath, "utf-8");
       const stats = await Fs.stat(fullPath);
       return {
+        content,
         updatedAt: stats.mtime,
         createdAt: stats.birthtime,
       };
     },
-    groups: Docs.getAllMetadataDocs,
+    paths: async () => {
+      const docs = await LocalDocs.getAll();
+      return docs.map((file) => LocalDocs.parseFile(file.path).split("/"));
+    },
+  };
+
+  export const dbStrategy: DocumentStrategy = {
+    fileInfo: WritemeDoc.getDocumentContent,
+    groups: () => getMetadataGroups(WritemeDoc.groups, (str) => str),
+    paths: async () => {
+      const paths = await WritemeDoc.getAllForStaticPaths();
+      return paths.map((x) => Strings.concatUrl(x.section.slug, x.slug).split("/"));
+    },
   };
 
   type StaticProps = {
@@ -101,12 +147,11 @@ export namespace Writeme {
     strategy: DocumentStrategy
   ): Promise<StaticProps> => {
     const path = Array.isArray(queryPath) ? Strings.concatUrl(queryPath.join("/")) : queryPath!;
-    const writemeConfig = await WritemeRc();
+    const writemeConfig = WritemeRc();
 
     try {
-      const fileContent = await strategy.content(path);
-      const stat = await strategy.stats(path);
-      const { content, data } = matter(fileContent);
+      const file = await strategy.fileInfo(path);
+      const { content, data } = matter(file.content);
       const scope = {
         ...data,
         ...writemeConfig?.requestVariables,
@@ -127,8 +172,8 @@ export namespace Writeme {
           ...data,
           next,
           prev,
-          updatedAt: stat.updatedAt.toISOString(),
-          createdAt: stat.createdAt.toISOString(),
+          updatedAt: file.updatedAt.toISOString(),
+          createdAt: file.createdAt.toISOString(),
           readingTime: Math.ceil(content.split(" ").length / 250),
         },
       };

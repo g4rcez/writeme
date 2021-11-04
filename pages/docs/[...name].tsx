@@ -31,7 +31,8 @@ const GithubOgp = dynamic(() => import("components/open-graph/github-ogp"));
 const YoutubeOgp = dynamic(() => import("components/open-graph/youtube-ogp"));
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const docs = await Writeme.getStaticFiles();
+  const docs = await Writeme.dbStrategy.paths();
+  console.log(docs);
   return {
     fallback: false,
     paths: docs.map((name) => ({ params: { name } })),
@@ -41,7 +42,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (props) => {
   const queryPath = props.params?.name;
   try {
-    const staticProps = await Writeme.getStaticProps(queryPath!, Writeme.localFiles);
+    const staticProps = await Writeme.getStaticProps(queryPath!, Writeme.dbStrategy);
     return {
       props: staticProps,
       revalidate: false,

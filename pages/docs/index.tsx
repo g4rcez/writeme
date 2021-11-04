@@ -1,19 +1,17 @@
 import { SiteContainer } from "components/container";
-import { Docs } from "lib/docs";
+import { Writeme } from "lib/writeme";
 import { GetStaticProps } from "next";
 import Link from "next/link";
+
 export const getStaticProps: GetStaticProps = async () => {
-  const docs = await Docs.getAllMetadataDocs();
   return {
     props: {
-      docs: docs
-        .map((x) => ({ ...x, items: x.items.sort((a, b) => a.order - b.order) }))
-        .sort((a, b) => a.sidebar - b.sidebar),
+      docs: [],
     },
   };
 };
 
-export default function DocsIndex({ docs }: { docs: Docs.DocumentsMetadata }) {
+export default function DocsIndex({ docs }: { docs: Writeme.DocumentItem[] }) {
   return (
     <SiteContainer>
       {docs.map((document) => (

@@ -8,8 +8,8 @@ export namespace Http {
   }
 
   export enum Method {
-    get,
-    put,
+    get = "get",
+    put = "put",
   }
 
   export type WritemeApiResponse<T> = T extends Array<any>

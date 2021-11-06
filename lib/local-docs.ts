@@ -18,6 +18,7 @@ export namespace Docs {
   export const getAll = async (): Promise<Writeme.MetaGroups[]> => {
     const filesMd: string[] = await Glob(docFromExt(".md"));
     const filesMdx: string[] = await Glob(docFromExt(".mdx"));
+
     return [...filesMd, ...filesMdx].map((path) => ({ path, content: readFileSync(path, "utf-8") }));
   };
 

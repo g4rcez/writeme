@@ -30,9 +30,10 @@ const Flowchart = dynamic(() => import("components/flowchart"));
 const GithubOgp = dynamic(() => import("components/open-graph/github-ogp"));
 const YoutubeOgp = dynamic(() => import("components/open-graph/youtube-ogp"));
 
+const strategy = Writeme.defaultStrategy;
+
 export const getStaticPaths: GetStaticPaths = async () => {
-  const docs = await Writeme.dbStrategy.paths();
-  console.log(docs);
+  const docs = await strategy.paths();
   return {
     fallback: false,
     paths: docs.map((name) => ({ params: { name } })),
@@ -42,7 +43,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (props) => {
   const queryPath = props.params?.name;
   try {
-    const staticProps = await Writeme.getStaticProps(queryPath!, Writeme.dbStrategy);
+    const staticProps = await Writeme.getStaticProps(queryPath!, strategy);
     return {
       props: staticProps,
       revalidate: false,

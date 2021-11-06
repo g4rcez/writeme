@@ -22,7 +22,7 @@ export const EnterHelper = (textarea: HTMLTextAreaElement, event: any) => {
       start = textarea.selectionStart;
     } else {
       textarea.focus();
-      range = (document as any).selection.createRange();
+      range = (group as any).selection.createRange();
       range.moveStart("character", -input.length);
       start = range.text.replace(/\r\n/g, "\n").length;
     }

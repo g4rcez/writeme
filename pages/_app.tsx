@@ -12,7 +12,7 @@ import { FormEvent, Fragment, useCallback, useEffect, useMemo, useRef, useState 
 import { FaSearch, FaSun } from "react-icons/fa";
 import { shortcutKeys } from "shortcut-keys";
 import "../styles/globals.css";
-import Light from "../styles/themes/light.json";
+import Light from "styles/themes/light.json";
 
 const progress = new ProgressBar({
   size: 3,
@@ -106,7 +106,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </h1>
             <ul className="flex gap-x-4 list-none">
               <li>
-                <Link href="/docs/getting-started/">Docs</Link>
+                <Link href="/docs">Docs</Link>
               </li>
               <li>
                 <Link href="/blog/">Blog</Link>

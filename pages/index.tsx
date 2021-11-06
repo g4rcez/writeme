@@ -29,23 +29,23 @@ export default function Home() {
           <H2>Write Markdown or MDX</H2>
           <Paragraph>
             Built with{" "}
-            <a className="text-main-normal hover:text-main-dim" href="https://nextjs.org">
+            <a className="link" href="https://nextjs.org">
               NextJS
             </a>
             . Support{" "}
-            <a className="text-main-normal hover:text-main-dim" href="https://github.com/remarkjs/remark-gfm">
+            <a className="link" href="https://github.com/remarkjs/remark-gfm">
               Github Flavored Markdown
             </a>
             . Support emoji with{" "}
-            <a className="text-main-normal hover:text-main-dim" href="https://github.com/remarkjs/remark-gemoji">
+            <a className="link" href="https://github.com/remarkjs/remark-gemoji">
               remark-emoji
             </a>
             . Use{" "}
-            <a className="text-main-normal hover:text-main-dim" href="https://github.com/hashicorp/next-mdx-remote">
+            <a className="link" href="https://github.com/hashicorp/next-mdx-remote">
               next-mdx-remote
             </a>{" "}
             to support MDX syntax Interactive playground with{" "}
-            <a className="text-main-normal hover:text-main-dim" href="https://github.com/FormidableLabs/react-live">
+            <a className="link" href="https://github.com/FormidableLabs/react-live">
               react-live
             </a>
           </Paragraph>

@@ -9,8 +9,9 @@ const withRemoteRefresh = require("next-remote-refresh")({
 /** @type {import('next').NextConfig} */
 module.exports = withRemoteRefresh(
   withMDX({
-    reactStrictMode: true,
+    amp: true,
     compress: true,
+    reactStrictMode: true,
     poweredByHeader: false,
     experimental: { esmExternals: true },
   })

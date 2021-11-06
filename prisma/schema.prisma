@@ -10,27 +10,77 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Section {
-  id        String   @id @db.Uuid @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  slug      String
-
-  @@map("section")
-  Document Document[]
-}
-
-model Document {
-  id        String   @id @db.Uuid @default(uuid())
+model Group {
+  id        String   @id @default(uuid()) @db.Uuid
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   title     String   @db.VarChar(255)
   slug      String   @unique
-  content   String
-  published Boolean  @default(false)
-  section   Section  @relation(fields: [sectionId], references: [id])
+  position  Int
 
+  Document Document[]
+  @@map("group")
+}
+
+model Document {
+  id          String   @id @default(uuid()) @db.Uuid
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  title       String   @db.VarChar(255)
+  slug        String
+  description String   @default("")
+  content     String
+  published   Boolean  @default(false)
+  group       Group    @relation(fields: [groupId], references: [id])
+  position    Int
+
+  groupId String @db.Uuid
   @@map("document")
-  sectionId String @db.Uuid
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }

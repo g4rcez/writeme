@@ -1,12 +1,13 @@
 import { DocumentStats } from "components";
-import { WritemeDoc } from "db/database";
+import { Database } from "db/database";
+import FsSync from "fs";
 import Fs from "fs/promises";
 import matter from "gray-matter";
-import { Docs as LocalDocs } from "pages/docs/local-docs";
+import { Docs as LocalDocs } from "lib/local-docs";
 import { remarkTabs } from "lib/remark-tabs";
 import { remarkVariables } from "lib/remark-variables";
 import { Strings } from "lib/strings";
-import { WritemeRc } from "lib/writemerc";
+import { NextApiRequest, NextApiResponse } from "next";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import Path from "path";
@@ -15,6 +16,8 @@ import remarkFootnotes from "remark-footnotes";
 import remarkGemoji from "remark-gemoji";
 import remarkGfm from "remark-gfm";
 import remarkGithub from "remark-github";
+import { Http } from "./http";
+import { Is } from "./is";
 
 type StaticPathAdapter = () => Promise<string[][]>;
 
@@ -26,17 +29,36 @@ export namespace Writeme {
   };
 
   export const getStaticDocuments: StaticPathAdapter = async (): Promise<string[][]> => {
-    const docs = await WritemeDoc.getAllForStaticPaths();
+    const docs = await Database.documentPaths();
     return docs.map((document) => {
-      const sectionSlug = document.section.slug;
+      const sectionSlug = document.group.slug;
       const documentSlug = document.slug;
       return Strings.concatUrl(sectionSlug, documentSlug).split("/");
     });
   };
 
-  const writemeRc = WritemeRc()!;
+  type RecursiveDict = {
+    [k: string]: string | RecursiveDict;
+  };
+
+  export type WritemeRcProps = {
+    tokens: {
+      colors: RecursiveDict;
+    };
+    defaultRepository: string;
+    cssWatchDirectories: string[];
+    requestVariables: Record<string, string>;
+  };
+
+  export const rcConfig = (): WritemeRcProps | null => {
+    const path = Path.join(process.cwd(), "writeme.json");
+    const exists = FsSync.existsSync(path);
+    if (exists) return JSON.parse(FsSync.readFileSync(path, "utf-8"));
+    return null;
+  };
 
   const markdownConfig = async (content: string, scope: any) => {
+    const writemeRc = rcConfig();
     const source = await serialize(content, {
       scope,
       mdxOptions: {
@@ -47,7 +69,7 @@ export namespace Writeme {
           remarkGemoji,
           remarkDef,
           remarkFootnotes,
-          [remarkGithub, { repository: scope.repository || writemeRc.defaultRepository || "" }],
+          [remarkGithub, { repository: scope.repository || writemeRc?.defaultRepository || "" }],
         ],
       },
     });
@@ -78,10 +100,10 @@ export namespace Writeme {
     const docs = await getAll();
     const metadata = await Promise.all(
       docs.map(
-        async (x): Promise<DocumentStats> =>
+        async (document): Promise<DocumentStats> =>
           ({
-            ...matter(x.content).data,
-            link: Strings.concatUrl("/docs", parseName(x.path)),
+            ...matter(document.content).data,
+            link: Strings.concatUrl("/docs", parseName(document.path)),
           } as never)
       )
     );
@@ -91,6 +113,7 @@ export namespace Writeme {
       const current = acc[key];
       return { ...acc, [key]: Array.isArray(current) ? [...current, doc] : [doc] };
     }, {});
+    
     return Object.keys(groups)
       .map((group) => {
         const items = groups[group];
@@ -122,13 +145,15 @@ export namespace Writeme {
   };
 
   export const dbStrategy: DocumentStrategy = {
-    fileInfo: WritemeDoc.getDocumentContent,
-    groups: () => getMetadataGroups(WritemeDoc.groups, (str) => str),
+    fileInfo: Database.documentContent,
+    groups: () => getMetadataGroups(Database.groupedDocuments, (str) => str),
     paths: async () => {
-      const paths = await WritemeDoc.getAllForStaticPaths();
-      return paths.map((x) => Strings.concatUrl(x.section.slug, x.slug).split("/"));
+      const paths = await Database.documentPaths();
+      return paths.map((x) => Strings.concatUrl(x.group.slug, x.slug).split("/"));
     },
   };
+
+  export const defaultStrategy = dbStrategy;
 
   type StaticProps = {
     source: MDXRemoteSerializeResult<Record<string, unknown>>;
@@ -147,7 +172,7 @@ export namespace Writeme {
     strategy: DocumentStrategy
   ): Promise<StaticProps> => {
     const path = Array.isArray(queryPath) ? Strings.concatUrl(queryPath.join("/")) : queryPath!;
-    const writemeConfig = WritemeRc();
+    const writemeConfig = rcConfig();
 
     try {
       const file = await strategy.fileInfo(path);
@@ -180,5 +205,20 @@ export namespace Writeme {
     } catch (error) {
       throw error;
     }
+  };
+
+  type Actions = Partial<Record<Http.Method, (req: NextApiRequest, res: NextApiResponse) => any>>;
+
+  export const apiHandler = (actions: Actions) => (req: NextApiRequest, res: NextApiResponse) => {
+    const method = (req.method ?? Http.Method.get)?.toLowerCase() as Http.Method;
+
+    if (Is.Keyof(actions, method)) {
+      const fn = actions[method];
+      if (fn) {
+        return fn(req, res);
+      }
+    }
+
+    return res.status(Http.StatusCode.MethodNotAllowed);
   };
 }

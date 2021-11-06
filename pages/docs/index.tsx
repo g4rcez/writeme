@@ -6,7 +6,7 @@ import Link from "next/link";
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
-      docs: [],
+      docs: await Writeme.defaultStrategy.groups(),
     },
   };
 };

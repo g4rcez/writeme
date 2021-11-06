@@ -1,87 +1,119 @@
-import { Document, PrismaClient, Section } from "@prisma/client";
+import { Document as DbDocument, PrismaClient, Group as DbGroup } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { Strings } from "lib/strings";
 import { Writeme } from "lib/writeme";
 
 const client = new PrismaClient();
 
-export namespace WritemeSection {
-  export const getDefaultSection = async (): Promise<Section | null> => {
-    const result = await client.section.findFirst();
-    return result;
-  };
-}
-
-export namespace WritemeDoc {
-  export type Upsert = {
+export namespace Database {
+  export type Document = DbDocument;
+  export type Group = DbGroup;
+  export type UpsertDocument = {
+    description: string;
+    position: number;
     id?: string;
     title: string;
     content: string;
     slug: string;
   };
 
-  export type Type = Document;
-
-  export const upsert = async (doc: Upsert, section: Section) => {
+  export const upsertDocument = async (doc: UpsertDocument, group: Group) => {
     const uuid = randomUUID();
     const now = new Date().toISOString();
 
     if (doc.id) {
-      const updated = await client.document.update({
-        where: {
-          id: doc.id,
-        },
+      return client.document.update({
+        where: { id: doc.id },
         data: {
+          description: doc.description,
           content: doc.content,
           slug: doc.slug,
           title: doc.title,
           id: doc.id,
           published: true,
           updatedAt: now,
-          sectionId: section.id,
+          groupId: group.id,
         },
       });
-      return updated;
     }
-    const data = {
-      content: doc.content,
-      slug: doc.slug,
-      title: doc.title,
-      id: uuid,
-      createdAt: now,
-      published: true,
-      updatedAt: now,
-      sectionId: section.id,
-    };
-    const result = await client.document.create({ data });
-    return result;
+    return client.document.create({
+      data: {
+        description: doc.description,
+        position: doc.position,
+        content: doc.content,
+        slug: doc.slug,
+        title: doc.title,
+        id: uuid,
+        createdAt: now,
+        published: true,
+        updatedAt: now,
+        groupId: group.id,
+      },
+    });
   };
 
-  export const getAllForStaticPaths = async () => {
-    const documents = await client.document.findMany({
+  export const documentPaths = async () =>
+    client.document.findMany({
       select: {
         content: false,
         createdAt: true,
-        section: true,
+        group: true,
         slug: true,
         title: false,
         id: false,
         updatedAt: false,
-        sectionId: false,
+        groupId: false,
       },
       where: {
         published: true,
       },
     });
+
+  export type AllDocuments = {
+    description: string
+    position: number;
+    slug: string;
+    title: string;
+    id: string;
+    group: {
+      slug: string;
+      title: string;
+      position: number;
+    };
+  };
+
+  export const documentById = async (id: string) => {
+    const document = await client.document.findFirst({ where: { id } });
+    return document;
+  };
+
+  export const allDocuments = async (): Promise<AllDocuments[]> => {
+    const documents = await client.document.findMany({
+      select: {
+        description: true,
+        content: false,
+        position: true,
+        slug: true,
+        title: true,
+        id: true,
+        group: {
+          select: {
+            slug: true,
+            title: true,
+            position: true,
+          },
+        },
+      },
+    });
     return documents;
   };
 
-  export const getDocumentContent = async (path: string) => {
+  export const documentContent = async (path: string) => {
     const [section, ...slug] = path.split("/");
     const documentSlug = slug.join("/");
     const document = await client.document.findFirst({
       where: {
-        section: {
+        group: {
           slug: section,
         },
         slug: documentSlug,
@@ -98,17 +130,35 @@ export namespace WritemeDoc {
     return document;
   };
 
-  export const groups = async (): Promise<Writeme.MetaGroups[]> => {
+  export const defaultGroup = async (): Promise<Group | null> => client.group.findFirst();
+  export const groupById = async (id: string): Promise<Group | null> => client.group.findFirst({ where: { id } });
+
+  export const allGroups = async () => {
+    const groups = await client.group.findMany();
+    return groups.map((group) => ({
+      ...group,
+      createdAt: group.createdAt.toISOString(),
+      updatedAt: group.updatedAt.toISOString(),
+    }));
+  };
+
+  export const upsertGroup = (title: string, slug: string, position: number, id?: string) => {
+    const now = new Date().toISOString();
+    const data = { slug, title, updatedAt: now, position };
+    if (id) {
+      return client.group.update({ where: { id }, data });
+    }
+    return client.group.create({ data: { ...data, createdAt: now } });
+  };
+
+  export const groupedDocuments = async (): Promise<Writeme.MetaGroups[]> => {
     const documents = await client.document.findMany({
-      select: {
-        content: true,
-        slug: true,
-        section: { select: { slug: true } },
-      },
+      select: { slug: true, content: true, group: { select: { slug: true } } },
     });
     return documents.map((document) => ({
-      path: Strings.concatUrl(document.section.slug, document.slug),
       content: document.content,
+      group: document.group.slug,
+      path: Strings.concatUrl(document.group.slug, document.slug),
     }));
   };
 }

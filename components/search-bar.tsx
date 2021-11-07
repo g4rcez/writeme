@@ -154,7 +154,7 @@ export const SearchBar: VFC<SearchBarProps> = ({ show, onChange, onOverlayClick,
     const children = e.currentTarget as HTMLElement;
     keyEffect(arrows, pressedKey, ulNoGroup, setActive, children);
     if (e.key === "Enter" || e.key === " ") {
-      (group.activeElement as HTMLButtonElement).click();
+      (document.activeElement as HTMLButtonElement).click();
     }
   }, []);
 

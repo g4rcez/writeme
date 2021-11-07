@@ -6,21 +6,25 @@ import { Database } from "db/database";
 import matter from "gray-matter";
 import { httpClient } from "lib/http-client";
 import { Strings } from "lib/strings";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import { DocumentPutRequest } from "pages/api/document";
 import React, { FormEventHandler, useState } from "react";
 import { BsEye, BsEyeSlash, BsTrash } from "react-icons/bs";
 import Router from "next/router";
 import { Links } from "lib/links";
+import { Is } from "lib/is";
 
 type Props = {
   groups: Database.Group[];
   document: Database.DocumentWithGroup & { frontMatter: FrontMatter[] };
 };
 
-export const getStaticProps: GetStaticProps = async (props) => {
+export const getServerSideProps: GetServerSideProps = async (props) => {
   const id = (props.params?.id as string) ?? "";
   const document = await Database.documentById(id);
+  if (Is.NilOrEmpty(document)) {
+    return { notFound: true };
+  }
   const { content, data } = matter(document.content);
   const groups = await Database.allGroups();
   const frontMatter = Object.keys(data)
@@ -49,10 +53,10 @@ export const getStaticProps: GetStaticProps = async (props) => {
   };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const documents = await Database.allDocuments();
-  return { paths: documents.map((x) => ({ params: { id: x.id } })), fallback: true };
-};
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   const documents = await Database.allDocuments();
+//   return { paths: documents.map((x) => ({ params: { id: x.id } })), fallback: true };
+// };
 
 export default function WriterPage(props: Props) {
   const [markdown, setMarkdown] = useState(props.document.content);

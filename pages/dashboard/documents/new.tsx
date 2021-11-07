@@ -30,7 +30,7 @@ const frontMatterHeaders = [
   { name: "sidebar", value: "", readonlyTitle: true },
 ];
 
-export default function WriterPage(props: Props) {
+export default function DashboardNewDocument(props: Props) {
   const [groupId, setGroupId] = useState("");
 
   const onSubmit: FormEventHandler<HTMLFormElement> = async (event) => {

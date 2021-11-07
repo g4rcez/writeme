@@ -1,4 +1,5 @@
 import { SiteContainer } from "components/container";
+import { Strategy } from "lib/strategy";
 import { Writeme } from "lib/writeme";
 import { GetStaticProps } from "next";
 import Link from "next/link";
@@ -11,7 +12,7 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export default function DocsIndex({ docs }: { docs: Writeme.DocumentItem[] }) {
+export default function DocsIndex({ docs }: { docs: Strategy.DocumentItem[] }) {
   return (
     <SiteContainer>
       {docs.map((document) => (

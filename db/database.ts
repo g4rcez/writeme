@@ -87,7 +87,7 @@ export namespace Database {
     };
   };
 
-  export const documentById = async (id: string): Promise<DocumentWithGroup> => {
+  export const documentById = async (id: string): Promise<DocumentWithGroup | null> => {
     const document = await client.document.findFirst({
       where: { id },
       select: {
@@ -108,7 +108,7 @@ export namespace Database {
         },
       },
     });
-    return document!;
+    return document;
   };
 
   export const allDocuments = async (): Promise<AllDocuments[]> => {

@@ -8480,6 +8480,11 @@ use-subscription@1.5.1:
   dependencies:
     object-assign "^4.1.1"
 
+use-typed-reducer@3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/use-typed-reducer/-/use-typed-reducer-3.1.1.tgz#b111f0718eac228072a25924bd03a2a34f21a201"
+  integrity sha512-UUVTQrasqB/aWVbka4PsDeCssPw3iMP4xHcFTz0R4gWsx3CYwU4tNo/ZtmWVQXgaapF7iaBrqrDdFOChrpDKOA==
+
 use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"

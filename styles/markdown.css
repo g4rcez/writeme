@@ -5,12 +5,20 @@
   height: fit-content;
 }
 
+.contains-task-list {
+  @apply ml-8 list-inside;
+}
+
+.contains-task-list > li {
+  @apply my-1;
+}
+
 .markdown {
   @apply text-text-paragraph;
 }
 
 .markdown p {
-  @apply mt-1 mb-2 antialiased lining-nums whitespace-pre-wrap break-words w-full container mx-auto leading-relaxed;
+  @apply mt-1 mb-2 antialiased lining-nums whitespace-pre-wrap break-words w-full leading-relaxed text-left;
 }
 
 .markdown a {

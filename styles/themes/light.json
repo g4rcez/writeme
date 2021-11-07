@@ -5,7 +5,8 @@
         "text": "#d1d5db"
     },
     "fail": {
-        "normal": "#EF4444"
+        "normal": "#EF4444",
+        "hover": "#BF3636"
     },
     "success": {
         "normal": "#34D399"

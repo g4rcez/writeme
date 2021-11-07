@@ -1,12 +1,17 @@
-import { Document as DbDocument, PrismaClient, Group as DbGroup } from "@prisma/client";
+import { Document as DbDocument, Group as DbGroup, PrismaClient } from "@prisma/client";
 import { randomUUID } from "crypto";
+import { Strategy } from "lib/strategy";
 import { Strings } from "lib/strings";
-import { Writeme } from "lib/writeme";
 
 const client = new PrismaClient();
 
 export namespace Database {
   export type Document = DbDocument;
+  export type DocumentWithGroup = {
+    group: {
+      slug: string;
+    };
+  } & Document;
   export type Group = DbGroup;
   export type UpsertDocument = {
     description: string;
@@ -70,7 +75,7 @@ export namespace Database {
     });
 
   export type AllDocuments = {
-    description: string
+    description: string;
     position: number;
     slug: string;
     title: string;
@@ -82,13 +87,33 @@ export namespace Database {
     };
   };
 
-  export const documentById = async (id: string) => {
-    const document = await client.document.findFirst({ where: { id } });
-    return document;
+  export const documentById = async (id: string): Promise<DocumentWithGroup> => {
+    const document = await client.document.findFirst({
+      where: { id },
+      select: {
+        content: true,
+        createdAt: true,
+        description: true,
+        groupId: true,
+        id: true,
+        position: true,
+        published: true,
+        slug: true,
+        title: true,
+        updatedAt: true,
+        group: {
+          select: {
+            slug: true,
+          },
+        },
+      },
+    });
+    return document!;
   };
 
   export const allDocuments = async (): Promise<AllDocuments[]> => {
     const documents = await client.document.findMany({
+      where: { published: true },
       select: {
         description: true,
         content: false,
@@ -151,14 +176,19 @@ export namespace Database {
     return client.group.create({ data: { ...data, createdAt: now } });
   };
 
-  export const groupedDocuments = async (): Promise<Writeme.MetaGroups[]> => {
+  export const groupedDocuments = async (): Promise<Strategy.MetaGroups[]> => {
     const documents = await client.document.findMany({
       select: { slug: true, content: true, group: { select: { slug: true } } },
+      where: { published: true },
     });
     return documents.map((document) => ({
       content: document.content,
       group: document.group.slug,
       path: Strings.concatUrl(document.group.slug, document.slug),
     }));
+  };
+
+  export const deleteDocument = async (id: string) => {
+    await client.document.update({ where: { id }, data: { published: false } });
   };
 }

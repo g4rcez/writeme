@@ -100,12 +100,13 @@ export const MarkdownMirror: EditorConfiguration = {
 };
 
 type Props = {
+  databaseMode?: boolean;
   markdown?: string;
   mode?: "json" | "md";
   onChange: (text: string) => void;
 };
 
-export const Writer: React.VFC<Props> = ({ markdown = "", mode = "md", onChange }) => {
+export const Writer: React.VFC<Props> = ({ markdown = "", mode = "md", onChange, databaseMode = false }) => {
   const div = useRef<HTMLDivElement>(null);
   const code = useRef<Editor | null>(null);
   const [loading, setLoading] = useState(true);
@@ -226,9 +227,11 @@ export const Writer: React.VFC<Props> = ({ markdown = "", mode = "md", onChange 
   return (
     <div className="w-full flex flex-col relative">
       <div className="w-full flex gap-x-2 my-2">
-        <Button onClick={onFrontMatter} className="bg-transparent opacity-70 hover:opacity-100">
-          FrontMatter
-        </Button>
+        {!databaseMode && (
+          <Button onClick={onFrontMatter} className="bg-transparent opacity-70 hover:opacity-100">
+            FrontMatter
+          </Button>
+        )}
         <Button onClick={onHeading} className="bg-transparent opacity-70 hover:opacity-100">
           H1
         </Button>

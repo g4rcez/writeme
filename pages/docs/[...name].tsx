@@ -12,6 +12,7 @@ import {
 } from "components/";
 import { Dates } from "lib/dates";
 import { httpClient } from "lib/http-client";
+import { Strategy } from "lib/strategy";
 import { Writeme } from "lib/writeme";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
@@ -80,7 +81,8 @@ const defaultComponents = {
   Tab,
   TableOfContent,
   Tabs,
-  ul: (props: any) => <ul {...props} className={props.className ?? "mt-2 mb-4"} />,
+  ul: (props: any) => <ul {...props} className={props.className ?? "mt-2 mb-4 list-inside ml-8 list-disc"} />,
+  ol: (props: any) => <ol {...props} className={props.className ?? "mt-2 mb-4 list-inside ml-8 list-decimal"} />,
   Playground: function Component(props: any) {
     return <Playground {...props} scope={playgroundScope} />;
   },
@@ -101,7 +103,7 @@ const components = {
 type Props = {
   notFound?: boolean;
   data: DocumentStats;
-  docs: Writeme.DocumentItem[];
+  docs: Strategy.DocumentItem[];
   source: MDXRemoteSerializeResult<Record<string, unknown>>;
 };
 
@@ -154,8 +156,9 @@ export default function Component({ source, data, notFound, docs }: Props) {
           </div>
         </section>
         <aside className="markdown-side-item md:w-48 text-sm text-text-text-normal mt-4 md:block hidden">
-          <span className="font-bold">In this Page:</span>
-          <TableOfContent className="table-of-content-target" observeHash markHighlight />
+          <TableOfContent className="table-of-content-target" observeHash markHighlight>
+            <span className="font-bold">In this Page:</span>
+          </TableOfContent>
         </aside>
       </main>
     </SiteContainer>

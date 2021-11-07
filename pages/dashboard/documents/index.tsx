@@ -1,6 +1,7 @@
 import { Heading, SiteContainer, Text } from "components";
 import { Divider } from "components/divider";
 import { Database } from "db/database";
+import { Links } from "lib/links";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 
@@ -23,7 +24,7 @@ export default function DashboardDocumentIndex(props: Props) {
       </header>
       <section className="w-full flex my-2 flex-wrap gap-4">
         {props.documents.map((document) => {
-          const href = `/dashboard/document/${document.id}`;
+          const href = Links.adminUpdateDocuments(document.id);
           return (
             <Link href={href} key={document.id}>
               <a

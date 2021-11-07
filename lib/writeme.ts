@@ -1,9 +1,6 @@
 import { DocumentStats } from "components";
-import { Database } from "db/database";
 import FsSync from "fs";
-import Fs from "fs/promises";
 import matter from "gray-matter";
-import { Docs as LocalDocs } from "lib/local-docs";
 import { remarkTabs } from "lib/remark-tabs";
 import { remarkVariables } from "lib/remark-variables";
 import { Strings } from "lib/strings";
@@ -16,45 +13,31 @@ import remarkFootnotes from "remark-footnotes";
 import remarkGemoji from "remark-gemoji";
 import remarkGfm from "remark-gfm";
 import remarkGithub from "remark-github";
+import { DatabaseStrategy } from "./database.strategy";
 import { Http } from "./http";
 import { Is } from "./is";
-
-type StaticPathAdapter = () => Promise<string[][]>;
+import { LocalStrategy } from "./local.strategy";
+import { Strategy } from "./strategy";
 
 export namespace Writeme {
-  export type DocumentItem = {
-    name: string;
-    sidebar: number;
-    items: DocumentStats[];
-  };
-
-  export const getStaticDocuments: StaticPathAdapter = async (): Promise<string[][]> => {
-    const docs = await Database.documentPaths();
-    return docs.map((document) => {
-      const sectionSlug = document.group.slug;
-      const documentSlug = document.slug;
-      return Strings.concatUrl(sectionSlug, documentSlug).split("/");
-    });
-  };
-
   type RecursiveDict = {
     [k: string]: string | RecursiveDict;
   };
 
   export type WritemeRcProps = {
-    tokens: {
-      colors: RecursiveDict;
-    };
     defaultRepository: string;
     cssWatchDirectories: string[];
     requestVariables: Record<string, string>;
+    tokens: {
+      colors: RecursiveDict;
+    };
   };
 
   export const rcConfig = (): WritemeRcProps | null => {
     const path = Path.join(process.cwd(), "writeme.json");
     const exists = FsSync.existsSync(path);
-    if (exists) return JSON.parse(FsSync.readFileSync(path, "utf-8"));
-    return null;
+    if (!exists) return null;
+    return JSON.parse(FsSync.readFileSync(path, "utf-8"));
   };
 
   const markdownConfig = async (content: string, scope: any) => {
@@ -76,88 +59,11 @@ export namespace Writeme {
     return source;
   };
 
-  type ContentAdapter = (path: string) => Promise<{
-    content: string;
-    updatedAt: Date;
-    createdAt: Date;
-  }>;
-
-  export type DocumentStrategy = {
-    fileInfo: ContentAdapter;
-    paths: StaticPathAdapter;
-    groups: () => Promise<DocumentItem[]>;
-  };
-
-  export type MetaGroups = {
-    content: string;
-    path: string;
-  };
-
-  const getMetadataGroups = async (
-    getAll: () => Promise<MetaGroups[]>,
-    parseName: (name: string) => string
-  ): Promise<DocumentItem[]> => {
-    const docs = await getAll();
-    const metadata = await Promise.all(
-      docs.map(
-        async (document): Promise<DocumentStats> =>
-          ({
-            ...matter(document.content).data,
-            link: Strings.concatUrl("/docs", parseName(document.path)),
-          } as never)
-      )
-    );
-
-    const groups = metadata.reduce<LocalDocs.Data>((acc, doc) => {
-      const key = doc.section;
-      const current = acc[key];
-      return { ...acc, [key]: Array.isArray(current) ? [...current, doc] : [doc] };
-    }, {});
-    
-    return Object.keys(groups)
-      .map((group) => {
-        const items = groups[group];
-        return {
-          name: group,
-          sidebar: LocalDocs.sidebarOrder(items),
-          items: items.sort((a, b) => a.order - b.order),
-        };
-      })
-      .sort((a, b) => a.sidebar - b.sidebar);
-  };
-
-  export const localStrategy: DocumentStrategy = {
-    groups: () => getMetadataGroups(LocalDocs.getAll, LocalDocs.parseFile),
-    fileInfo: async (path: string) => {
-      const fullPath = Path.resolve(process.cwd(), ...LocalDocs.path, `${path}.mdx`);
-      const content = await Fs.readFile(fullPath, "utf-8");
-      const stats = await Fs.stat(fullPath);
-      return {
-        content,
-        updatedAt: stats.mtime,
-        createdAt: stats.birthtime,
-      };
-    },
-    paths: async () => {
-      const docs = await LocalDocs.getAll();
-      return docs.map((file) => LocalDocs.parseFile(file.path).split("/"));
-    },
-  };
-
-  export const dbStrategy: DocumentStrategy = {
-    fileInfo: Database.documentContent,
-    groups: () => getMetadataGroups(Database.groupedDocuments, (str) => str),
-    paths: async () => {
-      const paths = await Database.documentPaths();
-      return paths.map((x) => Strings.concatUrl(x.group.slug, x.slug).split("/"));
-    },
-  };
-
-  export const defaultStrategy = dbStrategy;
+  export const defaultStrategy = LocalStrategy.actions;
 
   type StaticProps = {
     source: MDXRemoteSerializeResult<Record<string, unknown>>;
-    docs: DocumentItem[];
+    docs: Strategy.DocumentItem[];
     data: {
       next: DocumentStats | null;
       prev: DocumentStats | null;
@@ -169,7 +75,7 @@ export namespace Writeme {
 
   export const getStaticProps = async (
     queryPath: string[] | string | undefined,
-    strategy: DocumentStrategy
+    strategy: Strategy.Document
   ): Promise<StaticProps> => {
     const path = Array.isArray(queryPath) ? Strings.concatUrl(queryPath.join("/")) : queryPath!;
     const writemeConfig = rcConfig();
@@ -218,7 +124,6 @@ export namespace Writeme {
         return fn(req, res);
       }
     }
-
     return res.status(Http.StatusCode.MethodNotAllowed);
   };
 }

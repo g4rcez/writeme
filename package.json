@@ -51,7 +51,8 @@
     "shell-quote": "1.7.2",
     "shortcut-keys": "2.0.0",
     "storage-manager-js": "4.0.6",
-    "tailwindcss": "2.2.17"
+    "tailwindcss": "2.2.17",
+    "use-typed-reducer": "3.1.1"
   },
   "devDependencies": {
     "@types/codemirror": "5.60.2",

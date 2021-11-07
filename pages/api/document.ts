@@ -3,7 +3,8 @@ import matter from "gray-matter";
 import { Http } from "lib/http";
 import { Strings } from "lib/strings";
 import { Writeme } from "lib/writeme";
-import type { NextApiRequest } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { uniq, uniqBy } from "ramda";
 
 type RawDocumentRequest = {
   documentId?: string;
@@ -24,20 +25,23 @@ const actions = {
     });
   },
 
+  delete: (req: NextApiRequest, res: NextApiResponse) => {
+    const id = req.query.id as string;
+    Database.deleteDocument(id);
+    res.status(Http.StatusCode.Ok).json(null);
+  },
+
   put: async (req: NextApiRequest, res: Http.WritemeApiResponse<{ document: Database.Document | null }>) => {
     const body = req.body as RawDocumentRequest;
     const description = body.frontMatter.find((x) => x.name === "description")!.value;
 
     try {
       const section = await Database.groupById(body.groupId);
-
+      const frontMatter = [...body.frontMatter, { name: "section", value: section?.title }];
       const markdown = Strings.joinLines(
         "---",
-        ...body.frontMatter.map((x) => `${x.name}: ${x.value}`),
-        `section: ${section?.title}`,
-        "tag: []",
+        ...uniqBy((props) => props.name, frontMatter).map((x) => `${x.name}: ${x.value}`),
         "---",
-        "",
         body.markdown
       );
       const { data } = matter(markdown);

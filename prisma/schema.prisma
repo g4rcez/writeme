@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Group {
-  id        String   @id @default(uuid()) @db.Uuid
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   title     String   @db.VarChar(255)
@@ -23,7 +23,7 @@ model Group {
 }
 
 model Document {
-  id          String   @id @default(uuid()) @db.Uuid
+  id          String   @id @default(uuid())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   title       String   @db.VarChar(255)
@@ -34,7 +34,7 @@ model Document {
   group       Group    @relation(fields: [groupId], references: [id])
   position    Int
 
-  groupId String @db.Uuid
+  groupId String
   @@map("document")
 }
 

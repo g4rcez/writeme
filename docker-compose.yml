@@ -1,6 +1,18 @@
 version: "3"
 services:
-  database:
+  mysql:
+    image: mysql:5.6
+    restart: always
+    volumes:
+      - ./data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: writeme
+    ports:
+      - "3306:3306"
+    networks:
+      - network
+  postgres:
     image: postgres:14-alpine
     restart: always
     volumes:
@@ -15,68 +27,6 @@ services:
       POSTGRES_USER_LOCAL: postgres
     ports:
       - "5432:5432"
-    networks:
-      - network
-  dev:
-    image: node:16.13.0-alpine
-    working_dir: /app
-    volumes:
-      - .:/app
-    command: /bin/sh -c "yarn ; yarn start:dev"
-    ports:
-      - "3000:3000"
-    depends_on:
-      - database
-    networks:
-      - network
-  test:
-    image: node:16.13.0-alpine
-    working_dir: /app
-    volumes:
-      - .:/app
-    command: /bin/sh -c "yarn test"
-    ports:
-      - "3000:3000"
-    depends_on:
-      - database
-    networks:
-      - network
-  build:
-    image: node:16.13.0-alpine
-    working_dir: /app
-    volumes:
-      - .:/app
-    command: /bin/sh -c "yarn build"
-    ports:
-      - "3000:3000"
-    depends_on:
-      - database
-    networks:
-      - network
-  start:
-    image: node:16.13.0-alpine
-    working_dir: /app
-    volumes:
-      - .:/app
-    command: /bin/sh -c "yarn start"
-    ports:
-      - "5000:5000"
-    depends_on:
-      - database
-    networks:
-      - network
-  tests:
-    image: node
-    working_dir: /app
-    volumes:
-      - ./app
-    command: yarn jest
-    environment:
-      POSTGRES_HOST_LOCAL: "database"
-    ports:
-      - "3000:3000"
-    depends_on:
-      - database
     networks:
       - network
 

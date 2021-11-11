@@ -3,9 +3,10 @@ import { randomUUID } from "crypto";
 import { Strategy } from "lib/strategy";
 import { Strings } from "lib/strings";
 
-const client = new PrismaClient();
+const prisma = new PrismaClient();
 
 export namespace Database {
+  export const Client = prisma;
   export type Document = DbDocument;
   export type DocumentWithGroup = {
     group: {
@@ -27,7 +28,7 @@ export namespace Database {
     const now = new Date().toISOString();
 
     if (doc.id) {
-      return client.document.update({
+      return prisma.document.update({
         where: { id: doc.id },
         data: {
           description: doc.description,
@@ -41,7 +42,7 @@ export namespace Database {
         },
       });
     }
-    return client.document.create({
+    return prisma.document.create({
       data: {
         description: doc.description,
         position: doc.position,
@@ -58,7 +59,7 @@ export namespace Database {
   };
 
   export const documentPaths = async () =>
-    client.document.findMany({
+    prisma.document.findMany({
       select: {
         content: false,
         createdAt: true,
@@ -88,7 +89,7 @@ export namespace Database {
   };
 
   export const documentById = async (id: string): Promise<DocumentWithGroup | null> => {
-    const document = await client.document.findFirst({
+    const document = await prisma.document.findFirst({
       where: { id },
       select: {
         content: true,
@@ -112,7 +113,7 @@ export namespace Database {
   };
 
   export const allDocuments = async (): Promise<AllDocuments[]> => {
-    const documents = await client.document.findMany({
+    const documents = await prisma.document.findMany({
       where: { published: true },
       select: {
         description: true,
@@ -136,7 +137,7 @@ export namespace Database {
   export const documentContent = async (path: string) => {
     const [section, ...slug] = path.split("/");
     const documentSlug = slug.join("/");
-    const document = await client.document.findFirst({
+    const document = await prisma.document.findFirst({
       where: {
         group: {
           slug: section,
@@ -155,11 +156,11 @@ export namespace Database {
     return document;
   };
 
-  export const defaultGroup = async (): Promise<Group | null> => client.group.findFirst();
-  export const groupById = async (id: string): Promise<Group | null> => client.group.findFirst({ where: { id } });
+  export const defaultGroup = async (): Promise<Group | null> => prisma.group.findFirst();
+  export const groupById = async (id: string): Promise<Group | null> => prisma.group.findFirst({ where: { id } });
 
   export const allGroups = async () => {
-    const groups = await client.group.findMany();
+    const groups = await prisma.group.findMany();
     return groups.map((group) => ({
       ...group,
       createdAt: group.createdAt.toISOString(),
@@ -171,13 +172,13 @@ export namespace Database {
     const now = new Date().toISOString();
     const data = { slug, title, updatedAt: now, position };
     if (id) {
-      return client.group.update({ where: { id }, data });
+      return prisma.group.update({ where: { id }, data });
     }
-    return client.group.create({ data: { ...data, createdAt: now } });
+    return prisma.group.create({ data: { ...data, createdAt: now } });
   };
 
   export const groupedDocuments = async (): Promise<Strategy.MetaGroups[]> => {
-    const documents = await client.document.findMany({
+    const documents = await prisma.document.findMany({
       select: { slug: true, content: true, group: { select: { slug: true } } },
       where: { published: true },
     });
@@ -189,11 +190,11 @@ export namespace Database {
   };
 
   export const deleteDocument = async (id: string) => {
-    await client.document.update({ where: { id }, data: { published: false } });
+    await prisma.document.update({ where: { id }, data: { published: false } });
   };
 
   export const isAllowedUser = async (email: string) => {
-    const allowed = await client.allowedList.findFirst({ where: { email, authorized: true } });
+    const allowed = await prisma.allowedList.findFirst({ where: { email, authorized: true } });
     return allowed?.authorized ?? false;
   };
 }

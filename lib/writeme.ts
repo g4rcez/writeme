@@ -40,7 +40,7 @@ export namespace Writeme {
   };
 
   const markdownConfig = async (content: string, scope: any) => {
-    const writemeRc = rcConfig();
+    const writemeRc = Writeme.rcConfig();
     const source = await serialize(content, {
       scope,
       mdxOptions: {
@@ -77,7 +77,7 @@ export namespace Writeme {
     strategy: Strategy.Document
   ): Promise<StaticProps> => {
     const path = Array.isArray(queryPath) ? Strings.concatUrl(queryPath.join("/")) : queryPath!;
-    const writemeConfig = rcConfig();
+    const writemeConfig = Writeme.rcConfig();
 
     try {
       const file = await strategy.fileInfo(path);

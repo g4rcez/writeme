@@ -18,6 +18,8 @@ export type DocumentStats = {
   prev: DocumentStats | null;
 };
 
+export type Metadata = DocumentStats;
+
 type Extra = {
   direction: "next" | "prev";
 };

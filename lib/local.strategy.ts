@@ -7,13 +7,13 @@ import { Strategy } from "./strategy";
 export namespace LocalStrategy {
   const Glob = promisify(require("glob"));
 
-  export const PATH = ["pages", "docs"];
+  const PATH = ["pages", "docs"];
 
-  export const parseFile = (name: string) => name.replace("pages/docs/", "").replace(/\.mdx?$/gi, "");
+  const parseFile = (name: string) => name.replace("pages/docs/", "").replace(/\.mdx?$/gi, "");
 
-  export const docFromExt = (ext: string) => Path.join(...PATH, "**", `*${ext}`);
+  const docFromExt = (ext: string) => Path.join(...PATH, "**", `*${ext}`);
 
-  export const getAll = async (): Promise<Strategy.MetaGroups[]> => {
+  const getAll = async (): Promise<Strategy.MetaGroups[]> => {
     const filesMd: string[] = await Glob(docFromExt(".md"));
     const filesMdx: string[] = await Glob(docFromExt(".mdx"));
 

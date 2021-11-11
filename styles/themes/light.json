@@ -1,10 +1,23 @@
 {
     "transparent": "transparent",
+    "dropdown": {
+        "bg": "#121212",
+        "text": "#ccc"
+    },
+    "navbar": {
+        "bg": "#282A36",
+        "text": "#d1d5db"
+    },
     "fail": {
-        "normal": "#EF4444"
+        "normal": "#EF4444",
+        "hover": "#BF3636"
     },
     "success": {
         "normal": "#34D399"
+    },
+    "form": {
+        "text-input": "#282A36",
+        "bg-input": "#ffffff"
     },
     "http": {
         "get": "#64d2ff",
@@ -21,6 +34,7 @@
     "text": {
         "paragraph": "#3d3f4a",
         "title": "#181920",
+        "invert": "#888",
         "normal": "#6B7280",
         "dim": "#aeaeb2",
         "slight": "#D1D5DB",
@@ -40,8 +54,9 @@
         "normal": "#3a9cff",
         "hover-border": "#0a84ff",
         "dim": "#6cb5ff",
-        "slight": "#e6f2ff",
-        "accent": "#fff"
+        "slight": "#b5daff",
+        "accent": "#ffffff",
+        "bg": "#ffffff"
     },
     "code": "#282A36",
     "word": "#F8F8F2",
@@ -58,14 +73,14 @@
         "quote": "#009900",
         "negative": "#DD4444",
         "positive": "#229922",
-        "keyword": "#770088",
+        "keyword": "#C678DD",
         "atom": "#221199",
         "number": "#116644",
-        "def": "#0000FF",
+        "def": "#61AFEF",
         "var2": "#0055aa",
         "var3": "#008855",
         "comment": "#aa5500",
-        "string": "#aa1111",
+        "string": "#98C379",
         "string2": "#ff5500",
         "metaQualifier": "#555555",
         "builtin": "#3300aa",

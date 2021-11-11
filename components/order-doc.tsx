@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import { BsChevronDoubleLeft, BsChevronDoubleRight } from "react-icons/bs";
 
-export type Metadata = {
+export type DocumentStats = {
   title: string;
   description: string;
   section: string;
@@ -14,15 +14,15 @@ export type Metadata = {
   updatedAt: string;
   readingTime: string;
   link: string;
-  next: Metadata | null;
-  prev: Metadata | null;
+  next: DocumentStats | null;
+  prev: DocumentStats | null;
 };
 
 type Extra = {
   direction: "next" | "prev";
 };
 
-export const OrderDoc: React.FC<Metadata & Extra> = (props) => (
+export const OrderDoc: React.FC<DocumentStats & Extra> = (props) => (
   <aside className="order-doc previous-doc w-full max-w-sm break-words whitespace-pre-wrap justify-between items-end gap-x-4 gap-y-4">
     <Link href={props.link} passHref>
       <a href="">

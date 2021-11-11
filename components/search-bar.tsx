@@ -226,9 +226,8 @@ export const SearchBar: VFC<SearchBarProps> = ({ show, onChange, onOverlayClick,
               return (
                 <li
                   className={`p-2 ring-transparent outline-none transition-colors duration-300 cursor-pointer ease-linear ${
-                    isActive ? "bg-neutral-dim border-l-4 border-black font-extrabold" : ""
-                  } focus:bg-neutral-dim focus:border-l-4 focus:border-black focus:font-extrabold
-                  hover:bg-neutral-dim hover:bg-border-l-4 hover:border-black hover:font-extrabold`}
+                    isActive ? "bg-neutral-dim text-text-invert font-extrabold" : ""
+                  } focus:bg-neutral-dim focus:font-extrabold hover:bg-neutral-dim hover:font-extrabold`}
                   role="button"
                   tabIndex={0}
                   key={group.name}

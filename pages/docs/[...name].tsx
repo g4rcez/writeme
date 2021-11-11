@@ -1,8 +1,8 @@
 import {
   CodeResponse,
+  DocumentStats,
   Heading,
   MdxDocsProvider,
-  Metadata,
   OrderDoc,
   Sidebar,
   SiteContainer,
@@ -10,28 +10,16 @@ import {
   TableOfContent,
   Tabs,
 } from "components/";
-import Fs from "fs/promises";
-import matter from "gray-matter";
 import { Dates } from "lib/dates";
-import { Docs } from "lib/docs";
 import { httpClient } from "lib/http-client";
-import { remarkTabs } from "lib/remark-tabs";
-import { remarkVariables } from "lib/remark-variables";
-import { Strings } from "lib/strings";
-import { WritemeRc } from "lib/writemerc";
+import { Strategy } from "lib/strategy";
+import { Writeme } from "lib/writeme";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
-import { serialize } from "next-mdx-remote/serialize";
 import { useRouter } from "next/dist/client/router";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import Path from "path";
 import { Fragment } from "react";
-import remarkDef from "remark-deflist";
-import remarkFootnotes from "remark-footnotes";
-import remarkGemoji from "remark-gemoji";
-import remarkGfm from "remark-gfm";
-import remarkGithub from "remark-github";
 
 const CodeHighlight = dynamic(() => import("components/prism"));
 const MDXRemote = dynamic(() => import("components/mdx-remote"));
@@ -43,62 +31,23 @@ const Flowchart = dynamic(() => import("components/flowchart"));
 const GithubOgp = dynamic(() => import("components/open-graph/github-ogp"));
 const YoutubeOgp = dynamic(() => import("components/open-graph/youtube-ogp"));
 
+const strategy = Writeme.defaultStrategy;
+
 export const getStaticPaths: GetStaticPaths = async () => {
-  const docs = await Docs.getAllDocs();
+  const docs = await strategy.paths();
   return {
     fallback: false,
-    paths: await Promise.all(docs.map(async (file) => ({ params: { name: Docs.parseFile(file).split("/") } }))),
+    paths: docs.map((name) => ({ params: { name } })),
   };
 };
 
 export const getStaticProps: GetStaticProps = async (props) => {
   const queryPath = props.params?.name;
-  const path = Array.isArray(queryPath) ? Strings.concatUrl(queryPath.join("/")) : queryPath;
-  const doc = Path.resolve(process.cwd(), ...Docs.path, `${path}.mdx`);
-  const writemeConfig = await WritemeRc();
-
   try {
-    const fileContent = await Fs.readFile(doc, "utf-8");
-    const { content, data } = matter(fileContent);
-    const stat = await Fs.stat(doc);
-    const scope = { ...data, ...writemeConfig?.requestVariables, ...writemeConfig };
-    const source = await serialize(content, {
-      scope,
-      mdxOptions: {
-        remarkPlugins: [
-          remarkGfm,
-          remarkVariables(scope),
-          remarkTabs,
-          remarkGemoji,
-          remarkDef,
-          remarkFootnotes,
-          [remarkGithub, { repository: data.repository ?? "" }],
-        ],
-      },
-    });
-    const docs = await Docs.getAllMetadataDocs();
-    const currentGroup = docs.find((x) => x.sidebar === data.sidebar) ?? null;
-    const order = data.order - 1;
-    const next = currentGroup?.items[order + 1] ?? null;
-    const prev = currentGroup?.items[order - 1] ?? null;
-
-    return {
-      revalidate: false,
-      props: {
-        source,
-        docs,
-        data: {
-          ...data,
-          next,
-          prev,
-          updatedAt: stat.mtime.toISOString(),
-          createdAt: stat.birthtime.toISOString(),
-          readingTime: Math.ceil(content.split(" ").length / 250),
-        },
-      },
-    };
+    const staticProps = await Writeme.getStaticProps(queryPath!, strategy);
+    return { props: staticProps, revalidate: false };
   } catch (error) {
-    console.error(error);
+    console.log(error);
     if (process.env.NODE_ENV === "development") throw error;
     return { notFound: true };
   }
@@ -129,7 +78,8 @@ const defaultComponents = {
   Tab,
   TableOfContent,
   Tabs,
-  ul: (props: any) => <ul {...props} className={props.className ?? "mt-2 mb-4"} />,
+  ul: (props: any) => <ul {...props} className={props.className ?? "mt-2 mb-4 list-inside ml-8 list-disc"} />,
+  ol: (props: any) => <ol {...props} className={props.className ?? "mt-2 mb-4 list-inside ml-8 list-decimal"} />,
   Playground: function Component(props: any) {
     return <Playground {...props} scope={playgroundScope} />;
   },
@@ -148,9 +98,9 @@ const components = {
 };
 
 type Props = {
-  data: Metadata;
-  docs: Docs.DocMetadata;
   notFound?: boolean;
+  data: DocumentStats;
+  docs: Strategy.DocumentItem[];
   source: MDXRemoteSerializeResult<Record<string, unknown>>;
 };
 
@@ -203,8 +153,9 @@ export default function Component({ source, data, notFound, docs }: Props) {
           </div>
         </section>
         <aside className="markdown-side-item md:w-48 text-sm text-text-text-normal mt-4 md:block hidden">
-          <span className="font-bold">In this Page:</span>
-          <TableOfContent className="table-of-content-target" observeHash markHighlight />
+          <TableOfContent className="table-of-content-target" observeHash markHighlight>
+            <span className="font-bold">In this Page:</span>
+          </TableOfContent>
         </aside>
       </main>
     </SiteContainer>

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import Light from "styles/themes/colors.json";
+import Light from "styles/themes/light.json";
 import Dark from "styles/themes/dark.json";
 import { setCssVars } from "styles/themes/themes";
 import { useMedia } from "./use-media";

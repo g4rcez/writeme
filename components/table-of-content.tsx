@@ -1,4 +1,5 @@
 import { Strings } from "lib/strings";
+import { title } from "process";
 import React, { useEffect, useState, VFC } from "react";
 
 const Tags = {
@@ -25,8 +26,9 @@ type Props = {
   observeHash?: boolean;
 };
 
-export const TableOfContent: VFC<Props> = ({
+export const TableOfContent: React.FC<Props> = ({
   id = "document-root",
+  children,
   observeHash = false,
   className = "",
   markHighlight = false,
@@ -92,8 +94,13 @@ export const TableOfContent: VFC<Props> = ({
     return () => window.removeEventListener("hashchange", onChangeHash);
   }, [observeHash]);
 
+  if (titles.length === 0) {
+    return null;
+  }
+
   return (
     <header className={`table-of-content ${className}`}>
+      {children}
       <nav>
         <ul className="list-inside">
           {titles.map((x) => (

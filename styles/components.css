@@ -61,7 +61,7 @@
   .button {
     @apply px-4 py-3 my-0 leading-3 text-sm bg-main-normal;
     @apply transition-colors duration-300 ease-out;
-    @apply hover:bg-main-slight active:bg-main-slight;
+    @apply hover:bg-main-hover-border active:bg-main-hover-border;
     @apply text-main-accent rounded-lg;
   }
 
@@ -162,5 +162,36 @@
     @apply my-2 antialiased text-text-paragraph lining-nums;
     @apply whitespace-pre-wrap break-words w-full container;
     @apply mx-auto leading-relaxed;
+  }
+
+  .link {
+    @apply transition-colors duration-300 text-main-normal hover:text-main-dim;
+    @apply active:text-main-dim no-underline hover:underline active:underline;
+  }
+
+  @keyframes slide-down {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .dropdown {
+    @apply bg-dropdown-bg text-dropdown-text rounded shadow-lg p-1;
+    animation-duration: 200ms;
+    transform-origin: top center;
+    animation-timing-function: ease-out;
+  }
+
+  .dropdown[data-side="bottom"] {
+    animation-name: slide-down;
+  }
+
+  .dropdown-item {
+    @apply px-4 rounded;
   }
 }

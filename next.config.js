@@ -8,8 +8,9 @@ const withMDX = require("@next/mdx")({
 
 /** @type {import('next').NextConfig} */
 module.exports = withMDX({
+  amp: true,
   compress: true,
   reactStrictMode: true,
   poweredByHeader: false,
-  experimental: { esmExternals: true, concurrentFeatures: true, serverComponents: true },
+  experimental: { esmExternals: true },
 });

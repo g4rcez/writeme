@@ -9,7 +9,7 @@ import { Links } from "lib/links";
 import { NextComponentType, NextPageContext } from "next";
 import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 //@ts-ignore
-import { useRemoteRefresh } from "next-remote-refresh/hook";
+// import { useRemoteRefresh } from "next-remote-refresh/hook";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Link from "next/link";
@@ -70,14 +70,14 @@ function Content({ Component, pageProps }: { Component: NextComponentType<NextPa
   const [show, setShow] = useState(false);
   const { setMode, onToggleMode } = useDarkMode();
 
-  useRemoteRefresh({
-    shouldRefresh: (path: string) => {
-      if (process.env.NODE_ENV === "development") {
-        if (path.includes("docs/") && /\.mdx?$/.test(path)) return true;
-      }
-      return false;
-    },
-  });
+  // useRemoteRefresh({
+  //   shouldRefresh: (path: string) => {
+  //     if (process.env.NODE_ENV === "development") {
+  //       if (path.includes("docs/") && /\.mdx?$/.test(path)) return true;
+  //     }
+  //     return false;
+  //   },
+  // });
 
   const goToPage = useCallback(
     (path: string) => {

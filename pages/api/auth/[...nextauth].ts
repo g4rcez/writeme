@@ -9,7 +9,6 @@ const signInFromProviders: ProviderDict = {
   github: async (user: User) => {
     if (user.id) {
       try {
-        console.log(user)
         return Database.isAllowedUser(`${user.id}`);
       } catch (error) {
         return false;

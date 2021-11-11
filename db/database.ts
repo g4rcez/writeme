@@ -194,8 +194,6 @@ export namespace Database {
   };
 
   export const isAllowedUser = async (email: string) => {
-    const users = await prisma.allowedList.findMany();
-    console.log(users);
     const allowed = await prisma.allowedList.findFirst({ where: { email, authorized: true } });
     return allowed?.authorized ?? false;
   };

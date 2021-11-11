@@ -191,4 +191,9 @@ export namespace Database {
   export const deleteDocument = async (id: string) => {
     await client.document.update({ where: { id }, data: { published: false } });
   };
+
+  export const isAllowedUser = async (email: string) => {
+    const allowed = await client.allowedList.findFirst({ where: { email, authorized: true } });
+    return allowed?.authorized ?? false;
+  };
 }

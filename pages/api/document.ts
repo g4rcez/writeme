@@ -25,9 +25,9 @@ const actions = {
     });
   },
 
-  delete: (req: NextApiRequest, res: NextApiResponse) => {
+  delete: async (req: NextApiRequest, res: NextApiResponse) => {
     const id = req.query.id as string;
-    Database.deleteDocument(id);
+    await Database.deleteDocument(id);
     res.status(Http.StatusCode.Ok).json(null);
   },
 

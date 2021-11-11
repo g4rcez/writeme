@@ -1,5 +1,9 @@
 {
     "transparent": "transparent",
+    "dropdown": {
+        "bg": "#121212",
+        "text": "#ccc"
+    },
     "navbar": {
         "bg": "#282A36",
         "text": "#d1d5db"
@@ -30,6 +34,7 @@
     "text": {
         "paragraph": "#D1D5DB",
         "title": "#e5e5ea",
+        "invert": "#121212",
         "normal": "#D1D5DB",
         "dim": "#aeaeb2",
         "slight": "#D1D5DB",

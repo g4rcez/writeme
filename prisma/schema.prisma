@@ -18,11 +18,10 @@ model Group {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   title     String   @db.VarChar(255)
-  slug      String   @unique
+  slug      String   @unique @db.VarChar(255)
   position  Int
 
   Document Document[]
-  @@map("group")
 }
 
 model Document {
@@ -30,15 +29,14 @@ model Document {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   title       String   @db.VarChar(255)
-  slug        String
-  description String   @default("")
-  content     String
+  slug        String   @db.VarChar(128)
+  description String   @default("") @db.VarChar(255)
+  content     String   @db.Text
   published   Boolean  @default(false)
   group       Group    @relation(fields: [groupId], references: [id])
   position    Int
 
   groupId String
-  @@map("document")
 }
 
 model Account {
@@ -86,4 +84,10 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model AllowedList {
+  id         String  @id @default(uuid())
+  email      String  @unique @db.VarChar(128)
+  authorized Boolean @default(false)
 }

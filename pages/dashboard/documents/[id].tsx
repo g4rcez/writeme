@@ -1,18 +1,17 @@
-import Link from "next/link";
 import { Heading, Select, SiteContainer } from "components";
 import { FrontMatter } from "components/document/front-matter";
 import { Writer } from "components/writer/writer";
 import { Database } from "db/database";
 import matter from "gray-matter";
 import { httpClient } from "lib/http-client";
+import { Is } from "lib/is";
+import { Links } from "lib/links";
 import { Strings } from "lib/strings";
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
+import Router from "next/router";
 import { DocumentPutRequest } from "pages/api/document";
 import React, { FormEventHandler, useState } from "react";
 import { BsEye, BsEyeSlash, BsTrash } from "react-icons/bs";
-import Router from "next/router";
-import { Links } from "lib/links";
-import { Is } from "lib/is";
 
 type Props = {
   groups: Database.Group[];
@@ -39,7 +38,6 @@ export const getServerSideProps: GetServerSideProps = async (props) => {
     )
     .sort((a, b) => a.name.localeCompare(b.name));
   return {
-    revalidate: 10,
     props: {
       groups,
       document: {
@@ -52,11 +50,6 @@ export const getServerSideProps: GetServerSideProps = async (props) => {
     },
   };
 };
-
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const documents = await Database.allDocuments();
-//   return { paths: documents.map((x) => ({ params: { id: x.id } })), fallback: true };
-// };
 
 export default function WriterPage(props: Props) {
   const [markdown, setMarkdown] = useState(props.document.content);
@@ -79,7 +72,6 @@ export default function WriterPage(props: Props) {
     try {
       const withoutPosition = frontMatter.filter((item) => item.name !== "position");
       const position = frontMatter.find((item) => item.name === "position")!;
-      console.log({ position });
       const body = {
         groupId,
         markdown,

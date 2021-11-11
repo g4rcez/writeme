@@ -45,10 +45,7 @@ export const getStaticProps: GetStaticProps = async (props) => {
   const queryPath = props.params?.name;
   try {
     const staticProps = await Writeme.getStaticProps(queryPath!, strategy);
-    return {
-      props: staticProps,
-      revalidate: false,
-    };
+    return { props: staticProps, revalidate: false };
   } catch (error) {
     console.log(error);
     if (process.env.NODE_ENV === "development") throw error;

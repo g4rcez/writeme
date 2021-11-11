@@ -13,7 +13,6 @@ import remarkFootnotes from "remark-footnotes";
 import remarkGemoji from "remark-gemoji";
 import remarkGfm from "remark-gfm";
 import remarkGithub from "remark-github";
-import { DatabaseStrategy } from "./database.strategy";
 import { Http } from "./http";
 import { Is } from "./is";
 import { LocalStrategy } from "./local.strategy";

@@ -1,6 +1,7 @@
 import { DetailedHTMLProps, forwardRef, InputHTMLAttributes } from "react";
 
 export type InputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
+
 export const Input = forwardRef<HTMLInputElement, InputProps>(function C({ className = "", ...props }, ref) {
   return (
     <input

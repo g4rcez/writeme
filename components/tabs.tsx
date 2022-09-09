@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { PropsWithChildren, useCallback, useEffect, useRef, useState } from "react";
 
 type fallback = (overTop: number, overBottom: number, parent: HTMLElement, parentBorderTopWidth: number) => void;
 
@@ -101,7 +101,7 @@ const calculateWidthSize = (ul: HTMLUListElement, id: string) => {
   return sum;
 };
 
-export const Tabs: React.FC<TabsProps> = (props) => {
+export const Tabs = (props: PropsWithChildren<TabsProps>) => {
   const inkBar = useRef<HTMLDivElement>(null);
   const header = useRef<HTMLUListElement>(null);
   const container = useRef<HTMLDivElement>(null);

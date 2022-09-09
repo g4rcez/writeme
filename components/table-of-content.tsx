@@ -1,6 +1,6 @@
 import { Strings } from "lib/strings";
 import { title } from "process";
-import React, { useEffect, useState, VFC } from "react";
+import React, { PropsWithChildren, useEffect, useState, VFC } from "react";
 
 const Tags = {
   H2: "ml-0",
@@ -26,13 +26,13 @@ type Props = {
   observeHash?: boolean;
 };
 
-export const TableOfContent: React.FC<Props> = ({
+export const TableOfContent = ({
   id = "document-root",
   children,
   observeHash = false,
   className = "",
   markHighlight = false,
-}) => {
+}: PropsWithChildren<Props>) => {
   const [titles, setTitles] = useState<Heading[]>([]);
   const [highlight, setHighlight] = useState("");
   const [hash, setHash] = useState("");

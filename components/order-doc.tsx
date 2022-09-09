@@ -24,7 +24,7 @@ type Extra = {
   direction: "next" | "prev";
 };
 
-export const OrderDoc: React.FC<DocumentStats & Extra> = (props) => (
+export const OrderDoc = (props: DocumentStats & Extra) => (
   <aside className="order-doc previous-doc w-full max-w-sm break-words whitespace-pre-wrap justify-between items-end gap-x-4 gap-y-4">
     <Link href={props.link} passHref>
       <a href="">

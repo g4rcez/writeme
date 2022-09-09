@@ -12,7 +12,7 @@ export default function GithubOgp() {
       const el = e.target as HTMLInputElement | null;
       if (el === null) return;
       setRepo(el.value);
-    }, 1500);
+    }, 600);
 
     input.current.addEventListener("input", handler);
   }, []);

@@ -95,7 +95,7 @@ export default function WriterPage(props: Props) {
 
   const onDelete = async () => {
     await httpClient.delete(`/document?id=${props.document.id}`);
-    Router.push(Links.adminDocuments);
+    await Router.push(Links.adminDocuments);
   };
 
   const toggleHeaders = () => setHideHeaders((prev) => !prev);

@@ -2,8 +2,8 @@ import { useHttpContext } from "components";
 import dynamic from "next/dynamic";
 import React, { Fragment } from "react";
 
+const HttpContext = dynamic(() => import("./http.context") as any) as any;
 const HttpRequest = dynamic(() => import("./http-request/http-request"));
-const HttpContext = dynamic(() => import("./http.context") as any);
 const HttpResponse = dynamic(() => import("./http-response/http-response"));
 const OpenGraph = dynamic(() => import("./open-graph/open-graph"));
 const CodeHighlight = dynamic(() => import("./prism"));
@@ -24,7 +24,7 @@ const parseMetaString = (str: string | undefined): Types.Dict => {
       [property]: values
         .join()
         .replace(/^("|')/, "")
-        .replace(/("|')$/, "")
+        .replace(/(["'])$/, "")
         .trim(),
     };
   }, {});

@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { httpClient } from "lib/http-client";
-import { createContext, useCallback, useContext, useState } from "react";
+import { createContext, Fragment, useCallback, useContext, useState } from "react";
 
 type Http = Types.Nullable<Types.BodyProxy>;
 
@@ -15,7 +15,7 @@ type HttpContext = {
 
 const Context = createContext<HttpContext>({} as never);
 
-export const HttpContext: React.FC = ({ children }) => {
+export const HttpContext = ({ children }: any) => {
   const [request, setRequest] = useState<Http>(null);
   const [response, setResponse] = useState<HttpResponseProps>(null);
   const [loading, setLoading] = useState(false);
@@ -55,7 +55,11 @@ export const HttpContext: React.FC = ({ children }) => {
     }
   }, []);
 
-  return <Context.Provider value={{ request, loading, response, onRequest }}>{children}</Context.Provider>;
+  return (
+    <Fragment>
+      <Context.Provider value={{ request, loading, response, onRequest }}>{children}</Context.Provider>
+    </Fragment>
+  );
 };
 
 export const useHttpContext = () => useContext(Context);

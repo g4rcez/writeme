@@ -43,17 +43,15 @@ const FrontMatterForm: React.FC<{
   );
 };
 
-export const FrontMatter: React.VFC<{ headers: FrontMatterHeaders[] }> = (props) => {
-  return (
-    <section className="flex flex-col w-full gap-x-4">
-      {props.headers.map((header, id) => (
-        <FrontMatterForm
-          showAdd={id === props.headers.length - 1}
-          key={`front-matter-id-${id}`}
-          id={id}
-          matter={header}
-        />
-      ))}
-    </section>
-  );
-};
+export const FrontMatter: React.FC<{ headers: FrontMatterHeaders[] }> = (props) => (
+  <section className="flex flex-col w-full gap-x-4">
+    {props.headers.map((header, id) => (
+      <FrontMatterForm
+        showAdd={id === props.headers.length - 1}
+        key={`front-matter-id-${id}`}
+        id={id}
+        matter={header}
+      />
+    ))}
+  </section>
+);

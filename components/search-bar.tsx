@@ -87,7 +87,7 @@ const keyEffect = (
   }
 };
 
-export const SearchBar: VFC<SearchBarProps> = ({ show, onChange, onOverlayClick, shortcutList }) => {
+export const SearchBar = ({ show, onChange, onOverlayClick, shortcutList }: SearchBarProps) => {
   useBlockScroll(show);
   const ul = useRef<HTMLUListElement>(null);
   const input = useRef<HTMLInputElement>(null);

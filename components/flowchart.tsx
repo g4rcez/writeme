@@ -1,6 +1,6 @@
-import { useEffect, useRef, VFC } from "react";
+import { useEffect, useRef } from "react";
 
-export const Flowchart: VFC<{ code: string }> = ({ code }) => {
+export const Flowchart = ({ code }: { code: string }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -85,7 +85,7 @@ export type ImportRequest<T extends {} = {}> = Comment & {
 
 export type Converter<T extends {} = {}> = (
   rawData: string
-) => ImportRequest<T> | ImportRequest<T> | null;
+) => ImportRequest<T> | null;
 
 export type Importer = {
   id: string;

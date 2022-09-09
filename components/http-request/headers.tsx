@@ -8,7 +8,7 @@ type Props = {
   onChange: (newHeaders: Header[]) => void;
 };
 
-export const Headers: React.VFC<Props> = ({ headers, onChange }) => {
+export const Headers: React.FC<Props> = ({ headers, onChange }) => {
   const onChangeInput = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value;

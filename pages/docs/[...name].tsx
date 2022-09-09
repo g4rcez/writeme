@@ -118,31 +118,32 @@ export default function Component({ source, data, notFound, docs }: Props) {
           {providerValue.titlePrefix} | {data.section} {data.title}
         </title>
       </Head>
-      <main className="lg:px-0 px-4 flex flex-row align-baseline justify-between gap-x-6">
+      <div className="lg:px-0 px-4 flex flex-row align-baseline justify-between gap-x-6">
         <Sidebar
-          active={asPath}
-          className="hidden md:block markdown-side-item border-r border-border-neutral md:w-48 max-w-xs mt-4"
           items={docs}
+          active={asPath}
+          className="hidden md:block markdown-side-item border-r border-border-neutral md:min-w-[12rem] w-48 max-w-[12rem] mt-4"
         />
         <section className="w-full flex-auto flex-grow-0 pl-4">
-          <article className="markdown">
+          <main className="markdown">
             {(notFound && <h1>Not found</h1>) || (
               <Fragment>
                 <header className="my-4">
                   <h1 className="text-5xl leading-tight lining-nums font-extrabold text-text-title">{data.title}</h1>
-                  <h4 className="text-base text-text-paragraph mb-2">{data.description}</h4>
-                  <h2 className="text-sm text-text-text-normal">
-                    {Dates.localeDate(data.createdAt)} - Reading time: {data.readingTime}min
-                  </h2>
+                  <p className="text-base text-text-paragraph mb-2">{data.description}</p>
+                  <p className="text-sm text-text-text-normal">
+                    <time dateTime={Dates.localeDate(data.createdAt)}>{Dates.localeDate(data.createdAt)}</time>- Reading
+                    time: {data.readingTime}min
+                  </p>
                 </header>
                 <MdxDocsProvider value={providerValue}>
-                  <section className="flex flex-col flex-wrap" id="document-root">
-                    <MDXRemote {...source} components={components} />
+                  <section className="flex flex-col flex-wrap max-w-none" id="document-root">
+                    <MDXRemote {...source} components={components as never} />
                   </section>
                 </MdxDocsProvider>
               </Fragment>
             )}
-          </article>
+          </main>
           <div
             className={`flex my-4 gap-x-4 ${
               hasPrev && hasNext ? "justify-between" : hasNext ? "justify-end" : "justify-start"
@@ -152,12 +153,12 @@ export default function Component({ source, data, notFound, docs }: Props) {
             {hasNext && <OrderDoc {...data.next!} direction="next" />}
           </div>
         </section>
-        <aside className="markdown-side-item md:w-48 text-sm text-text-text-normal mt-4 md:block hidden">
+        <aside className="markdown-side-item text-sm text-text-text-normal mt-4 md:block hidden md:min-w-[12rem] w-48 max-w-[12rem]">
           <TableOfContent className="table-of-content-target" observeHash markHighlight>
             <span className="font-bold">In this Page:</span>
           </TableOfContent>
         </aside>
-      </main>
+      </div>
     </SiteContainer>
   );
 }

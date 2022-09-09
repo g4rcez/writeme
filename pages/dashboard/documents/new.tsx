@@ -1,6 +1,5 @@
 import { Heading, Select, SiteContainer } from "components";
 import { FrontMatter } from "components/document/front-matter";
-import { Writer } from "components/writer/writer";
 import { Database } from "db/database";
 import { httpClient } from "lib/http-client";
 import { Links } from "lib/links";

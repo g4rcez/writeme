@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { httpClient } from "lib/http-client";
-import { Fragment, useEffect, useMemo, useState, VFC } from "react";
+import { Fragment, PropsWithChildren, useEffect, useMemo, useState, VFC } from "react";
 
 type Props = {
   url: string;
@@ -26,7 +26,7 @@ type OpenGraphAttrs = Partial<{
   "video:url": string;
 }>;
 
-export const OpenGraph: VFC<Props> = ({ url, ...props }) => {
+export const OpenGraph = ({ url, ...props }: PropsWithChildren<Props>) => {
   const [ogp, setOgp] = useState<Types.Nullable<OpenGraphAttrs>>(null);
   const [error, setError] = useState("");
 

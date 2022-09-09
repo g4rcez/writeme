@@ -8,7 +8,7 @@ const MethodTheme: Record<string, string> = {
   PUT: "bg-http-put",
 };
 
-export const HttpMethod: React.VFC<{ method?: string }> = ({ method = "GET" }) => {
+export const HttpMethod: React.FC<{ method?: string }> = ({ method = "GET" }) => {
   const text = method.toUpperCase();
   return <span className={`http-method ${MethodTheme[text] ?? MethodTheme.GET}`}>{text}</span>;
 };

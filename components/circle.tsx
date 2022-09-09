@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Circle: React.VFC<{ className?: string }> = ({ className = "bg-code" }) => (
+export const Circle: React.FC<{ className?: string }> = ({ className = "bg-code" }) => (
   <span aria-hidden="true" className={`rounded-full w-3 h-3 inline-block ${className}`} />
 );
 

@@ -17,8 +17,8 @@ export const CodeHighlight: React.VFC<Props> = ({ code = "", language }) => {
   const [copied, setCopied] = useState(false);
   const convertLang = useMemo(() => (language === "node" ? "javascript" : language), [language]);
 
-  const copy = () => {
-    copyToClipboard(code);
+  const copy = async () => {
+    await copyToClipboard(code);
     setCopied(true);
     setTimeout(() => setCopied(false), 1000);
   };

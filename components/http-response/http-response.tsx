@@ -63,7 +63,7 @@ const MessageFromStatus: Record<number, string> = {
 
 type Props = { response: HttpResponseProps; loading: boolean };
 
-export const HttpResponse: React.VFC<Props> = ({ loading, response }) => {
+export const HttpResponse: React.FC<Props> = ({ loading, response }) => {
   const httpResponseText: string = useMemo(() => {
     if (response === null) return "";
     const urlParts = new URL(response.url);

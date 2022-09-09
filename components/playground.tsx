@@ -13,7 +13,7 @@ const defaultCode = `const App = () => (
 
 render(<App />)`;
 
-export const Playground: React.FC<Props> = (props) => {
+export const Playground = (props: Props) => {
   return (
     <div className="w-full block my-4">
       <LiveProvider noInline scope={props.scope} theme={theme} code={props.code ?? defaultCode}>

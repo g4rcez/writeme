@@ -5,7 +5,7 @@ import { httpClient } from "lib/http-client";
 import { Strings } from "lib/strings";
 import { GetStaticProps } from "next";
 import Router from "next/router";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { PropsWithChildren, useCallback, useEffect, useState } from "react";
 import { BsPlusCircle } from "react-icons/bs";
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -20,7 +20,7 @@ type Props = {
   groups: Database.Group[];
 };
 
-const SubInfo: React.FC = ({ children }) => (
+const SubInfo = ({ children }: PropsWithChildren) => (
   <p className="my-2 antialiased text-text-paragraph lining-nums whitespace-pre-wrap break-words w-full text-left leading-relaxed">
     {children}
   </p>
@@ -163,7 +163,7 @@ export default function DashboardGroup(props: Props) {
             </SubInfo>
             <SubInfo>
               <b>Updated At: </b>
-              <time>{group.updatedAt}</time>
+              <time>{group.updatedAt.toISOString()}</time>
             </SubInfo>
           </button>
         ))}

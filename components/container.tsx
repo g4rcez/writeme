@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 
 type Props = {
   className?: string;
@@ -6,8 +6,16 @@ type Props = {
   tag?: "section" | "div" | "header" | "nav" | "article";
 };
 
-// eslint-disable-next-line react/display-name
-export const SiteContainer: React.FC<Props> = React.forwardRef<HTMLDivElement, Props>(
-  ({ className = "", tag = "section", children }, externalRef) =>
-    React.createElement(tag, { className: `w-full max-w-7xl mx-auto sm:px-0 px-4 ${className}`, ref: externalRef }, children)
-) as any;
+export const SiteContainer = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(function InnerSiteContainer(
+  { className = "", tag = "section", children },
+  externalRef
+) {
+  return React.createElement(
+    tag,
+    {
+      className: `w-full max-w-7xl mx-auto sm:px-0 px-4 ${className}`,
+      ref: externalRef,
+    },
+    children
+  );
+});

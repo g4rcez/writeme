@@ -4,13 +4,11 @@ import { Writeme } from "lib/writeme";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 
-export const getStaticProps: GetStaticProps = async () => {
-  return {
-    props: {
-      docs: await Writeme.defaultStrategy.groups(),
-    },
-  };
-};
+export const getStaticProps: GetStaticProps = async () => ({
+  props: {
+    docs: await Writeme.defaultStrategy.groups(),
+  },
+});
 
 export default function DocsIndex({ docs }: { docs: Strategy.DocumentItem[] }) {
   return (

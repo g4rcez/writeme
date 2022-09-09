@@ -115,7 +115,6 @@
   }
 
   /* Tabs */
-
   .tab {
     @apply block w-full my-4;
   }
@@ -157,7 +156,6 @@
   }
 
   /* Paragraph */
-
   .text-paragraph {
     @apply my-2 antialiased text-text-paragraph lining-nums;
     @apply whitespace-pre-wrap break-words w-full container;

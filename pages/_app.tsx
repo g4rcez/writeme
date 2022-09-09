@@ -8,15 +8,12 @@ import { Is } from "lib/is";
 import { Links } from "lib/links";
 import { NextComponentType, NextPageContext } from "next";
 import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
-//@ts-ignore
-// import { useRemoteRefresh } from "next-remote-refresh/hook";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
-import React, { FormEvent, Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { FormEvent, Fragment, useCallback, useMemo, useRef, useState } from "react";
 import { FaSearch, FaSun } from "react-icons/fa";
-import { shortcutKeys } from "shortcut-keys";
 import Light from "styles/themes/light.json";
 import "../styles/globals.css";
 
@@ -70,18 +67,9 @@ function Content({ Component, pageProps }: { Component: NextComponentType<NextPa
   const [show, setShow] = useState(false);
   const { setMode, onToggleMode } = useDarkMode();
 
-  // useRemoteRefresh({
-  //   shouldRefresh: (path: string) => {
-  //     if (process.env.NODE_ENV === "development") {
-  //       if (path.includes("docs/") && /\.mdx?$/.test(path)) return true;
-  //     }
-  //     return false;
-  //   },
-  // });
-
   const goToPage = useCallback(
-    (path: string) => {
-      router.push(path);
+    async (path: string) => {
+      await router.push(path);
       setShow(false);
     },
     [router]
@@ -113,25 +101,10 @@ function Content({ Component, pageProps }: { Component: NextComponentType<NextPa
     e.preventDefault();
   }, []);
 
-  useEffect(() => {
-    const windowElement = shortcutKeys(window);
-    const options = { multiPlatform: true, description: "shortcut", prevent: false };
-    windowElement.add("alt+m", onToggleMode, options);
-    windowElement.add("alt+z", () => setMode("dark"), options);
-    windowElement.add("alt+x", () => setMode("light"), options);
-    windowElement.add("alt+k", toggleSearchBar, options);
-    windowElement.add("alt+h", () => goToPage("/"), options);
-    windowElement.add("alt+p", () => goToPage("/docs/getting-started/"), options);
-    windowElement.add("escape", () => setShow(false), options);
-
-    return () => {
-      windowElement.remove();
-    };
-  }, [goToPage, toggleSearchBar, onToggleMode, setMode]);
-
   return (
     <Fragment>
       <Head>
+        <meta title="WriteMe" />
         <meta key="og:description" property="og:description" content="Write docs without effort" />
         <meta key="og:type" property="og:type" content="article" />
         <meta key="twitter:description" name="twitter:description" content="Write docs without effort" />
@@ -150,9 +123,6 @@ function Content({ Component, pageProps }: { Component: NextComponentType<NextPa
               <li>
                 <Link href="/docs">Docs</Link>
               </li>
-              {/* <li>
-                <Link href="/blog/">Blog</Link>
-              </li> */}
             </ul>
           </section>
           <div className="flex gap-x-4">
@@ -180,7 +150,7 @@ function Content({ Component, pageProps }: { Component: NextComponentType<NextPa
 }
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { session, ...componentProps } = pageProps;
+  const { session, ...componentProps } = pageProps as any;
   return (
     <SessionProvider session={session}>
       <Content Component={Component} pageProps={componentProps} />

@@ -1,7 +1,7 @@
 import { MiniTitle } from "components/mini-title";
 import { CodeHighlight } from "components/prism";
 import { Text } from "components/text";
-import React, { useMemo } from "react";
+import React, { PropsWithChildren, useMemo } from "react";
 
 type Props = {
   body: any;
@@ -23,7 +23,7 @@ export const StatusCodeDict: Record<Props["statusCode"], React.ReactNode> = {
   "503": "Service Unavailable",
 };
 
-export const CodeResponse: React.FC<Props> = ({ statusCode, children, body, language = "json" }) => {
+export const CodeResponse = ({ statusCode, children, body, language = "json" }: PropsWithChildren<Props>) => {
   const responseBody = useMemo(
     () => (typeof body === "object" ? JSON.stringify(body, null, 4) : `${body ?? ""}`),
     [body]

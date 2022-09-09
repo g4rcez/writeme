@@ -15,13 +15,12 @@ const defaultValue: Modes[] = ["light", "dark"];
 
 export const useDarkMode = () => {
   const media = useMedia<Modes>(preferDarkQuery, defaultValue, "light");
-  const [mode, setMode] = useState<Modes>(media);
+  const [mode, setMode] = useState<Modes | string>(media);
 
   useEffect(() => {
-    const storageValue = LocalStorage.get(KEY);
+    const storageValue = LocalStorage.get<Modes>(KEY);
     if (storageValue) return setMode(storageValue);
     return setMode(media);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

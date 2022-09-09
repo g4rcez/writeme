@@ -2,18 +2,20 @@ import { Input } from "components/input";
 import { Is } from "lib/is";
 import { Strings } from "lib/strings";
 import { assocPath } from "ramda";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-const getKeys = <T,>(obj: T) => Object.entries(obj).map((x) => ({ key: x[0], value: x[1] }));
+const getKeys = <T extends object>(obj: T) => Object.entries(obj).map((x) => ({ key: x[0], value: x[1] }));
 
 type FieldProps = {
   item: { key: string; value: string | number };
   onChangeInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Type: React.FC = ({ children }) => <small className="italic font-thin text-text-slight">{children}</small>;
+const Type = ({ children }: PropsWithChildren) => (
+  <small className="italic font-thin text-text-slight">{children}</small>
+);
 
-const Field: React.VFC<FieldProps> = ({ item: x, onChangeInput }) => {
+const Field: React.FC<FieldProps> = ({ item: x, onChangeInput }) => {
   const firstPrototype = useRef(Is.Prototype(x.value));
   return (
     <section className="http-body-field">
@@ -116,7 +118,7 @@ const BodyRecursive: React.VFC<Props> = ({ parentPath = [], onChange, parentIsAr
   );
 };
 
-export const Body: React.VFC<Props> = (props) => {
+export const Body: React.FC<Props> = (props) => {
   const body = useMemo(() => {
     const txt = props.text ?? "";
     return Is.Json(txt) ? JSON.parse(txt) : {};

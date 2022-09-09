@@ -4,7 +4,7 @@ type ShortcutProps = {
   keys: string[][];
 };
 
-export const Shortcut: React.VFC<ShortcutProps> = ({ keys }) => (
+export const Shortcut = ({ keys }: ShortcutProps) => (
   <Fragment>
     {keys.map((key, index) => (
       <span key={index} className="shortcut-group">

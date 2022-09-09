@@ -1,5 +1,5 @@
 import { Editor, EditorConfiguration } from "codemirror";
-import React, { KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 const Textarea = async () => {
   await import("codemirror/addon/comment/comment");

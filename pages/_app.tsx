@@ -1,65 +1,28 @@
-/* eslint-disable @next/next/no-img-element */
 import ProgressBar from "@badrap/bar-of-progress";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { SiteContainer } from "components/container";
 import { SearchBar, ShortcutItem } from "components/search-bar";
 import { useDarkMode } from "hooks/use-dark-mode";
-import { Is } from "lib/is";
-import { Links } from "lib/links";
 import { NextComponentType, NextPageContext } from "next";
-import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
-import React, { FormEvent, Fragment, useCallback, useMemo, useRef, useState } from "react";
-import { FaSearch, FaSun } from "react-icons/fa";
+import { FormEvent, Fragment, useCallback, useMemo, useRef, useState } from "react";
+import { FaSun } from "react-icons/fa";
 import Light from "styles/themes/light.json";
 import "../styles/globals.css";
 
 const progress = new ProgressBar({
   size: 3,
   color: Light.main.normal,
-  className: "bar-of-progress",
+  className: "z-50",
   delay: 10,
 });
 
 Router.events.on("routeChangeStart", () => progress.start);
 Router.events.on("routeChangeError", () => progress.finish());
 Router.events.on("routeChangeComplete", () => setTimeout(() => progress.finish(), 1000));
-
-const LoggedIn = () => {
-  const session = useSession();
-  if (Is.NilOrEmpty(session.data)) {
-    return <button onClick={() => signIn()}>Sign in</button>;
-  }
-  if (Is.NilOrEmpty(session.data?.user)) {
-    return <button onClick={() => signIn()}>Sign in</button>;
-  }
-  return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger>
-        <img width="32px" src={session.data.user?.image!} alt="User avatar" className="rounded-full" />
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content loop sideOffset={8} className="dropdown">
-        <DropdownMenu.Item onClick={() => Router.push(Links.adminGroups)} className="dropdown-item">
-          Groups
-        </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => Router.push(Links.adminDocuments)} className="dropdown-item">
-          Documents
-        </DropdownMenu.Item>
-        <DropdownMenu.Separator />
-        <DropdownMenu.Item
-          onClick={() => signOut()}
-          className="dropdown-item hover:text-fail-hover focus:text-fail-hover"
-        >
-          Logout
-        </DropdownMenu.Item>
-        <DropdownMenu.Arrow />
-      </DropdownMenu.Content>
-    </DropdownMenu.Root>
-  );
-};
 
 function Content({ Component, pageProps }: { Component: NextComponentType<NextPageContext, any, {}>; pageProps: any }) {
   const router = useRouter();
@@ -130,17 +93,7 @@ function Content({ Component, pageProps }: { Component: NextComponentType<NextPa
               <button className="bg-transparent p-0 m-0" onClick={onToggleMode}>
                 <FaSun />
               </button>
-              <input
-                ref={input}
-                className="bg-transparent px-2 py-0.5 placeholder-shown:text-main-accent border-neutral-slight border rounded border-opacity-20 text-base hidden md:block"
-                placeholder="Search...Alt+K"
-                type="text"
-              />
-              <button onClick={toggleSearchBar} className="bg-transparent p-2 rounded-full text-base block md:hidden">
-                <FaSearch />
-              </button>
             </form>
-            <LoggedIn />
           </div>
         </SiteContainer>
       </header>

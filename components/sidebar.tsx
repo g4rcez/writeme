@@ -22,14 +22,17 @@ export const Sidebar = React.forwardRef<HTMLDivElement, Props>(function Sidebar(
   externalRef
 ) {
   return (
-    <aside style={style} className={`${className} text-text-paragraph`} ref={externalRef}>
+    <aside style={style} className={className} ref={externalRef}>
       {items.map((x) => {
         return (
           <Fragment key={x.name}>
             <header className="my-2 leading-tight font-bold">{x.name}</header>
             <section className="text-sm ml-4 flex flex-col">
               {x.items.map((x) => (
-                <header key={x.title} className={`mb-1 hover:underline ${x.link === active ? "text-main-normal font-bold" : ""}`}>
+                <header
+                  key={x.title}
+                  className={`mb-1 hover:underline ${x.link === active ? "text-main-500 font-bold" : ""}`}
+                >
                   <Link href={x.link}>{x.title}</Link>
                 </header>
               ))}

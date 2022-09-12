@@ -28,15 +28,12 @@ module.exports = {
   ].filter(Boolean),
   darkMode: "class",
   theme: {
-    colors: colorsMap,
     extend: {
+      colors: colorsMap,
       screens: {
         big: "1900px",
       },
     },
-  },
-  variants: {
-    extend: {},
   },
   plugins: [require("@tailwindcss/forms")({ strategy: "class" }), require("@tailwindcss/typography")],
 };

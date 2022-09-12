@@ -63,12 +63,12 @@ const playgroundScope = {
 };
 
 const defaultComponents = {
-  h1: (props: any) => <Heading {...props} tag="h2" size="text-3xl" />,
-  h2: (props: any) => <Heading {...props} tag="h2" size="text-3xl" />,
-  h3: (props: any) => <Heading {...props} tag="h3" size="text-2xl" />,
-  h4: (props: any) => <Heading {...props} tag="h4" size="text-xl" />,
-  h5: (props: any) => <Heading {...props} tag="h5" size="text-lg" />,
-  h6: (props: any) => <Heading {...props} tag="h6" size="text-base" />,
+  h1: (props: any) => <Heading {...props} tag="h2" data-tag="h1" size="text-3xl" />,
+  h2: (props: any) => <Heading {...props} tag="h2" data-tag="h2" size="text-3xl" />,
+  h3: (props: any) => <Heading {...props} tag="h3" data-tag="h3" size="text-2xl" />,
+  h4: (props: any) => <Heading {...props} tag="h4" data-tag="h4" size="text-xl" />,
+  h5: (props: any) => <Heading {...props} tag="h5" data-tag="h5" size="text-lg" />,
+  h6: (props: any) => <Heading {...props} tag="h6" data-tag="h6" size="text-base" />,
   pre: MdPre,
   CodeHighlight,
   CodeResponse,
@@ -118,13 +118,13 @@ export default function Component({ source, data, notFound, docs }: Props) {
           {providerValue.titlePrefix} | {data.section} {data.title}
         </title>
       </Head>
-      <div className="lg:px-0 px-4 flex flex-row align-baseline justify-between gap-x-6">
-        <Sidebar
-          items={docs}
-          active={asPath}
-          className="hidden md:block markdown-side-item border-r border-border-neutral md:min-w-[12rem] w-48 max-w-[12rem] mt-4"
-        />
-        <section className="w-full flex-auto flex-grow-0 pl-4">
+      <Sidebar
+        items={docs}
+        active={asPath}
+        className="hidden lg:block fixed z-20 inset-0 top-20 left-[max(0px,calc(50%-40rem))] right-auto w-[12.5rem] overflow-y-auto"
+      />
+      <section className="lg:pl-[12.5rem] mt-4">
+        <div className="mx-auto xl:max-w-none">
           <main className="markdown">
             {(notFound && <h1>Not found</h1>) || (
               <Fragment>
@@ -152,13 +152,8 @@ export default function Component({ source, data, notFound, docs }: Props) {
             {hasPrev && <OrderDoc {...data.prev!} direction="prev" />}
             {hasNext && <OrderDoc {...data.next!} direction="next" />}
           </div>
-        </section>
-        <aside className="markdown-side-item text-sm text-text-text-normal mt-4 md:block hidden md:min-w-[12rem] w-48 max-w-[12rem]">
-          <TableOfContent className="table-of-content-target" observeHash markHighlight>
-            <span className="font-bold">In this Page:</span>
-          </TableOfContent>
-        </aside>
-      </div>
+        </div>
+      </section>
     </SiteContainer>
   );
 }

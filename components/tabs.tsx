@@ -69,12 +69,12 @@ export const Tab: React.FC<TabProps> = (props) => (
     id={props.id}
     aria-selected={props.isActive ? "true" : "false"}
     onClick={props.onClick}
-    className="flex flex-grow-0 flex-shrink-0 outline-none focus:outline-none px-4 m-0 py-2"
+    className="flex flex-grow-0 flex-shrink-0 outline-none focus:outline-none px-4 m-0"
   >
     <button
       role="link"
       className={`px-4 bg-transparent outline-none m-0 focus:outline-none relative cursor-pointer ${
-        props.isActive ? "text-main-normal" : ""
+        props.isActive ? "text-main-500 font-extrabold tracking-wide" : ""
       }`}
     >
       {props.title ?? props.id}
@@ -131,9 +131,9 @@ export const Tabs = (props: PropsWithChildren<TabsProps>) => {
     ?.children;
 
   return (
-    <div className="tab">
-      <header className="tab-header">
-        <ul ref={header} className="tab-container" role="tablist">
+    <div className="block w-full my-4">
+      <header className="relative w-full tab-container overflow-x-auto flex flex-nowrap pb-2 border-b border-slate-300">
+        <ul ref={header} className="tab-container p-0 m-0 list-none inline-flex flex-nowrap text-base" role="tablist">
           {React.Children.map(props.children, (x: any) => {
             const tabProps: TabProps = x.props;
             const isActive = active === tabProps.id;
@@ -142,7 +142,7 @@ export const Tabs = (props: PropsWithChildren<TabsProps>) => {
         </ul>
         <div ref={inkBar} className="inkbar" />
       </header>
-      <section className="tab-content" ref={container}>
+      <section className="block w-full mt-2" ref={container}>
         {children}
       </section>
     </div>

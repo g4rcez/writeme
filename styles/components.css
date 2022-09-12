@@ -3,10 +3,6 @@
 @import "tailwindcss/utilities";
 
 @layer components {
-  /* Top loadbar */
-  .bar-of-progress {
-    @apply z-50;
-  }
   /* order docs */
   .order-doc {
     @apply p-4 border border-border-slight rounded-lg;
@@ -115,21 +111,6 @@
   }
 
   /* Tabs */
-  .tab {
-    @apply block w-full my-4;
-  }
-  .tab-header {
-    @apply relative w-full tab-container overflow-x-auto flex flex-nowrap pb-2 border-b border-border-neutral;
-  }
-
-  .tab-content {
-    @apply block w-full mt-2;
-  }
-
-  .tab-container {
-    @apply p-0 m-0 list-none inline-flex flex-nowrap text-base font-normal;
-  }
-
   .tab-container::-webkit-scrollbar {
     background-color: transparent;
     height: 0.1rem;
@@ -149,7 +130,7 @@
   }
 
   .inkbar {
-    @apply bg-main-normal absolute bottom-0 left-0;
+    @apply bg-main-500 absolute bottom-0 left-0;
     width: fit-content;
     height: 0.25rem;
     transition: all 150ms cubic-bezier(0.28, 0.5, 0.51, 0.87);
@@ -176,20 +157,5 @@
       opacity: 1;
       transform: scale(1);
     }
-  }
-
-  .dropdown {
-    @apply bg-dropdown-bg text-dropdown-text rounded shadow-lg p-1;
-    animation-duration: 200ms;
-    transform-origin: top center;
-    animation-timing-function: ease-out;
-  }
-
-  .dropdown[data-side="bottom"] {
-    animation-name: slide-down;
-  }
-
-  .dropdown-item {
-    @apply px-4 rounded;
   }
 }

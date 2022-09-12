@@ -5,9 +5,9 @@ export const Circle: React.FC<{ className?: string }> = ({ className = "bg-code"
 );
 
 export const HttpCircleStatus: React.VFC<{ status: number }> = ({ status }) => {
-  if (status >= 100 && status <= 199) return <Circle className="bg-http-info" />;
-  if (status >= 200 && status <= 299) return <Circle className="bg-http-success" />;
-  if (status >= 300 && status <= 399) return <Circle className="bg-http-redirect" />;
-  if (status >= 400 && status <= 499) return <Circle className="bg-http-client" />;
-  return <Circle className="bg-http-server" />;
+  if (status >= 100 && status <= 199) return <Circle className="bg-blue-500" />;
+  if (status >= 200 && status <= 299) return <Circle className="bg-emerald-500" />;
+  if (status >= 300 && status <= 399) return <Circle className="bg-indigo-500" />;
+  if (status >= 400 && status <= 499) return <Circle className="bg-orange-400" />;
+  return <Circle className="bg-red-500" />;
 };

@@ -1,13 +1,13 @@
 import { Strings } from "lib/strings";
-import { title } from "process";
-import React, { PropsWithChildren, useEffect, useState, VFC } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 
 const Tags = {
-  H2: "ml-0",
-  H3: "ml-4",
-  H4: "ml-8",
-  H5: "ml-12",
-  H6: "ml-16",
+  h1: "ml-0",
+  h2: "ml-8",
+  h3: "ml-16",
+  h4: "ml-24",
+  h5: "ml-32",
+  h6: "ml-40",
 };
 
 type Tag = keyof typeof Tags;
@@ -51,7 +51,7 @@ export const TableOfContent = ({
             const text = x.dataset.text ?? textContent;
             const id = Strings.slug(textContent) + "-" + index;
             x.id = id;
-            return { id, text, tag: x.tagName as Tag, top: x.getBoundingClientRect().top };
+            return { id, text, tag: x.dataset.tag as Tag, top: x.getBoundingClientRect().top };
           })
       );
     };
@@ -102,13 +102,13 @@ export const TableOfContent = ({
     <header className={`table-of-content ${className}`}>
       {children}
       <nav>
-        <ul className="list-inside">
+        <ul className="list-inside ml-">
           {titles.map((x) => (
             <li
               key={x.id}
               className={`table-of-content-item ${
                 (hash === x.id && observeHash) || (highlight === x.id && markHighlight)
-                  ? "text-main-normal font-extrabold"
+                  ? "text-main-500 font-extrabold"
                   : ""
               } ${Tags[x.tag]}`}
             >

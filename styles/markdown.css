@@ -25,16 +25,8 @@
   @apply hover:underline no-underline text-main-normal;
 }
 
-.markdown table {
-  @apply table table-fixed border-collapse border border-border-neutral mb-4;
-}
-
 .markdown tr {
   @apply border-b border-border-neutral p-2;
-}
-
-.markdown tr:last-child {
-  @apply border-b-0;
 }
 
 .markdown td,

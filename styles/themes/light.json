@@ -51,6 +51,7 @@
         "slight": "#e5e5ea"
     },
     "main": {
+        "500": "#8b5cf6",
         "normal": "#3a9cff",
         "hover-border": "#0a84ff",
         "dim": "#6cb5ff",

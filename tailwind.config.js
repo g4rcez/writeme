@@ -1,4 +1,3 @@
-const WritemeConfig = require("./writeme.json");
 const Colors = require("./styles/themes/light.json");
 
 function remap(colors, prefix) {
@@ -16,20 +15,16 @@ function remap(colors, prefix) {
   return newColors;
 }
 
-const colorsMap = remap({ ...Colors, ...WritemeConfig.tokens.colors });
-
 module.exports = {
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx,md,html}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx,md,html}",
-    "./blog/**/*.{js,ts,jsx,tsx,mdx,md,html}",
-    "./docs/**/*.{js,ts,jsx,tsx,mdx,md,html}",
-    ...WritemeConfig.cssWatchDirectories,
-  ].filter(Boolean),
   darkMode: "class",
+  content: [
+    "./pages/**/*.{jsx,tsx,html,md,mdx}",
+    "./src/**/*.{jsx,tsx,html,md,mdx}",
+    "./src/components/**/*.{jsx,tsx,html,md,mdx}",
+  ],
   theme: {
     extend: {
-      colors: colorsMap,
+      colors: remap(Colors),
       screens: {
         big: "1900px",
       },

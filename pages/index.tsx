@@ -1,14 +1,12 @@
-import { SiteContainer } from "components/container";
-import Link from "next/link";
-import React from "react";
+import React, { PropsWithChildren } from "react";
 
-const Paragraph: React.FC = ({ children }) => (
+const Paragraph = ({ children }: PropsWithChildren) => (
   <p className="break-words whitespace-pre-line max-w-prose leading-loose text-lg mb-2 dark:text-main-slight">
     {children}
   </p>
 );
 
-const H2: React.FC = ({ children }) => (
+const H2 = ({ children }: PropsWithChildren) => (
   <h2 className="text-3xl text-text-paragraph dark:text-text-title font-extrabold leading-loose mb-2">{children}</h2>
 );
 
@@ -54,7 +52,7 @@ const sections = [
 export default function Home() {
   return (
     <main>
-      <section className="my-12 w-full container mx-auto flex flex-row flex-wrap justify-center text-center gap-x-8 flex-1">
+      <section className="my-12 w-full container mx-auto flex flex-wrap justify-center text-center gap-x-8 flex-1">
         {sections.map((section) => (
           <article key={section.title} className="flex flex-col">
             <H2>{section.title}</H2>

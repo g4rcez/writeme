@@ -1,5 +1,4 @@
 // Using https://github.com/mccleanp/remark-docusaurus-tabs
-
 import { Strings } from "./strings";
 
 export function remarkTabs() {
@@ -7,15 +6,11 @@ export function remarkTabs() {
     const getId = (tab: any): string => Strings.slug(nodes[tab.start].children[0].value);
     const getTitle = (tab: any): string => nodes[tab.start].children[0].value;
 
-    let tabNodes = [];
-
+    const tabNodes = [];
     tabNodes.push({ type: "jsx", value: defaultId === undefined ? `<Tabs>` : `<Tabs default="${defaultId}">` });
-
     tabs.forEach((tab) => {
       tabNodes.push({ type: "jsx", value: `<Tab title="${getTitle(tab)}" id="${getId(tab)}">` });
-
       tabNodes.push(...nodes.slice(tab.start + 1, tab.end));
-
       tabNodes.push({ type: "jsx", value: `</Tab>` });
     });
 
@@ -26,43 +21,34 @@ export function remarkTabs() {
 
   function findTabs(index: number, parent: any): any {
     const tabs = [];
-
     let depth;
-
     let tab: any | undefined;
     const { children } = parent;
-
     while (++index < children.length) {
       const child = children[index];
-
       if (child.type === "heading") {
         if (depth == null) {
           depth = child.depth;
         }
-
         if (child.depth < depth) {
           tab.end = index;
           break;
         }
-
         if (child.depth === depth) {
           if (tab) {
             tab.end = index;
           }
-
           tab = {};
           tab.start = index;
           tab.end = children.length;
           tabs.push(tab);
         }
       }
-
       if (child.type === "comment" && child.value.trim() === "/tabs") {
         tab.end = index;
         break;
       }
     }
-
     return tabs;
   }
 

@@ -14,14 +14,18 @@ export type Categories = {
 
 export type Category = {}
 
-export type Document = {
+export type FrontMatter = Record<string, FrontMatterValues>
+
+export type MarkdownDocument = {
   url: string;
   tags: Tag[];
   title: string;
   index: number;
+  content: string;
   category: string;
   createdAt: string;
-  frontMatter: Record<string, FrontMatterValues>;
+  description: string;
+  frontMatter: FrontMatter;
 }
 
 export abstract class Strategy {
@@ -31,7 +35,7 @@ export abstract class Strategy {
 
   public abstract getAllDocumentPaths(): Promise<string[]>;
 
-  public abstract getDocument(name: string): Promise<Document | null>;
+  public abstract getDocument(name: string): Promise<MarkdownDocument | null>;
 
   protected construct(name: string) {
     this.name = name;

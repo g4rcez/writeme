@@ -11,11 +11,12 @@ datasource db {
 }
 
 model Authors {
-  id        String      @id @default(uuid()) @db.Uuid
-  name      String      @db.VarChar(256)
-  nickname  String      @unique @db.VarChar(64)
-  email     String      @unique @db.VarChar(256)
-  documents Documents[]
+  id              String            @id @default(uuid()) @db.Uuid
+  name            String            @db.VarChar(256)
+  nickname        String            @unique @db.VarChar(64)
+  email           String            @unique @db.VarChar(256)
+  documents       Documents[]
+  DocumentAuthors DocumentAuthors[]
 }
 
 model Tags {
@@ -34,25 +35,40 @@ model DocumentTags {
 }
 
 model Categories {
-  id        String      @id @default(uuid()) @db.Uuid
-  title     String      @db.VarChar(256)
-  url       String      @unique @db.VarChar(256)
-  index     Int         @db.Integer
-  Documents Documents[]
+  id          String      @id @default(uuid()) @db.Uuid
+  title       String      @db.VarChar(256)
+  url         String      @unique @db.VarChar(256)
+  index       Int         @db.Integer
+  icon        String?     @db.VarChar(256)
+  banner      String?     @db.VarChar(256)
+  description String      @db.VarChar(512)
+  Documents   Documents[]
 }
 
 model Documents {
-  id           String         @id @default(uuid()) @db.Uuid
-  title        String         @db.VarChar(256)
-  url          String         @unique @db.VarChar(256)
-  content      String         @db.Text
-  metadata     Json           @db.JsonB
-  createdAt    DateTime       @db.Timestamptz
-  updatedAt    DateTime       @updatedAt @db.Timestamptz
-  author       Authors        @relation(fields: [authorId], references: [id])
-  authorId     String         @db.Uuid
-  category     Categories     @relation(fields: [categoryId], references: [id])
-  documentTags DocumentTags[]
-  categoryId   String         @db.Uuid
-  index        Int            @db.Integer
+  id              String            @id @default(uuid()) @db.Uuid
+  title           String            @db.VarChar(256)
+  url             String            @unique @db.VarChar(256)
+  content         String            @db.Text
+  banner          String?           @db.VarChar(256)
+  icon            String?           @db.VarChar(256)
+  metadata        Json              @db.JsonB
+  description     String            @db.VarChar(512)
+  createdAt       DateTime          @db.Timestamptz
+  updatedAt       DateTime          @updatedAt @db.Timestamptz
+  category        Categories        @relation(fields: [categoryId], references: [id])
+  documentTags    DocumentTags[]
+  categoryId      String            @db.Uuid
+  index           Int               @db.Integer
+  Authors         Authors?          @relation(fields: [authorsId], references: [id])
+  authorsId       String?           @db.Uuid
+  DocumentAuthors DocumentAuthors[]
+}
+
+model DocumentAuthors {
+  id          String    @id @default(uuid()) @db.Uuid
+  author      Authors   @relation(fields: [authorsId], references: [id])
+  document    Documents @relation(fields: [documentsId], references: [id])
+  authorsId   String    @db.Uuid
+  documentsId String    @db.Uuid
 }

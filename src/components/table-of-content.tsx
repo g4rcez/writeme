@@ -99,7 +99,7 @@ export const TableOfContent = ({
   }
 
   return (
-    <header className={`table-of-content ${className}`}>
+    <header className={`${className} my-8 py-4 dark:border-zinc-700 border-zinc-200 border-b border-t`}>
       {children}
       <nav>
         <ul className="list-inside ml-">

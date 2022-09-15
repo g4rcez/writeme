@@ -14,7 +14,7 @@ const KEY = "@writeme/theme";
 const defaultValue: Modes[] = ["light", "dark"];
 
 export const useDarkMode = () => {
-  const media = useMedia<Modes>(preferDarkQuery, defaultValue, "light");
+  const media = useMedia<Modes>(preferDarkQuery, defaultValue, "dark");
   const [mode, setMode] = useState<Modes | string>(media);
 
   useEffect(() => {

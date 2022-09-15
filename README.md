@@ -35,23 +35,16 @@ You can see the [Getting Started](https://writeme.vercel.app/docs/project/gettin
 - https://github.com/remarkjs/remark-gfm
 - https://github.com/remarkjs/remark-github
 
-## ToDo
+## ToDo - Design
+- [ ] Improvements for text reading
+- [ ] Improvements for documents layouts
+- [ ] 
 
-- [x] Proxy requests using NextJS `/api`
-- [x] Use the same docusaurus DX
-- [x] Implement Github PR/issues opengraph style
-- [x] Group docs by project
-- [x] Order docs by key in header (parsed by [gray-matter](https://github.com/jonschlinkert/gray-matter))
-- [x] Create `before` and `next` link at end of docs
-- [x] create-next-app example (for alpha/beta versions)
-- [x] ScrollSpy for side Table of Content
-- [ ] Better layout for sidebar
-- [ ] Integration with [shields.io](https://shields.io)
-- [ ] Add puppeteer to create opengraph images
-- [x] Add shortcuts support with [shortcut-keys](https://github.com/leoavelino7/shortcut-keys)
-- [ ] Create `writemerc.json` for global config
-- [ ] Support `/blog`. Organize blog posts by `/blog/year/month/day/post-name`
-- [ ] Support style customization (using design tokens)
-- [ ] Add Dark Mode
-- [ ] Deploy as lib
-- [ ] i18n
+## ToDo - System preferences
+- [ ] Save preferred mode
+- [ ] Save preferred language
+
+## ToDo - Markdown write
+- [ ] Language setup for all code blocks. Context to choose multiple languages
+- [ ] Support for `.env` in code blocks
+- [ ] Code blocks with tabs

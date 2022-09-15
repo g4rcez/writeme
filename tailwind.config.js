@@ -1,4 +1,5 @@
 const Colors = require("./styles/themes/light.json");
+const plugin = require("tailwindcss/plugin");
 
 function remap(colors, prefix) {
   const newColors = {};
@@ -15,6 +16,7 @@ function remap(colors, prefix) {
   return newColors;
 }
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: "class",
   content: [
@@ -30,5 +32,11 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/forms")({ strategy: "class" }), require("@tailwindcss/typography")],
+  plugins: [
+    require("@tailwindcss/forms")({ strategy: "class" }),
+    require("@tailwindcss/typography"),
+    plugin(function ({ addVariant }) {
+      addVariant("link", ["&:hover", "&:focus"]);
+    }),
+  ],
 };

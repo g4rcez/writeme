@@ -22,24 +22,32 @@ export namespace Writeme {
     [k: string]: string | RecursiveDict;
   };
 
+  type ConfigValues = string | number | null | ConfigValues[];
+
   export type WritemeRcProps = {
+    title: string;
+    baseUrl?: string;
     strategy?: string;
-    defaultRepository: string;
-    cssWatchDirectories: string[];
-    requestVariables: Record<string, string>;
-    tokens: {
+    defaultRepository?: string;
+    requestVariables?: Partial<Record<string, ConfigValues>>;
+    tokens?: Partial<{
       colors: RecursiveDict;
-    };
+    }>;
   };
 
-  export const rcConfig = (): WritemeRcProps | null => {
+  export const rcConfig = (): WritemeRcProps => {
     const path = Path.join(process.cwd(), "writeme.json");
     const exists = FsSync.existsSync(path);
-    if (!exists) return null;
+    if (!exists)
+      return {
+        title: "Writeme",
+      };
     return JSON.parse(FsSync.readFileSync(path, "utf-8"));
   };
 
   export const config = rcConfig();
+
+  export type Config = typeof config;
 
   const markdownConfig = async (content: string, scope: any) => {
     const writemeRc = Writeme.rcConfig();
@@ -53,13 +61,12 @@ export namespace Writeme {
           remarkGemoji,
           remarkDef,
           remarkFootnotes,
-          [remarkGithub, { repository: scope.repository || writemeRc?.defaultRepository || "" }]
-        ]
-      }
+          [remarkGithub, { repository: scope.repository || writemeRc?.defaultRepository || "" }],
+        ],
+      },
     });
     return source;
   };
-
 
   type StaticProps = {
     source: MDXRemoteSerializeResult<Record<string, unknown>>;
@@ -87,7 +94,7 @@ export namespace Writeme {
         ...data,
         ...writemeConfig?.requestVariables,
         ...writemeConfig,
-        repository: data.repository ?? ""
+        repository: data.repository ?? "",
       };
       const source = await markdownConfig(content, scope);
       const docs = await strategy.groups();
@@ -105,8 +112,8 @@ export namespace Writeme {
           prev,
           updatedAt: file.updatedAt.toISOString(),
           createdAt: file.createdAt.toISOString(),
-          readingTime: Math.ceil(content.split(" ").length / 250)
-        }
+          readingTime: Math.ceil(content.split(" ").length / 250),
+        },
       };
     } catch (error) {
       throw error;

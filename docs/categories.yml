@@ -2,11 +2,11 @@
   title: "Getting Started"
   description: "How to start to use WriteMe"
   banner: ""
-  icon: "https://via.placeholder.com/150"
+  icon: "/rocket-240.png?__dark=rocket-dark-240.png"
   index: 0
 - name: "advanced-topics"
-  title: "Advanced Topics"
-  description: "Learn how this amazing tool works"
+  title: "Roadmap"
+  description: "Checkout our plans. See our features for the future."
   banner: ""
-  icon: "https://via.placeholder.com/150"
+  icon: "/rocket-240.png?__dark=rocket-dark-240.png"
   index: 1

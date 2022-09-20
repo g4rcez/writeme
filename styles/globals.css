@@ -5,12 +5,16 @@
 @import "./prism.css";
 @import "./components.css";
 
-html, body {
-    @apply bg-slate-100 text-slate-700;
+html {
+    @apply duration-300 transition-colors ease-in bg-slate-100 text-slate-600;
 }
 
-html.dark, html.dark body {
-    @apply bg-zinc-900 text-slate-200
+html.dark {
+    @apply text-white bg-zinc-900;
+}
+
+.dark {
+    color-scheme: dark;
 }
 
 html,
@@ -21,6 +25,4 @@ body,
     min-height: 100%;
     scroll-padding: 4.5rem;
     font-family: "Inter", sans-serif;
-    transition: all 250ms cubic-bezier(0.66, 0.54, 0.4, 0.88);
-
 }

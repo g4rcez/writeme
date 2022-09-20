@@ -8,6 +8,7 @@ import Light from "styles/themes/light.json";
 import "../styles/globals.css";
 import { Navbar } from "../src/components/navbar";
 import { VscGithub } from "react-icons/vsc";
+import { DarkMode } from "../src/hooks/use-dark-mode";
 
 const progress = new ProgressBar({
   size: 3,
@@ -24,19 +25,22 @@ function Content({ Component, pageProps }: { Component: NextComponentType<NextPa
   return (
     <Fragment>
       <Head>
+        <title>WriteMe</title>
         <meta title="WriteMe" />
-        <meta key="og:description" property="og:description" content="Write docs without effort" />
-        <meta key="og:type" property="og:type" content="article" />
-        <meta key="twitter:description" name="twitter:description" content="Write docs without effort" />
+        <meta key="og:type" property="og:type" content="website" />
       </Head>
       <div className="flex h-screen flex-col justify-between">
         <Navbar />
+        <div className="h-1 pt-16"></div>
         <Component {...pageProps} />
         <div className="px-6 py-8 w-full border-t border-slate-200 dark:border-zinc-700">
           <footer className="container w-full mx-auto text-center flex items-center justify-center gap-x-4">
             Working in Progress
-            <a className="transition-colors duration-300 ease-out link:text-black dark:link:text-white" href="https://github.com/g4rcez/writeme">
-              <VscGithub className="text-3xl mb-2" />
+            <a
+              className="transition-colors duration-300 ease-out link:text-black dark:link:text-white"
+              href="https://github.com/g4rcez/writeme"
+            >
+              <VscGithub className="text-3xl mb-1" />
             </a>
           </footer>
         </div>
@@ -46,5 +50,9 @@ function Content({ Component, pageProps }: { Component: NextComponentType<NextPa
 }
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <Content Component={Component} pageProps={pageProps} />;
+  return (
+    <DarkMode>
+      <Content Component={Component} pageProps={pageProps} />;
+    </DarkMode>
+  );
 }

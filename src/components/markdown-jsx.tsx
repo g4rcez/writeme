@@ -6,8 +6,9 @@ import { CodeResponse } from "./http-response/code-response";
 import { Heading } from "./text";
 import { TableOfContent } from "./table-of-content";
 import { MDXRemote } from "next-mdx-remote";
+import { Erase } from "../lib/types";
 
-type MDXRemoteProps = Parameters<typeof MDXRemote>[0][""]
+type MDXRemoteProps = Erase<NonNullable<Parameters<typeof MDXRemote>[0]>, "components">;
 
 const CodeHighlight = dynamic(() => import("./prism"));
 const HttpRequest = dynamic(() => import("./http-request/http-request"));
@@ -18,14 +19,13 @@ const Playground = dynamic(() => import("./playground"));
 const GithubOgp = dynamic(() => import("./open-graph/github-ogp"));
 const YoutubeOgp = dynamic(() => import("./open-graph/youtube-ogp"));
 
-
 const playgroundScope = {
   axios: httpClient,
   Tab,
   Tabs,
   HttpRequest,
   CodeResponse,
-  CodeHighlight
+  CodeHighlight,
 };
 
 const defaultComponents = {
@@ -54,13 +54,13 @@ const defaultComponents = {
       return <input {...props} className={`form-checkbox rounded ${props.className ?? ""}`} />;
     }
     return <input {...props} />;
-  }
+  },
 };
 
-export const MarkdownJsxComponents = {
+export const MarkdownJsxComponents: any = {
   ...defaultComponents,
   GithubOgp,
-  YoutubeOgp
+  YoutubeOgp,
 };
 
 export const MarkdownJsx = (source: MDXRemoteProps) => <MDXRemote {...source} components={MarkdownJsxComponents} />;

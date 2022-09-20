@@ -1,4 +1,4 @@
----yaml
+--- yaml
 title: How to install
 createdAt: 2022-09-13T04:14:57.330Z
 index: 0
@@ -10,6 +10,7 @@ tags:
   title: Documentation
 
 ---
+
 <TableOfContent />
 
 # Common Markdown

@@ -29,7 +29,7 @@ type Props = {
 export const TableOfContent = ({
   id = "document-root",
   children,
-  observeHash = false,
+  observeHash = true,
   className = "",
   markHighlight = false,
 }: PropsWithChildren<Props>) => {
@@ -64,7 +64,7 @@ export const TableOfContent = ({
   useEffect(() => {
     if (!markHighlight || titles.length === 0) return;
     const scroll = () => {
-      const axisY = Math.max(window.pageYOffset, 0);
+      const axisY = Math.max(window.scrollY, 0);
       let current = titles[0].id;
       const innerHeight = window.innerHeight;
       if (axisY === 0) {
@@ -90,6 +90,7 @@ export const TableOfContent = ({
   useEffect(() => {
     if (!observeHash) return;
     const onChangeHash = () => setHash((window.location.hash ?? "").replace(/^#/, ""));
+    onChangeHash();
     window.addEventListener("hashchange", onChangeHash);
     return () => window.removeEventListener("hashchange", onChangeHash);
   }, [observeHash]);
@@ -102,11 +103,11 @@ export const TableOfContent = ({
     <header className={`${className} my-8 py-4 dark:border-zinc-700 border-zinc-200 border-b border-t`}>
       {children}
       <nav>
-        <ul className="list-inside ml-">
+        <ul className="list-inside ml-4 text-sm">
           {titles.map((x) => (
             <li
               key={x.id}
-              className={`table-of-content-item ${
+              className={`table-of-content-item my-2 ${
                 (hash === x.id && observeHash) || (highlight === x.id && markHighlight)
                   ? "text-main-500 font-extrabold"
                   : ""

@@ -9,9 +9,9 @@ export const Navbar = ({}: Props) => {
   return (
     <header
       id="writeme-header"
-      className="flex sticky z-10 top-0 justify-between w-full bg-white dark:bg-transparent backdrop-blur-md border-b border-slate-200 dark:border-zinc-800 shadow-sm"
+      className="flex fixed z-10 top-0 justify-between w-screen bg-white dark:bg-transparent backdrop-blur-md border-b border-slate-200 dark:border-zinc-800 shadow-sm px-6"
     >
-      <nav className="py-4 px-6 flex justify-between w-full">
+      <nav className="py-4 flex justify-between w-full">
         <section className="flex items-baseline gap-x-8">
           <h1 className="font-extrabold text-lg">
             <Link passHref href="/">

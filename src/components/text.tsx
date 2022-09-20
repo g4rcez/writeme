@@ -13,9 +13,7 @@ export const Heading = ({ tag, ...props }: PropsWithChildren<Props>) =>
     tag,
     {
       ...props,
-      className: `mt-1 tabular-nums antialiased font-bold text-text-paragraph leading-relaxed ${
-        props.className ?? ""
-      } ${props.size}`,
+      className: `mt-1 tabular-nums antialiased font-bold leading-relaxed ${props.className ?? ""} ${props.size}`,
     },
     props.children
   );

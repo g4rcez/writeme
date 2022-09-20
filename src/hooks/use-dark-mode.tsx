@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useState } from "react";
 import Light from "styles/themes/light.json";
 import Dark from "styles/themes/dark.json";
 import { setCssVars } from "styles/themes/themes";
@@ -13,7 +13,18 @@ const KEY = "@writeme/theme";
 
 const defaultValue: Modes[] = ["light", "dark"];
 
-export const useDarkMode = () => {
+const Context = createContext({
+  mode: "" as Modes,
+  onToggleMode: () => {},
+  setMode: (n: Modes | ((prev: Modes) => Modes)) => {},
+});
+
+export const DarkMode = ({ children }: PropsWithChildren) => {
+  const mode = useInternalDarkMode();
+  return <Context.Provider value={mode as any}>{children}</Context.Provider>;
+};
+
+const useInternalDarkMode = () => {
   const media = useMedia<Modes>(preferDarkQuery, defaultValue, "dark");
   const [mode, setMode] = useState<Modes | string>(media);
 
@@ -35,3 +46,5 @@ export const useDarkMode = () => {
 
   return { mode, setMode, onToggleMode };
 };
+
+export const useDarkMode = () => useContext(Context);

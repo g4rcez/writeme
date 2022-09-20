@@ -25,6 +25,7 @@
 
 .markdown blockquote {
     @apply p-2 border-l-4 border-l-slate-500 text-lg border border-slate-300 rounded my-4;
+    @apply dark:border-l-slate-200 dark:border-slate-700;
 }
 
 .markdown .contains-task-list {

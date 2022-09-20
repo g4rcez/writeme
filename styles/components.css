@@ -10,8 +10,7 @@
 
     /* Search bar */
     .wall-overlay {
-        @apply absolute top-0 left-0 h-screen w-screen z-20;
-        background-color: rgba(0, 0, 0, 0.9);
+        @apply absolute top-0 left-0 h-screen w-screen z-20 bg-black/90;
     }
 
     .wall-content-container {

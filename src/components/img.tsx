@@ -18,7 +18,6 @@ const useImageUrl = (url: string) => {
 export const Img = ({ src, ...props }: Props) => {
   const { mode } = useDarkMode();
   const [imgUrl, setImageUrl] = useState("");
-  const isDarkMode = mode === "dark";
   const darkUrl = useImageUrl(src);
 
   useEffect(() => {

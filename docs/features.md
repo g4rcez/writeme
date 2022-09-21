@@ -1,7 +1,7 @@
 ---yaml
-title: Setup
+title: Features
 createdAt: 2022-09-13T04:14:57.330Z
-index: 1
+index: 2
 category: getting-started
 tags:
 
@@ -10,6 +10,8 @@ tags:
   title: Documentation
 
 ---
+
+<TableOfContent />
 
 # Common Markdown
 
@@ -59,7 +61,11 @@ This is second tab content
 
 <!-- /tabs -->
 
-## Http Request
+## Titles
+
+Titles inside of tabs aren't displayed in `<TableOfContent />` component
+
+# Http Request
 
 Focus in web API docs, this component receive a `curl` command and transform in amazing http request visualizer. Create
 a code mark with bash language and pass `type=request`
@@ -74,11 +80,10 @@ curl -X POST "{{host}}/api/test" -H "Content-Type: application/json" -d '{"email
 curl -X POST "{{host}}/api/test" -H "Content-Type: application/json" -d '{"email":"write@me.com"}'
 ```
 
-~~This component is connected to `HttpResponse` using the `HttpContext` and share the state about request/response to
-create a better experience for readers. This integration may have
-bugs `Error: Parse Error: Content-Length can't be present with Transfer-Encoding`. If you know how to solve this
-problem, please open a [Pull Request](https://github.com/g4rcez/writeme/pulls)~~
-**HttpRequest and HttpResponse now is a single component**
+HttpRequest and HttpResponse now is a single component to use without any configuration.
 
+# Playground
+
+You use a default playground to execute Javascript code inside your browser
 
 <Playground />

@@ -113,7 +113,7 @@ export const TableOfContent = ({
                   : ""
               } ${Tags[x.tag]}`}
             >
-              <a className="w-fit hover:underline" href={`#${x.id}`}>
+              <a className="w-fit hover:underline" data-unstyled="true" href={`#${x.id}`}>
                 {x.text}
               </a>
             </li>

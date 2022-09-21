@@ -10,8 +10,8 @@
     @apply mt-1 mb-2 antialiased lining-nums break-words w-full leading-relaxed text-left;
 }
 
-.markdown a {
-    @apply hover:underline no-underline;
+.markdown a:not([data-unstyled]) {
+    @apply hover:underline no-underline text-main-300 hover:text-main-500 duration-300 ease-in underline;
 }
 
 .markdown tr {
@@ -58,4 +58,12 @@
 
 .markdown .code-highlight {
     @apply mb-4;
+}
+
+.markdown [data-heading="true"] {
+    @apply mb-2 leading-relaxed;
+}
+
+.markdown [data-heading="true"]:not(:first-of-type) {
+    @apply mt-12;
 }

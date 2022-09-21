@@ -29,12 +29,12 @@ const playgroundScope = {
 };
 
 const defaultComponents = {
-  h1: (props: any) => <Heading {...props} tag="h2" data-tag="h1" size="text-3xl" />,
-  h2: (props: any) => <Heading {...props} tag="h2" data-tag="h2" size="text-3xl" />,
-  h3: (props: any) => <Heading {...props} tag="h3" data-tag="h3" size="text-2xl" />,
-  h4: (props: any) => <Heading {...props} tag="h4" data-tag="h4" size="text-xl" />,
-  h5: (props: any) => <Heading {...props} tag="h5" data-tag="h5" size="text-lg" />,
-  h6: (props: any) => <Heading {...props} tag="h6" data-tag="h6" size="text-base" />,
+  h1: (props: any) => <Heading {...props} data-heading="true" tag="h2" data-tag="h1" size="text-3xl" />,
+  h2: (props: any) => <Heading {...props} data-heading="true" tag="h2" data-tag="h2" size="text-3xl" />,
+  h3: (props: any) => <Heading {...props} data-heading="true" tag="h3" data-tag="h3" size="text-2xl" />,
+  h4: (props: any) => <Heading {...props} data-heading="true" tag="h4" data-tag="h4" size="text-xl" />,
+  h5: (props: any) => <Heading {...props} data-heading="true" tag="h5" data-tag="h5" size="text-lg" />,
+  h6: (props: any) => <Heading {...props} data-heading="true" tag="h6" data-tag="h6" size="text-base" />,
   pre: MdPre,
   CodeHighlight,
   CodeResponse,

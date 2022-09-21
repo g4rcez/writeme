@@ -26,7 +26,7 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: Colors, //remap(Colors),
+      colors: remap(Colors),
       screens: {
         big: "1900px",
       },

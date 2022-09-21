@@ -29,12 +29,13 @@ function Content({ Component, pageProps }: { Component: NextComponentType<NextPa
         <meta title="WriteMe" />
         <meta key="og:type" property="og:type" content="website" />
       </Head>
-      <div className="flex h-screen flex-col justify-between">
+      <div className="flex h-screen flex-col justify-between gap-y-12">
         <Navbar />
-        <div className="h-1 pt-16"></div>
-        <Component {...pageProps} />
-        <div className="px-6 py-8 w-full border-t border-slate-200 dark:border-zinc-700">
-          <footer className="container w-full mx-auto text-center flex items-center justify-center gap-x-4">
+        <div className="mt-16">
+          <Component {...pageProps} />
+        </div>
+        <footer className="px-6 py-8 w-full border-t border-slate-200 dark:border-zinc-700">
+          <div className="container w-full mx-auto text-center flex items-center justify-center gap-x-4">
             Working in Progress
             <a
               className="transition-colors duration-300 ease-out link:text-black dark:link:text-white"
@@ -42,8 +43,8 @@ function Content({ Component, pageProps }: { Component: NextComponentType<NextPa
             >
               <VscGithub className="text-3xl mb-1" />
             </a>
-          </footer>
-        </div>
+          </div>
+        </footer>
       </div>
     </Fragment>
   );
@@ -52,7 +53,7 @@ function Content({ Component, pageProps }: { Component: NextComponentType<NextPa
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <DarkMode>
-      <Content Component={Component} pageProps={pageProps} />;
+      <Content Component={Component} pageProps={pageProps} />
     </DarkMode>
   );
 }

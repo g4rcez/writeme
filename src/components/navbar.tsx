@@ -15,7 +15,7 @@ export const Navbar = ({}: Props) => {
         <section className="flex items-baseline gap-x-8">
           <h1 className="font-extrabold text-lg">
             <Link passHref href="/">
-              <a href="/">Writeme</a>
+              <a>Writeme</a>
             </Link>
           </h1>
         </section>

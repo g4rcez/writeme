@@ -38,6 +38,8 @@ export type DocumentsJoinCategory = {
 };
 
 export abstract class Strategy {
+  public abstract sorted: boolean;
+
   public async getCategories(): Promise<Categories[]> {
     const list = await this.fetchCategories();
     return list.sort((a, b) => a.index - b.index);
@@ -48,7 +50,8 @@ export abstract class Strategy {
     documents: SimplerDocument[]
   ): DocumentsJoinCategory[] => {
     const map = new Map<string, SimplerDocument[]>(categories.map((x) => [x.id, []]));
-    documents.forEach((doc) => {
+    const sortDocuments = this.sorted ? documents : documents.sort((a, b) => a.index - b.index);
+    sortDocuments.forEach((doc) => {
       const category = map.get(doc.category);
       if (category === undefined) return;
       category.push(doc);
@@ -59,6 +62,18 @@ export abstract class Strategy {
       acc.push({ category, documents });
       return acc;
     }, []);
+  };
+
+  public getAdjacentPosts = (post: SimplerDocument, groups: DocumentsJoinCategory[]) => {
+    const groupIndex = groups.findIndex((x) => x.category.id === post.category);
+    const group = groups[groupIndex];
+    const current = group?.documents.findIndex((x) => x.url === post.url) ?? -1;
+    const previousGroup = groups[groupIndex - 1];
+    const lastOfPreviousGroup = previousGroup?.documents[previousGroup?.documents.length - 1];
+    const previous = group?.documents[current - 1] ?? lastOfPreviousGroup ?? null;
+    const firstOfNextGroup = groups[groupIndex + 1]?.documents[0];
+    const next = group?.documents[current + 1] ?? firstOfNextGroup ?? null;
+    return { previous, next };
   };
 
   public abstract getAllDocumentPaths(): Promise<string[]>;

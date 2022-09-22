@@ -18,6 +18,7 @@ type RawCategory = {
 };
 
 export class FsStrategy extends Strategy {
+  public sorted: boolean = false
   private root = path.join(path.resolve(process.cwd()), "docs");
   private postsDirRegex = path.join(this.root, "**", "*.?(md|mdx)");
   private categoriesFile = path.join(this.root, "categories.yml");

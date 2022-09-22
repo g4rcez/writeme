@@ -32,7 +32,7 @@ const useInternalDarkMode = () => {
     const storageValue = LocalStorage.get<Modes>(KEY);
     if (storageValue) return setMode(storageValue);
     return setMode(media);
-  }, []);
+  }, [media]);
 
   useEffect(() => {
     LocalStorage.set(KEY, mode);

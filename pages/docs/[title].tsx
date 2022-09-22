@@ -10,14 +10,7 @@ import Link from "next/link";
 import { Links } from "../../src/lib/links";
 import { useRouter } from "next/dist/client/router";
 import { DocumentNavigation } from "../../src/components/document-navigation";
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const docs = await strategy.getAllDocumentPaths();
-  return {
-    fallback: false,
-    paths: docs.map((title) => ({ params: { title } })),
-  };
-};
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   categories: Categories[];
@@ -28,37 +21,76 @@ type Props = {
   previous: Types.Nullable<SimplerDocument>;
 };
 
-export const Sidebar = ({ pathname, groups }: Types.Only<Props, "groups"> & { pathname: string }) => (
-  <aside className="fixed left-4 w-72 hidden sm:block pt-7">
-    <input
-      className="p-2 rounded-lg mb-6 placeholder-slate-400 bg-transparent border border-slate-700"
-      placeholder="Search...CTRL+K"
-    />
-    {groups.map((group) => (
-      <nav className="mb-4" key={`${group.category.url}-group-category`}>
-        <h3 className="font-medium text-lg mb-4">
-          <Link href={Links.toDoc(group.category.url)} passHref>
-            <a href={Links.toDoc(group.category.url)}>{group.category.title}</a>
-          </Link>
-        </h3>
-        <ul className="ml-4">
-          {group.documents.map((document) => (
-            <li key={document.url} className="mb-2 font-thin">
-              <Link href={Links.toDoc(document.url)} passHref>
-                <a
-                  href={Links.toDoc(document.url)}
-                  className={`my-4 link:underline ${document.url === pathname ? "text-main-500" : ""}`}
-                >
-                  {document.title}
-                </a>
+export const Sidebar = ({ pathname, groups }: Types.Only<Props, "groups"> & { pathname: string }) => {
+  const [filter, setFilter] = useState("");
+  const input = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const ref = input.current;
+    setFilter("");
+    if (ref === null) return;
+    const focus = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key === "k") {
+        event.stopPropagation();
+        event.preventDefault();
+        ref.focus();
+      }
+    };
+    window.addEventListener("keydown", focus);
+    return () => window.removeEventListener("keydown", focus);
+  }, [router.asPath]);
+
+  return (
+    <aside className="fixed left-4 w-72 hidden sm:block pt-7">
+      <input
+        ref={input}
+        value={filter}
+        placeholder="Search...CTRL+K"
+        onChange={(e) => setFilter(e.target.value)}
+        className="p-2 rounded-lg mb-6 placeholder-slate-400 bg-transparent border border-slate-700"
+      />
+      {groups.map((group) => {
+        const list =
+          filter === ""
+            ? group.documents
+            : group.documents.filter((document) =>
+                document.title.toLocaleLowerCase().includes(filter.toLocaleLowerCase())
+              );
+        return list.length === 0 ? null : (
+          <nav className="mb-4" key={`${group.category.url}-group-category`}>
+            <h3 className="font-medium text-lg mb-4">
+              <Link href={Links.toDoc(group.category.url)} passHref>
+                <a href={Links.toDoc(group.category.url)}>{group.category.title}</a>
               </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    ))}
-  </aside>
-);
+            </h3>
+            <ul className="ml-4">
+              {list.map((document) => (
+                <li key={document.url} className="mb-2 font-thin">
+                  <Link href={Links.toDoc(document.url)} passHref>
+                    <a
+                      href={Links.toDoc(document.url)}
+                      className={`my-4 link:underline ${document.url === pathname ? "text-main-500" : ""}`}
+                    >
+                      {document.title}
+                    </a>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        );
+      })}
+    </aside>
+  );
+};
+export const getStaticPaths: GetStaticPaths = async () => {
+  const docs = await strategy.getAllDocumentPaths();
+  return {
+    fallback: false,
+    paths: docs.map((title) => ({ params: { title } })),
+  };
+};
 
 export const getStaticProps: GetStaticProps<Props> = async (props) => {
   const title = props.params?.title as string;
@@ -67,24 +99,16 @@ export const getStaticProps: GetStaticProps<Props> = async (props) => {
     if (post === null) {
       return { notFound: true };
     }
-    const scope = {
+    const mdx = await Markdown.process(post.content, {
       ...post.frontMatter,
       ...Writeme.config?.requestVariables,
       ...Writeme.config,
       repository: post.frontMatter.repository ?? "",
-    };
-    const mdx = await Markdown.process(post.content, scope);
+    });
     const categories = await strategy.getCategories();
     const simplerDocuments = await strategy.getSimplerDocuments();
     const groups = strategy.aggregateDocumentToCategory(categories, simplerDocuments);
-    const groupIndex = groups.findIndex((x) => x.category.id === post.category);
-    const group = groups[groupIndex];
-    const current = group?.documents.sort((a, b) => a.index - b.index).findIndex((x) => x.url === post.url) ?? -1;
-    const previousGroup = groups[groupIndex - 1];
-    const lastOfPreviousGroup = previousGroup?.documents[previousGroup?.documents.length - 1];
-    const previous = group?.documents[current - 1] ?? lastOfPreviousGroup ?? null;
-    const firstOfNextGroup = groups[groupIndex + 1]?.documents[0];
-    const next = group?.documents[current + 1] ?? firstOfNextGroup ?? null;
+    const { next, previous } = strategy.getAdjacentPosts(post, groups);
     return {
       props: { post, categories, mdx, groups, next: next, previous: previous },
       revalidate: false,

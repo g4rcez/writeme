@@ -28,7 +28,6 @@ export const DocumentNavigation = ({
   next: Types.Nullable<SimplerDocument>;
   previous: Types.Nullable<SimplerDocument>;
 }) => {
-  console.log({ previous, next });
   return (
     <nav className="w-full flex justify-between gap-8 mt-8">
       <Box doc={previous} back />

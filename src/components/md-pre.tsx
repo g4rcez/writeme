@@ -55,9 +55,6 @@ export const MdPre = (props: any, otherProps: any) => {
 
   if (language === "chart") return <Flowchart code={componentProps.children} />;
   if (type === "request") {
-    console.log({
-      code: props.children.props.children,
-    });
     return (
       <HttpContext>
         <ConnectedHttp code={props.children.props.children ?? ""} />

@@ -3,9 +3,8 @@ import { Writeme } from "../lib/writeme";
 import { Helpers } from "../lib/helpers";
 
 const strategies = {
-  fs: () => new FsStrategy()
+  fs: () => new FsStrategy(),
 };
-
 
 export const strategy = (() => {
   const name = Writeme.config?.strategy ?? "";

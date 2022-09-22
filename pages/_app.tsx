@@ -36,7 +36,7 @@ function Content({ Component, pageProps }: { Component: NextComponentType<NextPa
         </div>
         <footer className="px-6 py-8 w-full border-t border-slate-200 dark:border-zinc-700">
           <div className="container w-full mx-auto text-center flex items-center justify-center gap-x-4">
-            Working in Progress
+            Work in Progress
             <a
               className="transition-colors duration-300 ease-out link:text-black dark:link:text-white"
               href="https://github.com/g4rcez/writeme"

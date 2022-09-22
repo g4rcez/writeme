@@ -1,65 +1,37 @@
-import { SiteContainer } from "components/container";
-import Link from "next/link";
 import React from "react";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { strategy } from "../src/strategies/main.strategy";
+import { Categories } from "../src/strategies/strategy";
+import Link from "next/link";
+import { Links } from "../src/lib/links";
+import { Img } from "../src/components/img";
 
-const Paragraph: React.FC = ({ children }) => (
-  <p className="break-words whitespace-pre-line max-w-prose leading-loose text-lg mb-2 dark:text-main-slight">
-    {children}
-  </p>
-);
-
-const H2: React.FC = ({ children }) => (
-  <h2 className="text-3xl text-text-paragraph dark:text-text-title font-extrabold leading-loose mb-2">{children}</h2>
-);
-
-const sections = [
-  {
-    title: "Write Markdown or MDX",
-    body: (
-      <Paragraph>
-        Built with{" "}
-        <a className="link" href="https://nextjs.org">
-          NextJS
-        </a>
-        . Support{" "}
-        <a className="link" href="https://github.com/remarkjs/remark-gfm">
-          Github Flavored Markdown
-        </a>
-        . Support emoji with{" "}
-        <a className="link" href="https://github.com/remarkjs/remark-gemoji">
-          remark-emoji
-        </a>
-        . Use{" "}
-        <a className="link" href="https://github.com/hashicorp/next-mdx-remote">
-          next-mdx-remote
-        </a>{" "}
-        to support MDX syntax Interactive playground with{" "}
-        <a className="link" href="https://github.com/FormidableLabs/react-live">
-          react-live
-        </a>
-      </Paragraph>
-    ),
+export const getStaticProps: GetStaticProps<{ categories: Categories[] }> = async () => ({
+  props: {
+    categories: await strategy.getCategories(),
   },
-  {
-    title: "Database or Local",
-    body: (
-      <Paragraph>
-        You can write your docs local or using a database and work async with your team. Writeme has two default
-        strategies to read/write your docs and you can write your own strategy to work with anything
-      </Paragraph>
-    ),
-  },
-];
+});
 
-export default function Home() {
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
+
+export default function Home({ categories }: Props) {
   return (
-    <main>
-      <section className="my-12 w-full container mx-auto flex flex-row flex-wrap justify-center text-center gap-x-8 flex-1">
-        {sections.map((section) => (
-          <article key={section.title} className="flex flex-col">
-            <H2>{section.title}</H2>
-            {section.body}
-          </article>
+    <main className="flex flex-col h-screen justify-between">
+      <section className="my-12 w-full grid grid-cols-1 md:grid-cols-2 gap-12 px-6 mx-auto container">
+        {categories.map((category) => (
+          <Link key={category.id} passHref href={Links.toDoc(category.url)}>
+            <a className="transition-colors duration-300 block shadow-sm rounded-lg p-8 max-w-5xl bg-white dark:bg-transparent backdrop-blur-md border border-slate-200 link:border-slate-300 dark:border-zinc-700 dark:link:border-zinc-500">
+              {category.icon && (
+                <Img
+                  src={category.icon}
+                  alt={`Image for ${category.title}`}
+                  className="block w-32 aspect-square float-left mr-8 rounded"
+                />
+              )}
+              <h2 className="text-3xl font-bold">{category.title}</h2>
+              <p className="mt-2">{category.description}</p>
+            </a>
+          </Link>
         ))}
       </section>
     </main>

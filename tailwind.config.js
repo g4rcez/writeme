@@ -1,5 +1,5 @@
-const WritemeConfig = require("./writeme.json");
 const Colors = require("./styles/themes/light.json");
+const plugin = require("tailwindcss/plugin");
 
 function remap(colors, prefix) {
   const newColors = {};
@@ -16,28 +16,27 @@ function remap(colors, prefix) {
   return newColors;
 }
 
-const colorsMap = remap({ ...Colors, ...WritemeConfig.tokens.colors });
-
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  mode: "jit",
-  purge: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx,md,html}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx,md,html}",
-    "./blog/**/*.{js,ts,jsx,tsx,mdx,md,html}",
-    "./docs/**/*.{js,ts,jsx,tsx,mdx,md,html}",
-    ...WritemeConfig.cssWatchDirectories,
-  ].filter(Boolean),
-  darkMode: "class", // or 'media' or 'class'
+  darkMode: "class",
+  content: [
+    "./pages/**/*.{jsx,tsx,html,md,mdx}",
+    "./src/**/*.{jsx,tsx,html,md,mdx}",
+    "./src/components/**/*.{jsx,tsx,html,md,mdx}",
+  ],
   theme: {
-    colors: colorsMap,
     extend: {
+      colors: remap(Colors),
       screens: {
         big: "1900px",
       },
     },
   },
-  variants: {
-    extend: {},
-  },
-  plugins: [require("@tailwindcss/forms")({ strategy: "class" }), require("@tailwindcss/typography")],
+  plugins: [
+    require("@tailwindcss/forms")({ strategy: "class" }),
+    require("@tailwindcss/typography"),
+    plugin(function ({ addVariant }) {
+      addVariant("link", ["&:hover", "&:focus"]);
+    }),
+  ],
 };

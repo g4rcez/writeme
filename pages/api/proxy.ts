@@ -1,4 +1,4 @@
-import { httpClient } from "lib/http-client";
+import { httpClient } from "src/lib/http-client";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function proxyHandler(req: NextApiRequest, res: NextApiResponse<Types.ProxyResponse>) {
@@ -12,7 +12,7 @@ export default async function proxyHandler(req: NextApiRequest, res: NextApiResp
       url: body.url,
       method: body.method ?? "GET",
       data: body.body,
-      headers: body.headers as never,
+      headers: body.headers as any,
     });
 
     const end = Date.now();

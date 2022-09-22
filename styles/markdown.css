@@ -1,81 +1,69 @@
-.markdown-side-item {
-  position: sticky;
-  top: 4.75rem;
-  will-change: transform;
-  height: fit-content;
-}
-
 .contains-task-list {
-  @apply ml-8 list-inside;
+    @apply ml-8 list-inside;
 }
 
 .contains-task-list > li {
-  @apply my-1;
-}
-
-.markdown {
-  @apply text-text-paragraph;
+    @apply my-1;
 }
 
 .markdown p {
-  @apply mt-1 mb-2 antialiased lining-nums whitespace-pre-wrap break-words w-full leading-relaxed text-left;
+    @apply mt-1 mb-2 antialiased lining-nums break-words w-full leading-relaxed text-left;
 }
 
-.markdown a {
-  @apply hover:underline no-underline text-main-normal;
-}
-
-.markdown table {
-  @apply table table-fixed border-collapse border border-border-neutral mb-4;
+.markdown a:not([data-unstyled]) {
+    @apply hover:underline no-underline text-main-300 hover:text-main-500 duration-300 ease-in underline;
 }
 
 .markdown tr {
-  @apply border-b border-border-neutral p-2;
-}
-
-.markdown tr:last-child {
-  @apply border-b-0;
+    @apply border-b border-border-neutral p-2;
 }
 
 .markdown td,
 .markdown th {
-  @apply p-2;
+    @apply p-2;
 }
 
 .markdown blockquote {
-  padding: 0.5rem;
-  border: 1px solid var(--gray);
-  border-radius: 0.25rem;
+    @apply p-2 border-l-4 border-l-slate-500 text-lg border border-slate-300 rounded my-4;
+    @apply dark:border-l-slate-200 dark:border-slate-700;
 }
 
 .markdown .contains-task-list {
-  @apply mt-2 mb-4;
+    @apply mt-2 mb-4;
 }
 
 .markdown .task-list-item {
-  @apply flex items-center gap-x-1;
+    @apply flex items-center gap-x-1;
 }
 
 .markdown .footnotes {
-  @apply my-4 pt-2;
+    @apply my-4 pt-2;
 }
 
 .markdown dl {
-  @apply my-1;
+    @apply my-1;
 }
 
 .markdown dt {
-  @apply font-bold;
+    @apply font-bold;
 }
 
 .markdown dd {
-  @apply font-thin italic ml-4 mb-2;
+    @apply font-thin italic ml-4 mb-2;
 }
 
 .markdown code:not([class]) {
-  @apply bg-code text-word px-1 py-0.5 rounded font-extrabold italic;
+    @apply bg-code text-word px-1 py-0.5 rounded font-extrabold italic;
 }
 
 .markdown .code-highlight {
-  @apply mb-4;
+    @apply mb-4;
+}
+
+.markdown [data-heading="true"] {
+    @apply mb-2 leading-relaxed;
+}
+
+.markdown [data-heading="true"]:not(:first-of-type) {
+    @apply mt-12;
 }

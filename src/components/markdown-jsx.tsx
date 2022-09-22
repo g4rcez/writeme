@@ -43,6 +43,7 @@ const defaultComponents = {
   HttpResponse,
   Tab,
   TableOfContent,
+  Toc: TableOfContent,
   Tabs,
   ul: (props: any) => <ul {...props} className={props.className ?? "mt-2 mb-4 list-inside ml-8 list-disc"} />,
   ol: (props: any) => <ol {...props} className={props.className ?? "mt-2 mb-4 list-inside ml-8 list-decimal"} />,

@@ -24,3 +24,7 @@ body,
     scroll-padding: 4.5rem;
     font-family: "Inter", sans-serif;
 }
+
+.cm-editor {
+    font-size: 1.05rem;
+}

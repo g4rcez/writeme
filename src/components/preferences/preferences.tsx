@@ -1,6 +1,6 @@
 import { LocalStorage } from "storage-manager-js";
-import { createContext, Fragment, PropsWithChildren, useCallback, useContext, useEffect, useState } from "react";
-import { coreExtensionsEnabled, defaultExtensionsEnable } from "./editor/editor-preferences";
+import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useState } from "react";
+import { coreExtensionsEnabled, defaultExtensionsEnable } from "../editor/editor-preferences";
 
 type Preferences = {
   extensions: string[];
@@ -16,10 +16,10 @@ const context = createContext<
   [state: Preferences, setPreference: <T extends keyof Preferences>(key: T, val: Preferences[T]) => void]
 >([initialState, <T extends keyof Preferences>(k: T, val: Preferences[T]) => {}]);
 
-export const getPreference = <T extends keyof Preferences>(key: T, defaultValue: Preferences[T]): Preferences[T] =>
+const getPreference = <T extends keyof Preferences>(key: T, defaultValue: Preferences[T]): Preferences[T] =>
   LocalStorage.get<Preferences[T]>(`writeme/${key}`) ?? (defaultValue as any);
 
-export const setPreference = <T extends keyof Preferences>(key: T, value: Preferences[T]): void =>
+const setPreference = <T extends keyof Preferences>(key: T, value: Preferences[T]): void =>
   LocalStorage.set<Preferences[T]>(`writeme/${key}`, value);
 
 export const Preferences = ({ children }: PropsWithChildren) => {
@@ -31,7 +31,6 @@ export const Preferences = ({ children }: PropsWithChildren) => {
   }, []);
 
   const callback = useCallback(<T extends keyof Preferences>(key: T, val: Preferences[T]) => {
-    console.log({ key, val });
     setState((prev) => ({ ...prev, [key]: val }));
     setPreference(key, val);
   }, []);

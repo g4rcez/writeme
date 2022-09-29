@@ -28,4 +28,12 @@ export namespace Strings {
 
   export const concatUrl = (baseURL: string, ...urls: string[]) =>
     normalizePath(urls.reduce((acc, el) => acc.replace(/\/+$/, "") + "/" + el.replace(/^\/+/, ""), baseURL));
+
+  export const capitalize = (str = "") =>
+    str
+      .match(/[A-Z]{2,}(?=[A-Z][a-záéíóúõôê]+[0-9]*|\b)|[A-Z]?[a-záéíóúõôê]+[0-9]*|[A-Z]|[0-9]+/g)
+      ?.map((x) => x.charAt(0).toUpperCase() + x.slice(1).toLowerCase())
+      .join(" ")
+      .replace(/(\d+)/g, " $1")
+      .replace(/\s+/g, " ") ?? "";
 }

@@ -15,13 +15,14 @@ import { darkTheme } from "./themes";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
 import interact from "@replit/codemirror-interact";
+import { useState } from "react";
 
 export type EditorNamedExtension = {
   name: string;
   ext: Extension;
 };
 
-const themeSwitcher = new Compartment();
+export const themeSwitcher = new Compartment();
 
 const numberIncrement = new Compartment().of(
   interact({
@@ -50,10 +51,10 @@ export const extraExtensions: EditorNamedExtension[] = [
 ];
 
 export const coreExtensions: Extension[] = [
-  themeSwitcher.of(darkTheme),
   placeholder("Text here..."),
   keymap.of(defaultKeymap.concat(historyKeymap)),
   markdown({ base: markdownLanguage, codeLanguages: languages, addKeymap: true }),
+  themeSwitcher.of(darkTheme),
 ];
 
 export const defaultExtensionsEnable: string[] = [

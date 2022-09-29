@@ -28,3 +28,7 @@ body,
 .cm-editor {
     font-size: 1.05rem;
 }
+
+.translate-1\/2 {
+    transform: translate(-50%, -50%);
+}

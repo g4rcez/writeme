@@ -1,4 +1,4 @@
-import { Input } from "src/components/input";
+import { Input } from "src/components/form/input";
 import { Is } from "src/lib/is";
 import { Strings } from "src/lib/strings";
 import { assocPath } from "ramda";

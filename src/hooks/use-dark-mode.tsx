@@ -2,7 +2,7 @@ import React, { createContext, PropsWithChildren, useCallback, useContext, useEf
 import Light from "styles/themes/light.json";
 import Dark from "styles/themes/dark.json";
 import { setCssVars } from "styles/themes/themes";
-import { usePreferences } from "../components/preferences";
+import { usePreferences } from "../components/preferences/preferences";
 
 type Modes = "light" | "dark";
 

@@ -9,7 +9,7 @@ import "../styles/globals.css";
 import { Navbar } from "../src/components/navbar";
 import { VscGithub } from "react-icons/vsc";
 import { DarkMode } from "../src/hooks/use-dark-mode";
-import { Preferences } from "../src/components/preferences";
+import { Preferences } from "../src/components/preferences/preferences";
 
 const progress = new ProgressBar({
   size: 3,

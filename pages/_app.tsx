@@ -1,26 +1,12 @@
-import ProgressBar from "@badrap/bar-of-progress";
 import { NextComponentType, NextPageContext } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import Router from "next/router";
 import React, { Fragment } from "react";
-import Light from "styles/themes/light.json";
 import "../styles/globals.css";
 import { Navbar } from "../src/components/navbar";
 import { VscGithub } from "react-icons/vsc";
 import { DarkMode } from "../src/hooks/use-dark-mode";
 import { Preferences } from "../src/components/preferences/preferences";
-
-const progress = new ProgressBar({
-  size: 3,
-  color: Light.main.normal,
-  className: "z-50",
-  delay: 10,
-});
-
-Router.events.on("routeChangeStart", () => progress.start);
-Router.events.on("routeChangeError", () => progress.finish());
-Router.events.on("routeChangeComplete", () => setTimeout(() => progress.finish(), 1000));
 
 function Content({ Component, pageProps }: { Component: NextComponentType<NextPageContext, any, {}>; pageProps: any }) {
   return (

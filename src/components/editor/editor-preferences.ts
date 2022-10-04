@@ -15,7 +15,7 @@ import { darkTheme } from "./themes";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
 import interact from "@replit/codemirror-interact";
-import { useState } from "react";
+import { basicSetup } from "codemirror";
 
 export type EditorNamedExtension = {
   name: string;
@@ -51,6 +51,7 @@ export const extraExtensions: EditorNamedExtension[] = [
 ];
 
 export const coreExtensions: Extension[] = [
+  basicSetup,
   placeholder("Text here..."),
   keymap.of(defaultKeymap.concat(historyKeymap)),
   markdown({ base: markdownLanguage, codeLanguages: languages, addKeymap: true }),

@@ -24,6 +24,7 @@ const setPreference = <T extends keyof Preferences>(key: T, value: Preferences[T
 
 export const Preferences = ({ children }: PropsWithChildren) => {
   const [state, setState] = useState<Preferences>(() => initialState);
+
   useEffect(() => {
     const theme = getPreference("theme", initialState.theme);
     const extensions = getPreference("extensions", initialState.extensions);
@@ -34,6 +35,7 @@ export const Preferences = ({ children }: PropsWithChildren) => {
     setState((prev) => ({ ...prev, [key]: val }));
     setPreference(key, val);
   }, []);
+
   return <context.Provider value={[state, callback]}>{children}</context.Provider>;
 };
 

@@ -39,6 +39,7 @@ specifiers:
   '@types/shell-quote': 1.7.1
   autoprefixer: 10.4.11
   axios: 0.27.2
+  codemirror: 6.0.1
   eslint: 8.24.0
   eslint-config-next: 12.3.0
   flowchart.js: 1.17.1
@@ -111,6 +112,7 @@ dependencies:
   '@tailwindcss/typography': 0.5.7_tailwindcss@3.1.8
   autoprefixer: 10.4.11_postcss@8.4.16
   axios: 0.27.2
+  codemirror: 6.0.1
   flowchart.js: 1.17.1
   glob: 8.0.3
   gray-matter: 4.0.3
@@ -790,6 +792,14 @@ packages:
     deprecated: As of 0.20.0, this package has been merged into @codemirror/state
     dependencies:
       '@codemirror/state': 6.1.2
+    dev: false
+
+  /@codemirror/search/6.2.1:
+    resolution: {integrity: sha512-Q1JgUSBjQZRPIddlXzad/AVDigdhriLxQNFyP0gfrDTq6LDHNhr95U/tW3bpVssGenkaLzujtu/7XoK4kyvL3g==}
+    dependencies:
+      '@codemirror/state': 6.1.2
+      '@codemirror/view': 6.2.5
+      crelt: 1.0.5
     dev: false
 
   /@codemirror/state/6.1.2:
@@ -2638,6 +2648,20 @@ packages:
   /co/4.6.0:
     resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
     engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
+    dev: false
+
+  /codemirror/6.0.1:
+    resolution: {integrity: sha512-J8j+nZ+CdWmIeFIGXEFbFPtpiYacFMDR8GlHK3IyHQJMCaVRfGx9NT+Hxivv1ckLWPvNdZqndbr/7lVhrf/Svg==}
+    dependencies:
+      '@codemirror/autocomplete': 6.3.0_eqnojjybujbpyzalc7hq3ayyuy
+      '@codemirror/commands': 6.1.0
+      '@codemirror/language': 6.2.1
+      '@codemirror/lint': 6.0.0
+      '@codemirror/search': 6.2.1
+      '@codemirror/state': 6.1.2
+      '@codemirror/view': 6.2.5
+    transitivePeerDependencies:
+      - '@lezer/common'
     dev: false
 
   /collapse-white-space/1.0.6:

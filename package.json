@@ -49,6 +49,7 @@
     "@tailwindcss/typography": "0.5.7",
     "autoprefixer": "10.4.11",
     "axios": "0.27.2",
+    "codemirror": "6.0.1",
     "flowchart.js": "1.17.1",
     "glob": "8.0.3",
     "gray-matter": "4.0.3",

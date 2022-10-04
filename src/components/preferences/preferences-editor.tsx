@@ -30,7 +30,7 @@ export const PreferencesEditor = () => {
                   <Checkbox
                     onCheckedChange={() => {
                       const result = checked
-                        ? preferences.extensions.filter((i) => extension !== i)
+                        ? preferences.extensions.filter((ext) => extension !== ext)
                         : [...preferences.extensions, extension];
                       setPreferences("extensions", result);
                     }}

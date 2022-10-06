@@ -1,4 +1,4 @@
-import { MouseEvent, RefObject, useEffect, useMemo, useRef, useState } from "react";
+import React, { MouseEvent, RefObject, useEffect, useMemo, useRef, useState } from "react";
 import { EditorView } from "@codemirror/view";
 import { EditorState, Extension } from "@codemirror/state";
 import { darkTheme, lightTheme } from "./themes";
@@ -11,7 +11,9 @@ type UseCodeMirror = {
   editor: Types.Nullable<EditorState>;
 };
 
-const useCodeMirror = (initialText: string = ""): [ref: RefObject<HTMLDivElement>, codemirror: UseCodeMirror] => {
+const useCodeMirror = (
+  initialText: string = ""
+): [ref: RefObject<HTMLDivElement>, codemirror: UseCodeMirror, text: React.MutableRefObject<string>] => {
   const refContainer = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<UseCodeMirror>({ view: null, editor: null });
   const [preferences] = usePreferences();
@@ -49,11 +51,11 @@ const useCodeMirror = (initialText: string = ""): [ref: RefObject<HTMLDivElement
     state.view.dispatch({ effects: themeSwitcher.reconfigure(reconfigured) });
   }, [state.view, themeSwitcher, theme]);
 
-  return [refContainer, state];
+  return [refContainer, state, text];
 };
 
 export const MarkdownEditor = (props: { text: string; viewHeader?: boolean }) => {
-  const [ref, state] = useCodeMirror(props.text);
+  const [ref, state, textRef] = useCodeMirror(props.text);
 
   const onAddText = (event: MouseEvent<HTMLButtonElement>) => {
     const button = event.currentTarget;
@@ -94,7 +96,7 @@ export const MarkdownEditor = (props: { text: string; viewHeader?: boolean }) =>
           </button>
         </header>
       )}
-      <section ref={ref} />
+      <section ref={ref} data-value={textRef.current} />
     </div>
   );
 };

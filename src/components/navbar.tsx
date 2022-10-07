@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { FaSun } from "react-icons/fa";
+import { FaHouseUser, FaSun } from "react-icons/fa";
 import { useDarkMode } from "../hooks/use-dark-mode";
+import { PreferencesEditor } from "./preferences/preferences-editor";
 
 type Props = {};
 
@@ -20,6 +21,7 @@ export const Navbar = ({}: Props) => {
           </h1>
         </section>
         <div className="flex gap-x-4">
+          <PreferencesEditor />
           <button className="bg-transparent p-0 m-0" onClick={onToggleMode}>
             <FaSun />
           </button>

@@ -1,5 +1,6 @@
 const Colors = require("./styles/themes/light.json");
 const plugin = require("tailwindcss/plugin");
+const colors = require("tailwindcss/colors");
 
 function remap(colors, prefix) {
   const newColors = {};

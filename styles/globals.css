@@ -24,3 +24,11 @@ body,
     scroll-padding: 4.5rem;
     font-family: "Inter", sans-serif;
 }
+
+.cm-editor {
+    font-size: 1.05rem;
+}
+
+.translate-1\/2 {
+    transform: translate(-50%, -50%);
+}

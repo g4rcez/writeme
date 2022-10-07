@@ -1,4 +1,4 @@
-import { Input } from "src/components/input";
+import { Input } from "src/components/form/input";
 import { assocPath } from "ramda";
 import React, { useCallback } from "react";
 import { Header } from "./curl-parser";

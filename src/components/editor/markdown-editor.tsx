@@ -49,7 +49,7 @@ const useCodeMirror = (
     if (state.view === null || themeSwitcher === null) return;
     const reconfigured = theme === "dark" ? darkTheme : lightTheme;
     state.view.dispatch({ effects: themeSwitcher.reconfigure(reconfigured) });
-  }, [state.view, themeSwitcher, theme]);
+  }, [state.view, theme]);
 
   return [refContainer, state, text];
 };

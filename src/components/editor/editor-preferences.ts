@@ -9,13 +9,14 @@ import {
 } from "@codemirror/view";
 import { defaultKeymap } from "@codemirror/commands";
 import { historyKeymap } from "@codemirror/history";
-import { indentOnInput } from "@codemirror/language";
+import { indentOnInput, syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language";
 import { bracketMatching } from "@codemirror/matchbrackets";
 import { darkTheme } from "./themes";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
-import interact from "@replit/codemirror-interact";
 import { basicSetup } from "codemirror";
+import { autocompletion, CompletionContext } from "@codemirror/autocomplete";
+import { links } from "./link";
 
 export type EditorNamedExtension = {
   name: string;
@@ -23,23 +24,7 @@ export type EditorNamedExtension = {
 };
 
 export const themeSwitcher = new Compartment();
-
-const numberIncrement = new Compartment().of(
-  interact({
-    rules: [
-      {
-        regexp: /-?\b\d+\.?\d*\b/g,
-        cursor: "ew-resize",
-        onDrag: (text, setText, e) => {
-          const newVal = Number(text) + e.movementX;
-          if (isNaN(newVal)) return;
-          setText(newVal.toString());
-        },
-      },
-    ],
-  })
-);
-
+// https://api.github.com/emojis
 export const extraExtensions: EditorNamedExtension[] = [
   { name: "lineNumbers", ext: lineNumbers() },
   { name: "indentOnInput", ext: indentOnInput() },
@@ -47,11 +32,35 @@ export const extraExtensions: EditorNamedExtension[] = [
   { name: "highlightActiveLineGutter", ext: highlightActiveLineGutter() },
   { name: "highlightSpecialChars", ext: highlightSpecialChars() },
   { name: "bracketMatching", ext: bracketMatching() },
-  { name: "numberIncrement", ext: numberIncrement },
 ];
 
 export const coreExtensions: Extension[] = [
   basicSetup,
+  links,
+  autocompletion({
+    closeOnBlur: true,
+    selectOnOpen: true,
+    icons: true,
+    override: [
+      async (context: CompletionContext) => {
+        let word = context.matchBefore(/@(\w+)?/);
+        if (!word) return null;
+        if (word.from === word.to && !context.explicit) {
+          return null;
+        }
+        return {
+          from: word.from,
+          options: [
+            { label: "@Writeme", type: "css" },
+            { label: "@mention", type: "mention" },
+            { label: "@Test", type: "css" },
+            { label: "@This apply filter", type: "css" },
+          ],
+        };
+      },
+    ],
+  }),
+  syntaxHighlighting(defaultHighlightStyle),
   placeholder("Text here..."),
   keymap.of(defaultKeymap.concat(historyKeymap)),
   markdown({ base: markdownLanguage, codeLanguages: languages, addKeymap: true }),

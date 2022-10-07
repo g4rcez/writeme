@@ -22,7 +22,7 @@ const useInternalDarkMode = () => {
     const match = window.matchMedia("(prefers-color-scheme: dark)");
     match.addEventListener("change", onChange);
     return () => match.removeEventListener("change", onChange);
-  }, []);
+  }, [setMode]);
 
   useEffect(() => {
     const isLight = mode === "light";

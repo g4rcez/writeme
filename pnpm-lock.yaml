@@ -7,6 +7,7 @@ overrides:
 
 specifiers:
   '@badrap/bar-of-progress': 0.2.1
+  '@codemirror/autocomplete': 6.3.0
   '@codemirror/commands': 6.1.0
   '@codemirror/gutter': 0.19.9
   '@codemirror/highlight': 0.19.8
@@ -14,6 +15,7 @@ specifiers:
   '@codemirror/lang-markdown': 6.0.1
   '@codemirror/language': 6.2.1
   '@codemirror/language-data': 6.1.0
+  '@codemirror/lint': 6.0.0
   '@codemirror/matchbrackets': 0.19.4
   '@codemirror/state': 6.1.2
   '@codemirror/theme-one-dark': 6.1.0
@@ -87,6 +89,7 @@ specifiers:
 
 dependencies:
   '@badrap/bar-of-progress': 0.2.1
+  '@codemirror/autocomplete': 6.3.0_eqnojjybujbpyzalc7hq3ayyuy
   '@codemirror/commands': 6.1.0
   '@codemirror/gutter': 0.19.9
   '@codemirror/highlight': 0.19.8
@@ -94,6 +97,7 @@ dependencies:
   '@codemirror/lang-markdown': 6.0.1
   '@codemirror/language': 6.2.1
   '@codemirror/language-data': 6.1.0_@codemirror+view@6.2.5
+  '@codemirror/lint': 6.0.0
   '@codemirror/matchbrackets': 0.19.4
   '@codemirror/state': 6.1.2
   '@codemirror/theme-one-dark': 6.1.0
@@ -521,21 +525,6 @@ packages:
       '@codemirror/language': ^6.0.0
       '@codemirror/state': ^6.0.0
       '@codemirror/view': ^6.0.0
-      '@lezer/common': ^1.0.0
-    dependencies:
-      '@codemirror/language': 6.2.1
-      '@codemirror/state': 6.1.2
-      '@codemirror/view': 6.2.5
-      '@lezer/common': 1.0.1
-    dev: false
-
-  /@codemirror/autocomplete/6.3.0_vswjzb6pveu6y6iyyyir6hfjfy:
-    resolution: {integrity: sha512-4jEvh3AjJZTDKazd10J6ZsCIqaYxDMCeua5ouQxY8hlFIml+nr7le0SgBhT3SIytFBmdzPK3AUhXGuW3T79nVg==}
-    peerDependencies:
-      '@codemirror/language': ^6.0.0
-      '@codemirror/state': ^6.0.0
-      '@codemirror/view': ^6.0.0
-      '@lezer/common': ^1.0.0
     dependencies:
       '@codemirror/language': 6.2.1
       '@codemirror/state': 6.1.2
@@ -588,18 +577,6 @@ packages:
       '@lezer/cpp': 1.0.0
     dev: false
 
-  /@codemirror/lang-css/6.0.0_7gmfnszvpo62rhw3dd52n7u5ju:
-    resolution: {integrity: sha512-jBqc+BTuwhNOTlrimFghLlSrN6iFuE44HULKWoR4qKYObhOIl9Lci1iYj6zMIte1XTQmZguNvjXMyr43LUKwSw==}
-    dependencies:
-      '@codemirror/autocomplete': 6.3.0_vswjzb6pveu6y6iyyyir6hfjfy
-      '@codemirror/language': 6.2.1
-      '@codemirror/state': 6.1.2
-      '@lezer/css': 1.0.0
-    transitivePeerDependencies:
-      - '@codemirror/view'
-      - '@lezer/common'
-    dev: false
-
   /@codemirror/lang-css/6.0.0_@codemirror+view@6.2.5:
     resolution: {integrity: sha512-jBqc+BTuwhNOTlrimFghLlSrN6iFuE44HULKWoR4qKYObhOIl9Lci1iYj6zMIte1XTQmZguNvjXMyr43LUKwSw==}
     dependencies:
@@ -609,14 +586,13 @@ packages:
       '@lezer/css': 1.0.0
     transitivePeerDependencies:
       - '@codemirror/view'
-      - '@lezer/common'
     dev: false
 
   /@codemirror/lang-html/6.1.2:
     resolution: {integrity: sha512-e8JAUWyOo7N26tmek+WK0+Zg+pZRe+dQi8TZq0OOVVygpLV+mNAT2n5b5JhknY+TVZIVGLjuhdsoizw1SDFfPg==}
     dependencies:
-      '@codemirror/autocomplete': 6.3.0_vswjzb6pveu6y6iyyyir6hfjfy
-      '@codemirror/lang-css': 6.0.0_7gmfnszvpo62rhw3dd52n7u5ju
+      '@codemirror/autocomplete': 6.3.0_eqnojjybujbpyzalc7hq3ayyuy
+      '@codemirror/lang-css': 6.0.0_@codemirror+view@6.2.5
       '@codemirror/lang-javascript': 6.1.0
       '@codemirror/language': 6.2.1
       '@codemirror/state': 6.1.2
@@ -635,7 +611,7 @@ packages:
   /@codemirror/lang-javascript/6.1.0:
     resolution: {integrity: sha512-wAWEY1Wdis2cKDy9A5q/rUmzLHFbZgoupJBcGaeMMsDPi68Rm90NsmzAEODE5kW8mYdRKFhQ157WJghOZ3yYdg==}
     dependencies:
-      '@codemirror/autocomplete': 6.3.0_vswjzb6pveu6y6iyyyir6hfjfy
+      '@codemirror/autocomplete': 6.3.0_eqnojjybujbpyzalc7hq3ayyuy
       '@codemirror/language': 6.2.1
       '@codemirror/lint': 6.0.0
       '@codemirror/state': 6.1.2
@@ -696,7 +672,6 @@ packages:
       '@lezer/lr': 1.2.3
     transitivePeerDependencies:
       - '@codemirror/view'
-      - '@lezer/common'
     dev: false
 
   /@codemirror/lang-wast/6.0.0:
@@ -710,7 +685,7 @@ packages:
   /@codemirror/lang-xml/6.0.0_@codemirror+view@6.2.5:
     resolution: {integrity: sha512-M/HLWxIiP956xGjtrxkeHkCmDGVQGKu782x8pOH5CLJIMkWtiB1DWfDoDHqpFjdEE9dkfcqPWvYfVi6GbhuXEg==}
     dependencies:
-      '@codemirror/autocomplete': 6.3.0_vswjzb6pveu6y6iyyyir6hfjfy
+      '@codemirror/autocomplete': 6.3.0_eqnojjybujbpyzalc7hq3ayyuy
       '@codemirror/language': 6.2.1
       '@codemirror/state': 6.1.2
       '@lezer/common': 1.0.1
@@ -739,7 +714,6 @@ packages:
       '@codemirror/legacy-modes': 6.1.0
     transitivePeerDependencies:
       - '@codemirror/view'
-      - '@lezer/common'
     dev: false
 
   /@codemirror/language/0.19.10:
@@ -2660,8 +2634,6 @@ packages:
       '@codemirror/search': 6.2.1
       '@codemirror/state': 6.1.2
       '@codemirror/view': 6.2.5
-    transitivePeerDependencies:
-      - '@lezer/common'
     dev: false
 
   /collapse-white-space/1.0.6:

@@ -1,12 +1,14 @@
-- name: "getting-started"
-  title: "Getting Started"
-  description: "How to start to use WriteMe"
-  banner: ""
-  icon: "/rocket-240.png?__dark=rocket-dark-240.png"
+- id: getting-started
+  url: getting-started
+  title: Getting Started
   index: 0
-- name: "roadmap"
-  title: "Roadmap"
-  description: "Checkout our plans. See our features for the future."
+  icon: /rocket-240.png?__dark=rocket-dark-240.png
   banner: ""
-  icon: "/rocket-240.png?__dark=rocket-dark-240.png"
+  description: How to start to use WriteMe
+- id: roadmap
+  url: roadmap
+  title: Roadmap
   index: 1
+  icon: /rocket-240.png?__dark=rocket-dark-240.png
+  banner: ""
+  description: Checkout our plans. See our features for the future.

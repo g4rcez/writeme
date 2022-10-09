@@ -2,7 +2,7 @@ import remarkGfm from "remark-gfm";
 import remarkGemoji from "remark-gemoji";
 import remarkFootnotes from "remark-footnotes";
 import grayMatter from "gray-matter";
-import {FrontMatter, MarkdownDocument} from "../strategies/strategy";
+import {FrontMatter, MarkdownDocument} from "../../writeme/storage/storage";
 import {serialize} from "next-mdx-remote/serialize";
 import {MDXRemoteSerializeResult} from "next-mdx-remote";
 import {remarkVariables} from "./remark-variables";

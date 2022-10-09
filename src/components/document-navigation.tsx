@@ -1,4 +1,4 @@
-import { SimplerDocument } from "../strategies/strategy";
+import { SimplerDocument } from "../writeme/storage/storage";
 import Link from "next/link";
 import { Links } from "../lib/links";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";

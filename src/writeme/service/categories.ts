@@ -16,6 +16,11 @@ class CategoriesService extends Service implements IRepository<Categories, SaveC
     Validator.register(this.saveSchema);
   }
 
+  public async delete(uuid: string): Promise<Either.Error<string[]> | Either.Success<null>> {
+    await this.storage.delete(uuid);
+    return Either.success(null);
+  }
+
   public async update(
     item: Partial<SaveCategories>,
     id: string
@@ -24,7 +29,7 @@ class CategoriesService extends Service implements IRepository<Categories, SaveC
     if (category === null) {
       throw new Error("This category not exist.");
     }
-    return Either.success({
+    const updated = {
       id,
       index: item.index ?? category.index,
       title: item.title ?? category.title,
@@ -32,7 +37,9 @@ class CategoriesService extends Service implements IRepository<Categories, SaveC
       description: item.description ?? category.description,
       banner: item.banner ?? category.banner,
       icon: item.icon ?? category.icon,
-    });
+    };
+    await this.storage.updateCategory(updated);
+    return Either.success(updated);
   }
 
   public getCategories = async (): Promise<Categories[]> => {
@@ -48,9 +55,10 @@ class CategoriesService extends Service implements IRepository<Categories, SaveC
       .prop("url", fjs.string().pattern(Regex.UrlFriendly))
       .prop("title", fjs.string().minLength(1))
       .prop("index", fjs.integer())
-      .prop("icon", fjs.string().format(fjs.FORMATS.URI))
-      .prop("banner", fjs.string().format(fjs.FORMATS.URI))
+      .prop("icon", fjs.string())
+      .prop("banner", fjs.string())
       .prop("description", fjs.string())
+      .required(["url", "title", "index", "description"])
   );
 
   public async save(item: Categories): Promise<Categories> {
@@ -65,7 +73,7 @@ class CategoriesService extends Service implements IRepository<Categories, SaveC
     if (Either.isSuccess(validation)) {
       return Either.success({ ...item, id: Strings.uuid() });
     }
-    return Either.error(validation.error.map((x) => x.message ?? x.keyword));
+    return Either.error(validation.error.map((x) => `${x.instancePath} - ${x.message}`));
   }
 }
 

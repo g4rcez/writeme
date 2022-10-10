@@ -50,5 +50,9 @@ export abstract class Storage {
 
   public abstract saveCategory(category: Categories): Promise<void>;
 
+  public abstract updateCategory(category: Categories): Promise<void>;
+
   public abstract getCategory(id: string): Promise<Categories | null>;
+
+  public abstract delete(id: string): Promise<boolean>;
 }

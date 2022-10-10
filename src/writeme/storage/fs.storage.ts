@@ -4,20 +4,29 @@ import { promisify } from "util";
 import fs from "fs";
 import { Markdown } from "../../lib/markdown/markdown";
 import { parse as ymlParse, stringify as ymlStringify } from "yaml";
-import { Strings } from "../../lib/strings";
 
 const glob = promisify(require("glob"));
 
-type RawCategory = {
-  name: string;
-  title: string;
-  icon?: string;
-  index: number;
-  banner?: string;
-  description?: string;
-};
-
 export class FsStorage extends Storage {
+  public sorted: boolean = false;
+  private root = path.join(path.resolve(process.cwd()), "docs");
+  private postsDirRegex = path.join(this.root, "**", "*.?(md|mdx)");
+  private categoriesFile = path.join(this.root, "categories.yml");
+
+  private writeCategory = (yaml: any) => fs.writeFileSync(this.categoriesFile, ymlStringify(yaml));
+
+  public async delete(id: string): Promise<boolean> {
+    const categories = await this.fetchCategories();
+    this.writeCategory(categories.filter((x) => x.id !== id));
+    return true;
+  }
+
+  public async updateCategory(category: Categories): Promise<void> {
+    const categories = await this.fetchCategories();
+    const newCategories = categories.map((x) => (x.id === category.id ? category : x));
+    this.writeCategory(newCategories);
+  }
+
   private openFile = (file: string) => fs.readFileSync(file, "utf-8");
 
   public async getCategory(id: string): Promise<Categories | null> {
@@ -26,16 +35,10 @@ export class FsStorage extends Storage {
     return yml.find((x: any) => x.id === id) ?? null;
   }
 
-  public sorted: boolean = false;
-  private root = path.join(path.resolve(process.cwd()), "docs");
-  private postsDirRegex = path.join(this.root, "**", "*.?(md|mdx)");
-  private categoriesFile = path.join(this.root, "categories.yml");
-
   public async saveCategory(category: Categories): Promise<void> {
     const categories = await this.fetchCategories();
     categories.push(category);
-    const text = ymlStringify(categories);
-    fs.writeFileSync(this.categoriesFile, text);
+    this.writeCategory(categories);
   }
 
   public async getSimplerDocuments(): Promise<SimplerDocument[]> {
@@ -67,14 +70,14 @@ export class FsStorage extends Storage {
 
   public async fetchCategories(): Promise<Categories[]> {
     const text = fs.readFileSync(this.categoriesFile, "utf-8");
-    const content: RawCategory[] = ymlParse(text);
+    const content: Categories[] = ymlParse(text);
     return content.map(
       (x): Categories => ({
-        id: Strings.slug(x.name),
-        url: Strings.slug(x.name),
+        id: x.id,
+        url: x.url,
+        icon: x.icon,
         title: x.title,
         index: x.index,
-        icon: x.icon,
         banner: x.banner,
         description: x.description ?? "",
       })

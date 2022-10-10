@@ -1,14 +1,14 @@
 - id: getting-started
   url: getting-started
+  icon: /rocket-240.png?__dark=rocket-dark-240.png
   title: Getting Started
   index: 0
-  icon: /rocket-240.png?__dark=rocket-dark-240.png
   banner: ""
   description: How to start to use WriteMe
 - id: roadmap
   url: roadmap
+  icon: /rocket-240.png?__dark=rocket-dark-240.png
   title: Roadmap
   index: 1
-  icon: /rocket-240.png?__dark=rocket-dark-240.png
   banner: ""
   description: Checkout our plans. See our features for the future.

@@ -29,11 +29,6 @@
         @apply flex gap-2 items-center;
     }
 
-    /* Input */
-    .input {
-        @apply form-input border p-1 border-border-neutral rounded-md;
-    }
-
     /* Select */
     .select {
         @apply block form-select mt-1 rounded-md border-border-neutral;
@@ -43,10 +38,12 @@
 
     /* Button */
     .button {
-        @apply px-4 py-3 my-0 leading-3 text-sm bg-main-normal;
-        @apply transition-colors duration-300 ease-out;
-        @apply hover:bg-main-hover-border active:bg-main-hover-border;
-        @apply text-main-accent rounded-lg;
+        @apply px-3 py-2 my-0 leading-3 text-sm rounded-lg transition-colors duration-500;
+        @apply ease-in-out font-medium min-w-[150px] border text-base;
+    }
+
+    .button[data-theme=primary] {
+        @apply bg-main-500 link:bg-main-300 border-main-500;
     }
 
     /* HttpRequest */
@@ -143,5 +140,10 @@
             opacity: 1;
             transform: scale(1);
         }
+    }
+
+    .input:required + label:after {
+        content: " *";
+        color: var(--main-500)
     }
 }

@@ -37,22 +37,22 @@ export type DocumentsJoinCategory = {
   documents: SimplerDocument[];
 };
 
-export abstract class Storage {
-  public abstract sorted: boolean;
+export interface IStorage {
+  sorted: boolean;
 
-  public abstract getAllDocumentPaths(): Promise<string[]>;
+  getAllDocumentPaths(): Promise<string[]>;
 
-  public abstract getSimplerDocuments(): Promise<SimplerDocument[]>;
+  getSimplerDocuments(): Promise<SimplerDocument[]>;
 
-  public abstract getDocument(name: string): Promise<MarkdownDocument | null>;
+  getDocument(name: string): Promise<MarkdownDocument | null>;
 
-  public abstract fetchCategories(): Promise<Categories[]>;
+  fetchCategories(): Promise<Categories[]>;
 
-  public abstract saveCategory(category: Categories): Promise<void>;
+  saveCategory(category: Categories): Promise<void>;
 
-  public abstract updateCategory(category: Categories): Promise<void>;
+  updateCategory(category: Categories): Promise<void>;
 
-  public abstract getCategory(id: string): Promise<Categories | null>;
+  getCategory(id: string): Promise<Categories | null>;
 
-  public abstract delete(id: string): Promise<boolean>;
+  delete(id: string): Promise<boolean>;
 }

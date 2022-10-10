@@ -1,5 +1,5 @@
 import { Input } from "src/components/form/input";
-import { assocPath } from "ramda";
+import { Helpers } from "../../lib/helpers";
 import React, { useCallback } from "react";
 import { Header } from "./curl-parser";
 
@@ -14,8 +14,7 @@ export const Headers: React.FC<Props> = ({ headers, onChange }) => {
       const value = event.target.value;
       const dataIndex = Number.parseInt(event.target.dataset.index!);
       const path = [dataIndex, "value"];
-      const newHeaders = assocPath(path, value, headers);
-      onChange(newHeaders);
+      onChange(Helpers.set(headers, path, value));
     },
     [headers, onChange]
   );
@@ -24,14 +23,9 @@ export const Headers: React.FC<Props> = ({ headers, onChange }) => {
     <ul className="http-headers">
       {(headers.length > 0 &&
         headers.map((header, index) => (
-          <li
-            key={`header-${header.name}`}
-            className="http-headers-item"
-          >
+          <li key={`header-${header.name}`} className="http-headers-item">
             <label>
-              <span className="text-text-text-normal mr-1 italic cursor-text">
-                {header.name}:{" "}
-              </span>
+              <span className="text-text-text-normal mr-1 italic cursor-text">{header.name}: </span>
               <Input
                 className="font-bold text-text-paragraph p-1"
                 data-index={index}

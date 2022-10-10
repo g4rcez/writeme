@@ -15,7 +15,5 @@ declare global {
     export type Hide<T, K extends keyof T> = Omit<T, K>;
 
     export type Only<T, K extends keyof T> = Pick<T, K>;
-
-    export type ProxyResponse = (Types.BodyProxy & { statusCode: number; timeElapsed: number }) | null;
   }
 }

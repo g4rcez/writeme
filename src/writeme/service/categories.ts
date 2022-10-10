@@ -1,14 +1,13 @@
 import { Service } from "./service";
 import { Categories } from "../storage/storage";
 import { IRepository } from "./irepository";
-import { Erase } from "../../lib/types";
 import { Strings } from "../../lib/strings";
 import fjs from "fluent-json-schema";
 import { Regex } from "../../lib/regex";
 import { Either } from "../../lib/either";
 import { Validator } from "../../lib/validator";
 
-type SaveCategories = Erase<Categories, "id">;
+type SaveCategories = Types.Hide<Categories, "id">;
 
 class CategoriesService extends Service implements IRepository<Categories, SaveCategories> {
   constructor() {

@@ -1,4 +1,4 @@
-import fjs, { ArraySchema, ObjectSchema } from "fluent-json-schema";
+import { ArraySchema, ObjectSchema } from "fluent-json-schema";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import { Either } from "./either";

@@ -1,8 +1,8 @@
 import { Input } from "src/components/form/input";
 import { Is } from "src/lib/is";
 import { Strings } from "src/lib/strings";
-import { assocPath } from "ramda";
 import React, { PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Helpers } from "../../lib/helpers";
 
 const getKeys = <T extends object>(obj: T) => Object.entries(obj).map((x) => ({ key: x[0], value: x[1] }));
 
@@ -71,8 +71,7 @@ const BodyRecursive: React.VFC<Props> = ({ parentPath = [], onChange, parentIsAr
         const n = Number.parseInt(x, 10);
         return Number.isNaN(n) ? x : n;
       });
-      const newRequest = assocPath(path, value, props.originalRef);
-      onChange(newRequest);
+      onChange(Helpers.set(props.originalRef, path, value));
     },
     [parentPath, props.originalRef, onChange]
   );

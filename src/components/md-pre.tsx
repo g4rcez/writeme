@@ -1,4 +1,4 @@
-import { useHttpContext } from "src/components/index";
+import { useHttpContext } from "./http.context";
 import dynamic from "next/dynamic";
 import React, { Fragment } from "react";
 
@@ -23,7 +23,7 @@ const parseMetaString = (str: string | undefined): Types.Dict => {
       ...acc,
       [property]: values
         .join()
-        .replace(/^("|')/, "")
+        .replace(/^(["'])/, "")
         .replace(/(["'])$/, "")
         .trim(),
     };

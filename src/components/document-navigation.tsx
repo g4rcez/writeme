@@ -21,17 +21,14 @@ export const Box = ({ doc, back }: { doc: Types.Nullable<SimplerDocument>; back?
   );
 };
 
-export const DocumentNavigation = ({
-  next,
-  previous,
-}: {
+type Props = {
   next: Types.Nullable<SimplerDocument>;
   previous: Types.Nullable<SimplerDocument>;
-}) => {
-  return (
-    <nav className="w-full flex justify-between gap-8 mt-8">
-      <Box doc={previous} back />
-      <Box doc={next} />
-    </nav>
-  );
 };
+
+export const DocumentNavigation = ({ next, previous }: Props) => (
+  <nav className="w-full flex justify-between gap-8 mt-8">
+    <Box doc={previous} back />
+    <Box doc={next} />
+  </nav>
+);

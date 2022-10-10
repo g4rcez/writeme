@@ -20,15 +20,6 @@
         margin: auto;
     }
 
-    /* Shortcut */
-    .shortcut {
-        @apply text-xs px-2 py-1 rounded-md w-min font-medium bg-main-bg text-text-normal border border-separate;
-    }
-
-    .shortcut-group {
-        @apply flex gap-2 items-center;
-    }
-
     /* Select */
     .select {
         @apply block form-select mt-1 rounded-md border-border-neutral;

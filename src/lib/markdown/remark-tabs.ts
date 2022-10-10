@@ -1,5 +1,5 @@
 // Using https://github.com/mccleanp/remark-docusaurus-tabs
-import { Strings } from "./strings";
+import { Strings } from "../strings";
 
 export function remarkTabs() {
   function renderTabs(defaultId: string | undefined, tabs: any[], nodes: any[]) {

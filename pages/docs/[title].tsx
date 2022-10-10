@@ -1,9 +1,14 @@
 import { MdxDocsProvider } from "src/components/";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { strategy } from "../../src/strategies/main.strategy";
+import { storage } from "../../src/writeme/storage/main.storage";
 import { Dates } from "../../src/lib/dates";
-import { Markdown } from "../../src/lib/markdown";
-import { Categories, DocumentsJoinCategory, MarkdownDocument, SimplerDocument } from "../../src/strategies/strategy";
+import { Markdown } from "../../src/lib/markdown/markdown";
+import {
+  Categories,
+  DocumentsJoinCategory,
+  MarkdownDocument,
+  SimplerDocument,
+} from "../../src/writeme/storage/storage";
 import { Writeme } from "../../src/lib/writeme";
 import { MarkdownJsx } from "../../src/components/markdown-jsx";
 import Link from "next/link";
@@ -11,6 +16,8 @@ import { Links } from "../../src/lib/links";
 import { useRouter } from "next/dist/client/router";
 import { DocumentNavigation } from "../../src/components/document-navigation";
 import { useEffect, useRef, useState } from "react";
+import { postsService } from "../../src/writeme/service/posts";
+import { categoriesService } from "../../src/writeme/service/categories";
 
 type Props = {
   categories: Categories[];
@@ -84,8 +91,9 @@ export const Sidebar = ({ pathname, groups }: Types.Only<Props, "groups"> & { pa
     </aside>
   );
 };
+
 export const getStaticPaths: GetStaticPaths = async () => {
-  const docs = await strategy.getAllDocumentPaths();
+  const docs = await storage.getAllDocumentPaths();
   return {
     fallback: false,
     paths: docs.map((title) => ({ params: { title } })),
@@ -95,7 +103,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<Props> = async (props) => {
   const title = props.params?.title as string;
   try {
-    const post = await strategy.getDocument(title);
+    const post = await storage.getDocument(title);
     if (post === null) {
       return { notFound: true };
     }
@@ -105,10 +113,10 @@ export const getStaticProps: GetStaticProps<Props> = async (props) => {
       ...Writeme.config,
       repository: post.frontMatter.repository ?? "",
     });
-    const categories = await strategy.getCategories();
-    const simplerDocuments = await strategy.getSimplerDocuments();
-    const groups = strategy.aggregateDocumentToCategory(categories, simplerDocuments);
-    const { next, previous } = strategy.getAdjacentPosts(post, groups);
+    const categories = await categoriesService.getCategories();
+    const simplerDocuments = await storage.getSimplerDocuments();
+    const groups = postsService.aggregateDocumentToCategory(categories, simplerDocuments);
+    const { next, previous } = postsService.getAdjacentPosts(post, groups);
     return {
       props: { post, categories, mdx, groups, next: next, previous: previous },
       revalidate: false,

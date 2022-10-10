@@ -7,6 +7,7 @@ import { Navbar } from "../src/components/navbar";
 import { VscGithub } from "react-icons/vsc";
 import { DarkMode } from "../src/hooks/use-dark-mode";
 import { Preferences } from "../src/components/preferences/preferences";
+import { IconContext } from "react-icons";
 
 function Content({ Component, pageProps }: { Component: NextComponentType<NextPageContext, any, {}>; pageProps: any }) {
   return (
@@ -37,11 +38,15 @@ function Content({ Component, pageProps }: { Component: NextComponentType<NextPa
   );
 }
 
+const iconContextValue = { className: "react-icons" };
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Preferences>
       <DarkMode>
-        <Content Component={Component} pageProps={pageProps} />
+        <IconContext.Provider value={iconContextValue}>
+          <Content Component={Component} pageProps={pageProps} />
+        </IconContext.Provider>
       </DarkMode>
     </Preferences>
   );

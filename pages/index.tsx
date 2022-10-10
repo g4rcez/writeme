@@ -1,14 +1,14 @@
 import React from "react";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
-import { strategy } from "../src/strategies/main.strategy";
-import { Categories } from "../src/strategies/strategy";
+import { Categories } from "../src/writeme/storage/storage";
 import Link from "next/link";
 import { Links } from "../src/lib/links";
 import { Img } from "../src/components/img";
+import { categoriesService } from "../src/writeme/service/categories";
 
 export const getStaticProps: GetStaticProps<{ categories: Categories[] }> = async () => ({
   props: {
-    categories: await strategy.getCategories(),
+    categories: await categoriesService.getCategories(),
   },
 });
 

@@ -24,8 +24,6 @@ export namespace Strings {
 
   const normalizePath = (str: string) => str.replace(/\/\//g, "/");
 
-  export const joinLines = (...text: string[]) => text.join("\n");
-
   export const concatUrl = (baseURL: string, ...urls: string[]) =>
     normalizePath(urls.reduce((acc, el) => acc.replace(/\/+$/, "") + "/" + el.replace(/^\/+/, ""), baseURL));
 

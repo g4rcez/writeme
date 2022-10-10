@@ -13,7 +13,7 @@ type Props = {
 
 const copyToClipboardClass = "absolute right-0 mx-4 my-5 select-none";
 
-export const CodeHighlight: React.VFC<Props> = ({ code = "", language }) => {
+export const CodeHighlight: React.FC<Props> = ({ code = "", language }) => {
   const [copied, setCopied] = useState(false);
   const convertLang = useMemo(() => (language === "node" ? "javascript" : language), [language]);
 

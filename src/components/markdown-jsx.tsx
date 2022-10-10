@@ -6,9 +6,8 @@ import { CodeResponse } from "./http-response/code-response";
 import { Heading } from "./text";
 import { TableOfContent } from "./table-of-content";
 import { MDXRemote } from "next-mdx-remote";
-import { Erase } from "../lib/types";
 
-type MDXRemoteProps = Erase<NonNullable<Parameters<typeof MDXRemote>[0]>, "components">;
+type MDXRemoteProps = Types.Hide<NonNullable<Parameters<typeof MDXRemote>[0]>, "components">;
 
 const CodeHighlight = dynamic(() => import("./prism"));
 const HttpRequest = dynamic(() => import("./http-request/http-request"));
@@ -58,10 +57,6 @@ const defaultComponents = {
   },
 };
 
-export const MarkdownJsxComponents: any = {
-  ...defaultComponents,
-  GithubOgp,
-  YoutubeOgp,
-};
+export const MarkdownJsxComponents = { ...defaultComponents, GithubOgp, YoutubeOgp };
 
 export const MarkdownJsx = (source: MDXRemoteProps) => <MDXRemote {...source} components={MarkdownJsxComponents} />;

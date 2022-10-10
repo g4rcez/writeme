@@ -1,4 +1,4 @@
-import { Categories, MarkdownDocument, SimplerDocument, Storage } from "./storage";
+import { Categories, MarkdownDocument, SimplerDocument, IStorage } from "./storage";
 import path from "path";
 import { promisify } from "util";
 import fs from "fs";
@@ -7,13 +7,13 @@ import { parse as ymlParse, stringify as ymlStringify } from "yaml";
 
 const glob = promisify(require("glob"));
 
-export class FsStorage extends Storage {
+export class FsStorage implements IStorage {
   public sorted: boolean = false;
   private root = path.join(path.resolve(process.cwd()), "docs");
-  private postsDirRegex = path.join(this.root, "**", "*.?(md|mdx)");
-  private categoriesFile = path.join(this.root, "categories.yml");
+  private postsDirectory = path.join(this.root, "**", "*.?(md|mdx)");
+  private categoryFile = path.join(this.root, "categories.yml");
 
-  private writeCategory = (yaml: any) => fs.writeFileSync(this.categoriesFile, ymlStringify(yaml));
+  private writeCategory = (yaml: any) => fs.writeFileSync(this.categoryFile, ymlStringify(yaml));
 
   public async delete(id: string): Promise<boolean> {
     const categories = await this.fetchCategories();
@@ -27,10 +27,8 @@ export class FsStorage extends Storage {
     this.writeCategory(newCategories);
   }
 
-  private openFile = (file: string) => fs.readFileSync(file, "utf-8");
-
   public async getCategory(id: string): Promise<Categories | null> {
-    const text = this.openFile(this.categoriesFile);
+    const text = this.openFile(this.categoryFile);
     const yml = ymlParse(text);
     return yml.find((x: any) => x.id === id) ?? null;
   }
@@ -46,12 +44,7 @@ export class FsStorage extends Storage {
     return allDocs.map((document) => {
       const text = fs.readFileSync(document, "utf-8");
       const result = Markdown.frontMatter(text);
-      return {
-        index: result.index,
-        title: result.title,
-        category: result.category,
-        url: this.basename(document),
-      };
+      return { index: result.index, title: result.title, category: result.category, url: this.basename(document) };
     });
   }
 
@@ -69,7 +62,7 @@ export class FsStorage extends Storage {
   }
 
   public async fetchCategories(): Promise<Categories[]> {
-    const text = fs.readFileSync(this.categoriesFile, "utf-8");
+    const text = fs.readFileSync(this.categoryFile, "utf-8");
     const content: Categories[] = ymlParse(text);
     return content.map(
       (x): Categories => ({
@@ -86,5 +79,7 @@ export class FsStorage extends Storage {
 
   private basename = (file: string) => path.basename(file).replace(/\.mdx?$/, "");
 
-  private enumerate = async (): Promise<string[]> => glob(this.postsDirRegex);
+  private enumerate = async (): Promise<string[]> => glob(this.postsDirectory);
+
+  private openFile = (file: string) => fs.readFileSync(file, "utf-8");
 }

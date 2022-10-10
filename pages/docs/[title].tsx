@@ -9,7 +9,7 @@ import {
   MarkdownDocument,
   SimplerDocument,
 } from "../../src/writeme/storage/storage";
-import { Writeme } from "../../src/lib/writeme";
+import { Config } from "../../src/lib/config";
 import { MarkdownJsx } from "../../src/components/markdown-jsx";
 import Link from "next/link";
 import { Links } from "../../src/lib/links";
@@ -109,8 +109,8 @@ export const getStaticProps: GetStaticProps<Props> = async (props) => {
     }
     const mdx = await Markdown.process(post.content, {
       ...post.frontMatter,
-      ...Writeme.config?.requestVariables,
-      ...Writeme.config,
+      ...Config.properties?.requestVariables,
+      ...Config.properties,
       repository: post.frontMatter.repository ?? "",
     });
     const categories = await categoriesService.getCategories();

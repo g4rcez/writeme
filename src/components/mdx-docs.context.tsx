@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 
 type MdxDocsContextProps = {
   theme: string;
@@ -8,5 +8,3 @@ type MdxDocsContextProps = {
 const MdxDocsContext = createContext<MdxDocsContextProps>({ theme: "light", titlePrefix: "WriteMe" });
 
 export const MdxDocsProvider = MdxDocsContext.Provider;
-
-export const useMdxDocs = () => useContext(MdxDocsContext);

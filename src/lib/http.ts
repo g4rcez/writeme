@@ -18,13 +18,13 @@ export namespace Http {
   }
 
   type WritemeResponse =
-    | Either.Success<{ status: number; items: any[] } | { status: number; item: any }>
+    | Either.Success<{ status: number; items: any[] } | { status: number; item: any } | ({ status: number } & object)>
     | Either.Error<{ errors: string[]; payload: any; status: number }>;
 
   type Handlers = Partial<Record<Method, (req: NextApiRequest, res: NextApiResponse) => Promise<WritemeResponse>>>;
 
   export const handler = (handlers: Handlers) => async (req: NextApiRequest, res: NextApiResponse) => {
-    console.log(handler)
+    console.log(handler);
     const method = (req.method?.toLowerCase() as Method) ?? "get";
     const hasMethod = Helpers.has(handlers, method as Method);
     console.log({ method, hasMethod });

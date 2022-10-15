@@ -1,13 +1,33 @@
-import { Categories, MarkdownDocument, SimplerDocument, IStorage } from "./storage";
+import { Categories, MarkdownDocument, SimplerDocument, IStorage, MarkdownDocumentRaw } from "./storage";
 import path from "path";
 import { promisify } from "util";
 import fs from "fs";
 import { Markdown } from "../../lib/markdown/markdown";
 import { parse as ymlParse, stringify as ymlStringify } from "yaml";
+import { Strings } from "../../lib/strings";
 
 const glob = promisify(require("glob"));
 
 export class FsStorage implements IStorage {
+  public async saveDocument(data: MarkdownDocumentRaw): Promise<MarkdownDocument> {
+    const document: MarkdownDocument = {
+      tags: [],
+      authors: [],
+      id: Strings.uuid(),
+      index: data.index,
+      title: data.title,
+      url: Strings.slug(data.url),
+      category: data.category,
+      content: data.category,
+      description: data.description,
+      createdAt: data.createdAt,
+    };
+    const yaml = ymlStringify(document);
+    const text = "--- yaml\n" + yaml + "\n---\n" + data.content;
+    fs.writeFileSync(`${document.url}.md`, text, "utf-8");
+    return document;
+  }
+
   public sorted: boolean = false;
   private root = path.join(path.resolve(process.cwd()), "docs");
   private postsDirectory = path.join(this.root, "**", "*.?(md|mdx)");
@@ -15,14 +35,14 @@ export class FsStorage implements IStorage {
 
   private writeCategory = (yaml: any) => fs.writeFileSync(this.categoryFile, ymlStringify(yaml));
 
-  public async delete(id: string): Promise<boolean> {
-    const categories = await this.fetchCategories();
+  public async deleteCategory(id: string): Promise<boolean> {
+    const categories = await this.getCategories();
     this.writeCategory(categories.filter((x) => x.id !== id));
     return true;
   }
 
   public async updateCategory(category: Categories): Promise<void> {
-    const categories = await this.fetchCategories();
+    const categories = await this.getCategories();
     const newCategories = categories.map((x) => (x.id === category.id ? category : x));
     this.writeCategory(newCategories);
   }
@@ -34,7 +54,7 @@ export class FsStorage implements IStorage {
   }
 
   public async saveCategory(category: Categories): Promise<void> {
-    const categories = await this.fetchCategories();
+    const categories = await this.getCategories();
     categories.push(category);
     this.writeCategory(categories);
   }
@@ -61,7 +81,7 @@ export class FsStorage implements IStorage {
     return paths.map(this.basename);
   }
 
-  public async fetchCategories(): Promise<Categories[]> {
+  public async getCategories(): Promise<Categories[]> {
     const text = fs.readFileSync(this.categoryFile, "utf-8");
     const content: Categories[] = ymlParse(text);
     return content.map(

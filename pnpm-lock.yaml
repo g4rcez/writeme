@@ -82,6 +82,7 @@ specifiers:
   unified: 10.1.2
   use-typed-reducer: 3.1.1
   yaml: 2.1.1
+  zod: 3.19.1
 
 dependencies:
   '@codemirror/autocomplete': 6.3.0_eqnojjybujbpyzalc7hq3ayyuy
@@ -145,6 +146,7 @@ dependencies:
   unified: 10.1.2
   use-typed-reducer: 3.1.1_react@18.2.0
   yaml: 2.1.1
+  zod: 3.19.1
 
 devDependencies:
   '@types/glob': 8.0.0
@@ -8634,6 +8636,10 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zod/3.19.1:
+    resolution: {integrity: sha512-LYjZsEDhCdYET9ikFu6dVPGp2YH9DegXjdJToSzD9rO6fy4qiRYFoyEYwps88OseJlPyl2NOe2iJuhEhL7IpEA==}
+    dev: false
 
   /zwitch/2.0.2:
     resolution: {integrity: sha512-JZxotl7SxAJH0j7dN4pxsTV6ZLXoLdGME+PsjkL/DaBrVryK9kTGq06GfKrwcSOqypP+fdXGoCHE36b99fWVoA==}

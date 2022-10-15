@@ -42,6 +42,7 @@ export namespace Markdown {
     serialize(content, {
       scope,
       mdxOptions: {
+        useDynamicImport: true,
         remarkPlugins: [remarkGfm, remarkVariables(scope), remarkTabs, remarkGemoji, remarkDef, remarkFootnotes],
       },
     });

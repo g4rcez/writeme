@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,64 +8,42 @@ datasource db {
 }
 
 model Authors {
-  id              String            @id @default(uuid()) @db.Uuid
-  name            String            @db.VarChar(256)
-  nickname        String            @unique @db.VarChar(64)
-  email           String            @unique @db.VarChar(256)
-  documents       Documents[]
-  DocumentAuthors DocumentAuthors[]
+  id       String @id @default(uuid()) @db.Uuid
+  name     String @db.VarChar(256)
+  nickname String @unique @db.VarChar(64)
+  email    String @unique @db.VarChar(256)
+  links    Json
 }
 
 model Tags {
-  id           String         @id @default(uuid()) @db.Uuid
-  title        String         @db.VarChar(256)
-  url          String         @unique @db.VarChar(256)
-  documentTags DocumentTags[]
-}
-
-model DocumentTags {
-  id         String    @id @default(uuid()) @db.Uuid
-  document   Documents @relation(fields: [documentId], references: [id])
-  tag        Tags      @relation(fields: [tagsId], references: [id])
-  documentId String    @db.Uuid
-  tagsId     String    @db.Uuid
+  id    String @id @default(uuid()) @db.Uuid
+  title String @db.VarChar(256)
+  url   String @unique @db.VarChar(256)
 }
 
 model Categories {
-  id          String      @id @default(uuid()) @db.Uuid
-  title       String      @db.VarChar(256)
-  url         String      @unique @db.VarChar(256)
-  index       Int         @db.Integer
-  icon        String?     @db.VarChar(256)
-  banner      String?     @db.VarChar(256)
-  description String      @db.VarChar(512)
-  Documents   Documents[]
+  id          String  @id @default(uuid()) @db.Uuid
+  title       String  @db.VarChar(256)
+  url         String  @unique @db.VarChar(256)
+  index       Int     @db.Integer
+  icon        String? @db.VarChar(256)
+  banner      String? @db.VarChar(256)
+  description String  @db.VarChar(512)
 }
 
 model Documents {
-  id              String            @id @default(uuid()) @db.Uuid
-  title           String            @db.VarChar(256)
-  url             String            @unique @db.VarChar(256)
-  content         String            @db.Text
-  banner          String?           @db.VarChar(256)
-  icon            String?           @db.VarChar(256)
-  metadata        Json              @db.JsonB
-  description     String            @db.VarChar(512)
-  createdAt       DateTime          @db.Timestamptz
-  updatedAt       DateTime          @updatedAt @db.Timestamptz
-  category        Categories        @relation(fields: [categoryId], references: [id])
-  documentTags    DocumentTags[]
-  categoryId      String            @db.Uuid
-  index           Int               @db.Integer
-  Authors         Authors?          @relation(fields: [authorsId], references: [id])
-  authorsId       String?           @db.Uuid
-  DocumentAuthors DocumentAuthors[]
-}
-
-model DocumentAuthors {
-  id          String    @id @default(uuid()) @db.Uuid
-  author      Authors   @relation(fields: [authorsId], references: [id])
-  document    Documents @relation(fields: [documentsId], references: [id])
-  authorsId   String    @db.Uuid
-  documentsId String    @db.Uuid
+  id          String   @id @default(uuid()) @db.Uuid
+  title       String   @db.VarChar(256)
+  url         String   @unique @db.VarChar(256)
+  content     String   @db.Text
+  banner      String?  @db.VarChar(256)
+  icon        String?  @db.VarChar(256)
+  description String   @db.VarChar(512)
+  createdAt   DateTime @db.Timestamptz
+  updatedAt   DateTime @updatedAt @db.Timestamptz
+  index       Int      @db.Integer
+  metadata    Json
+  categories  Json
+  tags        Json
+  authors     Json
 }

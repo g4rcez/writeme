@@ -38,6 +38,7 @@
     "@codemirror/view": "6.2.5",
     "@g4rcez/httpsnippet": "1.24.5",
     "@g4rcez/prism-react-renderer": "0.0.1",
+    "@legendapp/state": "0.20.2",
     "@lezer/highlight": "1.1.1",
     "@prisma/client": "4.3.1",
     "@radix-ui/react-checkbox": "1.0.0",

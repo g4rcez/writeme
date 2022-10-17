@@ -16,7 +16,7 @@ import { Links } from "../../src/lib/links";
 import { useRouter } from "next/dist/client/router";
 import { DocumentNavigation } from "../../src/components/document-navigation";
 import { useEffect, useRef, useState } from "react";
-import { postsService } from "../../src/writeme/service/posts";
+import { postsService } from "../../src/writeme/service/documents";
 import { categoriesService } from "../../src/writeme/service/categories";
 
 type Props = {
@@ -107,12 +107,7 @@ export const getStaticProps: GetStaticProps<Props> = async (props) => {
     if (post === null) {
       return { notFound: true };
     }
-    const mdx = await Markdown.process(post.content, {
-      ...post.frontMatter,
-      ...Config.properties?.requestVariables,
-      ...Config.properties,
-      repository: post.frontMatter.repository ?? "",
-    });
+    const mdx = await Markdown.process(post.content, { ...Config.properties?.requestVariables, ...Config.properties });
     const categories = await categoriesService.getCategories();
     const simplerDocuments = await storage.getSimplerDocuments();
     const groups = postsService.aggregateDocumentToCategory(categories, simplerDocuments);

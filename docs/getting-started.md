@@ -1,14 +1,13 @@
 --- yaml
+id: e83f74e4-77a2-4f4e-b692-e82f6c3ac73b
 title: How to install
-createdAt: 2022-09-13T04:14:57.330Z
+createdAt: 2022-10-17T19:26:57.064Z
 index: 1
-category: getting-started
-tags:
-
-- id: docs
-  url: docs
-  title: Documentation
-
+category: roadmap
+tags: []
+authors: []
+url: getting-started
+description: New description
 ---
 
 <TableOfContent />

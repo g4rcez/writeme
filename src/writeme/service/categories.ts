@@ -10,6 +10,15 @@ import { z } from "zod";
 type SaveCategories = Types.Hide<Categories, "id">;
 
 class CategoriesService extends Service implements IRepository<Categories, SaveCategories> {
+  private saveSchema = z.object({
+    title: z.string().max(256),
+    index: z.number().int(),
+    description: z.string(),
+    banner: z.string().optional(),
+    icon: z.string().optional(),
+    url: Validator.urlFriendly.max(256),
+  });
+
   public async delete(uuid: string): Promise<Either.Error<string[]> | Either.Success<null>> {
     await this.storage.deleteCategory(uuid);
     return Either.success(null);
@@ -41,15 +50,6 @@ class CategoriesService extends Service implements IRepository<Categories, SaveC
     return list.sort((a, b) => a.index - b.index);
   };
 
-  private saveSchema = z.object({
-    title: z.string().max(256),
-    index: z.number().int(),
-    description: z.string(),
-    banner: z.string().optional(),
-    icon: z.string().optional(),
-    url: Validator.urlFriendly.max(256),
-  });
-
   public async save(item: Categories): Promise<Categories> {
     const id = Strings.uuid();
     const category = { ...item, id };
@@ -63,6 +63,14 @@ class CategoriesService extends Service implements IRepository<Categories, SaveC
       return Either.success({ ...validation.success, id: Strings.uuid() });
     }
     return Either.error(validation.error);
+  }
+
+  public async getAll(): Promise<Categories[]> {
+    return [];
+  }
+
+  public async findById(id: string): Promise<Categories | null> {
+    return null;
   }
 }
 

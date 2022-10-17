@@ -21,6 +21,7 @@ specifiers:
   '@codemirror/view': 6.2.5
   '@g4rcez/httpsnippet': 1.24.5
   '@g4rcez/prism-react-renderer': 0.0.1
+  '@legendapp/state': 0.20.2
   '@lezer/highlight': 1.1.1
   '@prisma/client': 4.3.1
   '@radix-ui/react-checkbox': 1.0.0
@@ -100,6 +101,7 @@ dependencies:
   '@codemirror/view': 6.2.5
   '@g4rcez/httpsnippet': 1.24.5
   '@g4rcez/prism-react-renderer': 0.0.1_react@18.2.0
+  '@legendapp/state': 0.20.2_react@18.2.0
   '@lezer/highlight': 1.1.1
   '@prisma/client': 4.3.1_prisma@4.3.1
   '@radix-ui/react-checkbox': 1.0.0_biqbaboplfbrettd7655fr4n2y
@@ -1115,6 +1117,23 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
+
+  /@legendapp/state/0.20.2_react@18.2.0:
+    resolution: {integrity: sha512-tfPbBQWZ5x2NWcBh9gliQ1b53/kKWoCvF7r4KVPdF1LiY7SZtB0+tvKX+f2keNJY//TqG5b2VlB1TH3zlCydVg==}
+    peerDependencies:
+      react: '>=16.8'
+      react-native: '>=0.61'
+      react-native-mmkv: ^2
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-native:
+        optional: true
+      react-native-mmkv:
+        optional: true
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /@lezer/common/0.15.12:
     resolution: {integrity: sha512-edfwCxNLnzq5pBA/yaIhwJ3U3Kz8VAUOTRg0hhxaizaI1N+qxV7EXDv/kLCkLeq2RzSFvxexlaj5Mzfn2kY0Ig==}

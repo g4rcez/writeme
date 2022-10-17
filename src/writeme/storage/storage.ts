@@ -39,14 +39,14 @@ export type SimplerCategory = Types.Hide<Categories, "description">;
 export type MarkdownDocument = {
   id: string;
   url: string;
-  tags: Tag[];
-  authors: Author[];
   title: string;
   index: number;
   content: string;
   category: string;
   createdAt: string;
   description: string;
+  tags: Tag[];
+  authors: Author[];
 };
 
 export type MarkdownDocumentRaw = {
@@ -62,6 +62,8 @@ export type MarkdownDocumentRaw = {
 };
 
 export type SimplerDocument = Types.Only<MarkdownDocument, "url" | "title" | "category" | "index">;
+
+export type VitrineDocument = Types.Hide<MarkdownDocument, "content">;
 
 export type DocumentsJoinCategory = {
   category: Categories;
@@ -87,5 +89,11 @@ export interface IStorage {
 
   deleteCategory(id: string): Promise<boolean>;
 
-  saveDocument(document: MarkdownDocumentRaw): Promise<MarkdownDocument>;
+  saveDocument(document: MarkdownDocument): Promise<void>;
+
+  getAllDocuments(): Promise<VitrineDocument[]>;
+
+  getDocumentById(id: string): Promise<MarkdownDocument | null>;
+
+  updateDocument(document: MarkdownDocument, id: string): Promise<MarkdownDocument | null>;
 }

@@ -1,39 +1,88 @@
-import { Categories, MarkdownDocument, SimplerDocument, IStorage, MarkdownDocumentRaw } from "./storage";
+import { Categories, IStorage, MarkdownDocument, SimplerDocument, VitrineDocument } from "./storage";
 import path from "path";
 import { promisify } from "util";
 import fs from "fs";
 import { Markdown } from "../../lib/markdown/markdown";
 import { parse as ymlParse, stringify as ymlStringify } from "yaml";
-import { Strings } from "../../lib/strings";
 
 const glob = promisify(require("glob"));
 
 export class FsStorage implements IStorage {
-  public async saveDocument(data: MarkdownDocumentRaw): Promise<MarkdownDocument> {
-    const document: MarkdownDocument = {
-      tags: [],
-      authors: [],
-      id: Strings.uuid(),
-      index: data.index,
-      title: data.title,
-      url: Strings.slug(data.url),
-      category: data.category,
-      content: data.category,
-      description: data.description,
-      createdAt: data.createdAt,
-    };
-    const yaml = ymlStringify(document);
-    const text = "--- yaml\n" + yaml + "\n---\n" + data.content;
-    fs.writeFileSync(`${document.url}.md`, text, "utf-8");
-    return document;
-  }
-
   public sorted: boolean = false;
   private root = path.join(path.resolve(process.cwd()), "docs");
   private postsDirectory = path.join(this.root, "**", "*.?(md|mdx)");
   private categoryFile = path.join(this.root, "categories.yml");
 
-  private writeCategory = (yaml: any) => fs.writeFileSync(this.categoryFile, ymlStringify(yaml));
+  public async updateDocument(document: MarkdownDocument, id: string) {
+    const allDocs = await this.enumerate();
+    const find = allDocs.find((document) => {
+      const text = fs.readFileSync(document, "utf-8");
+      const result = Markdown.frontMatter(text);
+      return result.id === id;
+    });
+    if (find === undefined) return null;
+    const { content, ...frontMatter } = document;
+    const text = fs.readFileSync(find, "utf-8");
+    const result = Markdown.frontMatter(text);
+    const tags = (result.tags ?? ([] as any[])).concat(document.tags);
+    const authors = (result.authors ?? ([] as any[])).concat(document.authors);
+    const yaml = ymlStringify({ ...result, ...frontMatter, tags, authors });
+    const markdown = "--- yaml\n" + yaml + "---\n" + content;
+    fs.writeFileSync(find, markdown, "utf-8");
+    return document;
+  }
+
+  public async getDocumentById(id: string): Promise<MarkdownDocument | null> {
+    const allDocs = await this.enumerate();
+    const find = allDocs.find((document) => {
+      const text = fs.readFileSync(document, "utf-8");
+      const result = Markdown.frontMatter(text);
+      return result.id === id;
+    });
+    if (find === undefined) return null;
+    const filename = path.join(this.root, find);
+    const text = fs.readFileSync(filename, "utf-8");
+    const { content, frontMatter } = Markdown.document(text);
+    return {
+      index: frontMatter.index,
+      url: frontMatter.url,
+      id: frontMatter.id,
+      content,
+      description: frontMatter.description ?? "",
+      title: frontMatter.title,
+      category: frontMatter.category,
+      createdAt: new Date(frontMatter.createdAt).toISOString(),
+      tags: frontMatter.tags || [],
+      authors: frontMatter.authors || [],
+    };
+  }
+
+  async getAllDocuments(): Promise<VitrineDocument[]> {
+    const allDocs = await this.enumerate();
+    return allDocs.map((document): VitrineDocument => {
+      const text = fs.readFileSync(document, "utf-8");
+      const result = Markdown.frontMatter(text);
+      const id = this.basename(document);
+      return {
+        index: result.index,
+        title: result.title,
+        category: result.category,
+        url: id,
+        tags: result.tags ?? [],
+        description: result.description ?? "",
+        authors: result.authors ?? [],
+        id: id,
+        createdAt: new Date(result.createdAt).toISOString(),
+      };
+    });
+  }
+
+  public async saveDocument(document: MarkdownDocument): Promise<void> {
+    const { content, ...data } = document;
+    const yaml = ymlStringify(data);
+    const text = "--- yaml\n" + yaml + "---\n" + content;
+    fs.writeFileSync(path.join(this.root, `${document.url}.md`), text, "utf-8");
+  }
 
   public async deleteCategory(id: string): Promise<boolean> {
     const categories = await this.getCategories();
@@ -72,8 +121,7 @@ export class FsStorage implements IStorage {
     const paths: string[] = await this.enumerate();
     const document = paths.find((x) => name === this.basename(x));
     if (document === undefined) return null;
-    const text = fs.readFileSync(document, "utf-8");
-    return Markdown.extract(text, name);
+    return Markdown.extract(fs.readFileSync(document, "utf-8"), name);
   }
 
   public async getAllDocumentPaths(): Promise<string[]> {
@@ -96,6 +144,8 @@ export class FsStorage implements IStorage {
       })
     );
   }
+
+  private writeCategory = (yaml: any) => fs.writeFileSync(this.categoryFile, ymlStringify(yaml));
 
   private basename = (file: string) => path.basename(file).replace(/\.mdx?$/, "");
 

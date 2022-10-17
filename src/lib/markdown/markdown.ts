@@ -15,13 +15,20 @@ export namespace Markdown {
     return document.data;
   };
 
+  export const document = (content: string) => {
+    const document = grayMatter(content);
+    return { content: document.content, frontMatter: document.data };
+  };
+
   export const extract = (text: string, name: string): MarkdownDocument => {
     const document = grayMatter(text);
     const matter: FrontMatter = document.data as any;
     const content = document.content;
     const createdAt = new Date(matter.createdAt as string).toISOString();
     return {
+      ...matter,
       content,
+      id: matter.id,
       url: name,
       createdAt,
       tags: matter.tags,

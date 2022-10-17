@@ -1,11 +1,18 @@
 import { Either } from "../../lib/either";
+import { z } from "zod";
 
-export interface IRepository<Entity, SaveEntity, ID = string> {
-  save (item: SaveEntity): Promise<Entity>;
+type ID = string;
 
-  validate (item: SaveEntity): Promise<Either.Error<string[]> | Either.Success<Entity>>;
+export interface IRepository<Entity, SaveEntity, GetEntity = SaveEntity> {
+  getAll(): Promise<GetEntity[]>;
 
-  update (item: Partial<SaveEntity>, uuid: ID): Promise<Either.Error<string[]> | Either.Success<Entity>>;
+  findById(id: string): Promise<Entity | null>;
 
-  delete (uuid: ID): Promise<Either.Error<string[]> | Either.Success<null>>;
+  save(item: Entity): Promise<Entity>;
+
+  validate(item: SaveEntity, schema?: z.ZodType): Promise<Either.Error<string[]> | Either.Success<Entity>>;
+
+  update(item: Entity, uuid: ID): Promise<Either.Error<null> | Either.Success<Entity>>;
+
+  delete(uuid: ID): Promise<Either.Error<string[]> | Either.Success<null>>;
 }

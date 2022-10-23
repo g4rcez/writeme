@@ -1,16 +1,13 @@
----yaml
+--- yaml
 title: Features
-createdAt: 2022-09-13T04:14:57.330Z
+createdAt: 2022-10-17T21:41:57.064Z
 index: 2
 category: getting-started
-tags:
-
-- id: docs
-  url: docs
-  title: Documentation
-
+tags: []
+authors: []
+url: features
+description: All writeme features
 ---
-
 <TableOfContent />
 
 # Common Markdown
@@ -46,10 +43,10 @@ There's no place like :house:
 
 # Tabs
 
-Support tabs with MDX or using comment with `<!-- |tabs -->` to open and `<!-- /tabs -->` to close. In comment mode, you
-can pass the default tab after `|tabs`
+Support tabs with MDX or using comment with `{/* |tabs */}` to open and `{/* /tabs */}` to close. In comment mode, you
+can pass the default tab after `|tabs`, just like this `{/* |tabs your-id */}`
 
-<!-- |tabs second -->
+{/* |tabs second */}
 
 ## First
 
@@ -59,7 +56,7 @@ This is first tab content
 
 This is second tab content
 
-<!-- /tabs -->
+{/* /tabs */}
 
 ## Titles
 
@@ -86,4 +83,4 @@ HttpRequest and HttpResponse now is a single component to use without any config
 
 You use a default playground to execute Javascript code inside your browser
 
-<Playground />
+<Playground test="AA" />

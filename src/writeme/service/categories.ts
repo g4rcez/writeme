@@ -2,21 +2,25 @@ import { Service } from "./service";
 import { Categories } from "../storage/storage";
 import { IRepository } from "./irepository";
 import { Strings } from "../../lib/strings";
-import fjs from "fluent-json-schema";
-import { Regex } from "../../lib/regex";
 import { Either } from "../../lib/either";
 import { Validator } from "../../lib/validator";
+
+import { z } from "zod";
 
 type SaveCategories = Types.Hide<Categories, "id">;
 
 class CategoriesService extends Service implements IRepository<Categories, SaveCategories> {
-  constructor() {
-    super();
-    Validator.register(this.saveSchema);
-  }
+  private saveSchema = z.object({
+    title: z.string().max(256),
+    index: z.number().int(),
+    description: z.string(),
+    banner: z.string().optional(),
+    icon: z.string().optional(),
+    url: Validator.urlFriendly.max(256),
+  });
 
   public async delete(uuid: string): Promise<Either.Error<string[]> | Either.Success<null>> {
-    await this.storage.delete(uuid);
+    await this.storage.deleteCategory(uuid);
     return Either.success(null);
   }
 
@@ -42,23 +46,9 @@ class CategoriesService extends Service implements IRepository<Categories, SaveC
   }
 
   public getCategories = async (): Promise<Categories[]> => {
-    const list = await this.storage.fetchCategories();
+    const list = await this.storage.getCategories();
     return list.sort((a, b) => a.index - b.index);
   };
-
-  private saveSchema = Validator.createSchema(
-    fjs
-      .object()
-      .id("categories")
-      .title("Validate Categories")
-      .prop("url", fjs.string().pattern(Regex.UrlFriendly))
-      .prop("title", fjs.string().minLength(1))
-      .prop("index", fjs.integer())
-      .prop("icon", fjs.string())
-      .prop("banner", fjs.string())
-      .prop("description", fjs.string())
-      .required(["url", "title", "index", "description"])
-  );
 
   public async save(item: Categories): Promise<Categories> {
     const id = Strings.uuid();
@@ -68,11 +58,19 @@ class CategoriesService extends Service implements IRepository<Categories, SaveC
   }
 
   public async validate(item: SaveCategories): Promise<Either.Error<string[]> | Either.Success<Categories>> {
-    const validation = Validator.validate(this.saveSchema.id, item);
+    const validation = await Validator.validate(this.saveSchema, item);
     if (Either.isSuccess(validation)) {
-      return Either.success({ ...item, id: Strings.uuid() });
+      return Either.success({ ...validation.success, id: Strings.uuid() });
     }
-    return Either.error(validation.error.map((x) => `${x.instancePath} - ${x.message}`));
+    return Either.error(validation.error);
+  }
+
+  public async getAll(): Promise<Categories[]> {
+    return [];
+  }
+
+  public async findById(id: string): Promise<Categories | null> {
+    return null;
   }
 }
 

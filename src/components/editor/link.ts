@@ -53,7 +53,6 @@ const extension = (view: EditorView) => {
       from: range.from,
       to: range.to,
       enter: ({ type, node, from, to }) => {
-        console.log(type, node, from, to);
         const text: string = view.state.doc.sliceString(from, to);
         if (type.name === "URL") {
           const link = new Link(from, to, text);

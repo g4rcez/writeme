@@ -25,7 +25,7 @@ const convertRequest = (curl: string) => {
   }
 };
 
-export const HttpRequest: React.VFC<Props> = ({ curl }) => {
+export const HttpRequest: React.FC<Props> = ({ curl }) => {
   const [language, setLanguage] = useState<HttpSnippet.Languages>(HttpDefault.language as HttpSnippet.Languages);
   const [framework, setFramework] = useState(HttpDefault.framework);
   const [req, setReq] = useState(() => convertRequest(curl));

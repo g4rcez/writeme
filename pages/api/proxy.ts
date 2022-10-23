@@ -1,12 +1,10 @@
 import { httpClient } from "src/lib/http-client";
-import type { NextApiRequest, NextApiResponse } from "next";
 import { Http } from "../../src/lib/http";
 import { Either } from "../../src/lib/either";
 
 export default Http.handler({
   post: async (req, res) => {
     const init = Date.now();
-
     const body: Types.BodyProxy = req.body;
     try {
       const response = await httpClient(body.url, {

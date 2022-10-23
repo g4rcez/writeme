@@ -28,13 +28,6 @@ const playgroundScope = {
 };
 
 const defaultComponents = {
-  h1: (props: any) => <Heading {...props} data-heading="true" tag="h2" data-tag="h1" size="text-3xl" />,
-  h2: (props: any) => <Heading {...props} data-heading="true" tag="h2" data-tag="h2" size="text-3xl" />,
-  h3: (props: any) => <Heading {...props} data-heading="true" tag="h3" data-tag="h3" size="text-2xl" />,
-  h4: (props: any) => <Heading {...props} data-heading="true" tag="h4" data-tag="h4" size="text-xl" />,
-  h5: (props: any) => <Heading {...props} data-heading="true" tag="h5" data-tag="h5" size="text-lg" />,
-  h6: (props: any) => <Heading {...props} data-heading="true" tag="h6" data-tag="h6" size="text-base" />,
-  pre: MdPre,
   CodeHighlight,
   CodeResponse,
   Flowchart,
@@ -42,10 +35,17 @@ const defaultComponents = {
   HttpResponse,
   Tab,
   TableOfContent,
-  Toc: TableOfContent,
   Tabs,
-  ul: (props: any) => <ul {...props} className={props.className ?? "mt-2 mb-4 list-inside ml-8 list-disc"} />,
+  Toc: TableOfContent,
+  h1: (props: any) => <Heading {...props} data-heading="true" tag="h2" data-tag="h1" size="text-3xl" />,
+  h2: (props: any) => <Heading {...props} data-heading="true" tag="h2" data-tag="h2" size="text-3xl" />,
+  h3: (props: any) => <Heading {...props} data-heading="true" tag="h3" data-tag="h3" size="text-2xl" />,
+  h4: (props: any) => <Heading {...props} data-heading="true" tag="h4" data-tag="h4" size="text-xl" />,
+  h5: (props: any) => <Heading {...props} data-heading="true" tag="h5" data-tag="h5" size="text-lg" />,
+  h6: (props: any) => <Heading {...props} data-heading="true" tag="h6" data-tag="h6" size="text-base" />,
   ol: (props: any) => <ol {...props} className={props.className ?? "mt-2 mb-4 list-inside ml-8 list-decimal"} />,
+  pre: MdPre,
+  ul: (props: any) => <ul {...props} className={props.className ?? "mt-2 mb-4 list-inside ml-8 list-disc"} />,
   Playground: function Component(props: any) {
     return <Playground {...props} scope={playgroundScope} />;
   },
@@ -57,6 +57,6 @@ const defaultComponents = {
   },
 };
 
-export const MarkdownJsxComponents = { ...defaultComponents, GithubOgp, YoutubeOgp };
+export const MarkdownJsxComponents = { ...defaultComponents, GithubOgp, YoutubeOgp } as any;
 
 export const MarkdownJsx = (source: MDXRemoteProps) => <MDXRemote {...source} components={MarkdownJsxComponents} />;

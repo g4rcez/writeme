@@ -1,4 +1,4 @@
-import React, { MouseEvent, RefObject, useEffect, useMemo, useRef, useState } from "react";
+import React, { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { EditorView } from "@codemirror/view";
 import { EditorState, Extension } from "@codemirror/state";
 import { darkTheme, lightTheme } from "./themes";
@@ -11,15 +11,13 @@ type UseCodeMirror = {
   editor: Types.Nullable<EditorState>;
 };
 
-const useCodeMirror = (
-  initialText: string = ""
-): [ref: RefObject<HTMLDivElement>, codemirror: UseCodeMirror, text: React.MutableRefObject<string>] => {
+const useCodeMirror = (initialText: string = "") => {
   const refContainer = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<UseCodeMirror>({ view: null, editor: null });
   const [preferences] = usePreferences();
   const extensionHash = useMemo(() => new Set(preferences.extensions), [preferences.extensions]);
   const theme = preferences.theme;
-  const text = useRef(initialText);
+  const [text, setText] = useState(initialText);
 
   useEffect(() => {
     if (refContainer.current === null) return;
@@ -27,13 +25,11 @@ const useCodeMirror = (
       .reduce<Extension[]>((acc, el) => (extensionHash.has(el.name) ? acc.concat(el.ext) : acc), [])
       .concat(coreExtensions);
     const startState = EditorState.create({
-      doc: text.current,
+      doc: initialText,
       extensions: allExtensions.concat(
         EditorView.lineWrapping,
         EditorView.updateListener.of((update) => {
-          if (update.changes) {
-            text.current = update.state.doc.toString();
-          }
+          setText(update.state.doc.toString());
         })
       ),
     });
@@ -43,7 +39,7 @@ const useCodeMirror = (
       view.destroy();
       setState({ editor: null, view: null });
     };
-  }, [refContainer, extensionHash]);
+  }, [initialText, refContainer, extensionHash]);
 
   useEffect(() => {
     if (state.view === null || themeSwitcher === null) return;
@@ -51,11 +47,19 @@ const useCodeMirror = (
     state.view.dispatch({ effects: themeSwitcher.reconfigure(reconfigured) });
   }, [state.view, theme]);
 
-  return [refContainer, state, text];
+  return [refContainer, state, text] as const;
 };
 
-export const MarkdownEditor = (props: { text: string; viewHeader?: boolean }) => {
-  const [ref, state, textRef] = useCodeMirror(props.text);
+type Props = {
+  form?: string;
+  text?: string;
+  viewHeader?: boolean;
+  className?: string;
+  name?: string;
+};
+
+export const MarkdownEditor = (props: Props) => {
+  const [ref, state, textRef] = useCodeMirror(props.text ?? "");
 
   const onAddText = (event: MouseEvent<HTMLButtonElement>) => {
     const button = event.currentTarget;
@@ -76,7 +80,7 @@ export const MarkdownEditor = (props: { text: string; viewHeader?: boolean }) =>
   };
 
   return (
-    <div className="w-full mx-auto block max-w-full">
+    <div className={`w-full mx-auto block max-w-full ${props.className ?? ""}`}>
       {props.viewHeader && (
         <header className="w-full flex gap-x-8 mb-2">
           <button onClick={onAddText} data-text="# " data-inline="false">
@@ -96,7 +100,8 @@ export const MarkdownEditor = (props: { text: string; viewHeader?: boolean }) =>
           </button>
         </header>
       )}
-      <section ref={ref} data-value={textRef.current} />
+      <textarea id={props.name} form={props.form} defaultValue={props.text} name={props.name} hidden value={textRef} />
+      <section ref={ref} />
     </div>
   );
 };

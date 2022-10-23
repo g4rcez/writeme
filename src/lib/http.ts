@@ -24,10 +24,8 @@ export namespace Http {
   type Handlers = Partial<Record<Method, (req: NextApiRequest, res: NextApiResponse) => Promise<WritemeResponse>>>;
 
   export const handler = (handlers: Handlers) => async (req: NextApiRequest, res: NextApiResponse) => {
-    console.log(handler);
     const method = (req.method?.toLowerCase() as Method) ?? "get";
     const hasMethod = Helpers.has(handlers, method as Method);
-    console.log({ method, hasMethod });
     if (!hasMethod) {
       return res.status(405).json({ message: "Method not allowed" });
     }

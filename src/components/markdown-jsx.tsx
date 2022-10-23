@@ -57,6 +57,6 @@ const defaultComponents = {
   },
 };
 
-export const MarkdownJsxComponents = { ...defaultComponents, GithubOgp, YoutubeOgp };
+export const MarkdownJsxComponents = { ...defaultComponents, GithubOgp, YoutubeOgp } as any;
 
 export const MarkdownJsx = (source: MDXRemoteProps) => <MDXRemote {...source} components={MarkdownJsxComponents} />;

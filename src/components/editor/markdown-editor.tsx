@@ -39,7 +39,7 @@ const useCodeMirror = (initialText: string = "") => {
       view.destroy();
       setState({ editor: null, view: null });
     };
-  }, [refContainer, extensionHash]);
+  }, [initialText, refContainer, extensionHash]);
 
   useEffect(() => {
     if (state.view === null || themeSwitcher === null) return;

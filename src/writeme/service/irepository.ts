@@ -12,7 +12,7 @@ export interface IRepository<Entity, SaveEntity, GetEntity = SaveEntity> {
 
   validate(item: SaveEntity, schema?: z.ZodType): Promise<Either.Error<string[]> | Either.Success<Entity>>;
 
-  update(item: Entity, uuid: ID): Promise<Either.Error<null> | Either.Success<Entity>>;
+  update(item: Entity, uuid: ID): Promise<Either.Error<string[]> | Either.Success<Entity>>;
 
   delete(uuid: ID): Promise<Either.Error<string[]> | Either.Success<null>>;
 }

@@ -103,7 +103,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<Props> = async (props) => {
   const title = props.params?.title as string;
   try {
-    const post = await storage.getDocument(title);
+    const post = await storage.getDocumentByName(title);
     if (post === null) {
       return { notFound: true };
     }

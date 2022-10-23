@@ -50,6 +50,7 @@ export type MarkdownDocument = {
 };
 
 export type MarkdownDocumentRaw = {
+  id?: string;
   tags: ID[];
   authors: ID[];
   category: ID;
@@ -77,7 +78,7 @@ export interface IStorage {
 
   getSimplerDocuments(): Promise<SimplerDocument[]>;
 
-  getDocument(name: string): Promise<MarkdownDocument | null>;
+  getDocumentByName(name: string): Promise<MarkdownDocument | null>;
 
   getCategories(): Promise<Categories[]>;
 
@@ -95,5 +96,5 @@ export interface IStorage {
 
   getDocumentById(id: string): Promise<MarkdownDocument | null>;
 
-  updateDocument(document: MarkdownDocument, id: string): Promise<MarkdownDocument | null>;
+  updateDocumentById(document: MarkdownDocument, id: string): Promise<MarkdownDocument | null>;
 }

@@ -45,7 +45,7 @@ class PostsService extends Service implements IRepository<MarkdownDocument, Mark
       return Either.success({
         authors: [],
         tags: [],
-        id: Strings.uuid(),
+        id: item.id ?? Strings.uuid(),
         index: data.index,
         title: data.title,
         url: data.url,
@@ -95,18 +95,19 @@ class PostsService extends Service implements IRepository<MarkdownDocument, Mark
   }
 
   public async findById(id: string): Promise<MarkdownDocument | null> {
-    return this.storage.getDocument(id);
+    return this.storage.getDocumentById(id);
   }
 
   public async update(
     item: MarkdownDocument,
     uuid: string
-  ): Promise<Either.Error<null> | Either.Success<MarkdownDocument>> {
+  ): Promise<Either.Error<string[]> | Either.Success<MarkdownDocument>> {
     try {
-      await this.storage.updateDocument(item, uuid);
+      const result = await this.storage.updateDocumentById(item, uuid);
+      if (result === null) return Either.error(["Not found this document"]);
       return Either.success(item);
     } catch (e) {
-      return Either.error(e as null);
+      return Either.error([]);
     }
   }
 }

@@ -1,62 +1,10 @@
-- authors: []
-  tags: []
-  id: getting-started
-  index: 1
-  title: How to install
+- id: getting-started
   url: getting-started
-  description: Desc
-  category: roadmap
-  content: >
-    
-    <TableOfContent />
-
-
-    [Writeme](https://github.com/g4rcez/writeme) is under development, so you can't install. But you can use online in [online demo](https://writeme.vercel.app).
-
-
-    # Clone
-
-
-    ```shell
-
-    git clone https://github.com/g4rcez/writeme
-
-    ```
-
-
-    # Install
-
-
-    First, we need to install dependencies
-
-    ```shell
-
-    # I prefer to use pnpm, but you can use yarn or npm
-
-    pnpm install
-
-    # or with yarn
-
-    yarn install
-
-    # or with npm
-
-    npm install
-
-    ```
-
-
-    # Enjoy
-
-
-    After install, just run the project
-
-    ```shell
-
-    npm run dev
-
-    ```
-  createdAt: 2022-10-17T19:21:22.376Z
+  icon: /rocket-240.png?__dark=rocket-dark-240.png
+  title: Getting Started
+  index: 1
+  banner: ""
+  description: How can I use writeme? Learn how to use.
 - id: roadmap
   url: roadmap
   icon: /rocket-240.png?__dark=rocket-dark-240.png

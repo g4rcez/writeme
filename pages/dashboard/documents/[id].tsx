@@ -72,7 +72,7 @@ export default function DashboardEditDocumentPage(props: Props) {
         </div>
         <div className="relative">
           <Button type="submit" className="absolute -top-4 right-0">
-            Create Document
+            Update
           </Button>
           <MarkdownEditor name="content" text={doc.content} viewHeader form={FORM_NAME} />
         </div>

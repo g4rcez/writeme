@@ -17,6 +17,8 @@ export namespace Is {
   export const Keyof = <T, K extends string>(o: T, key: K): K extends keyof T ? true : false =>
     Helpers.has(o, key as string) as never;
 
+  export const Null = (a: any): a is null => a === null;
+
   export const Empty = (a: any) => {
     if (a === undefined || a === "" || a === null) return true;
     if (Array.isArray(a) && a.length === 0) return true;

@@ -5,6 +5,7 @@ import { Heading } from "../../../src/components";
 import { Dates } from "../../../src/lib/dates";
 import Link from "next/link";
 import { Links } from "../../../src/lib/links";
+import { Card } from "../../../src/components/card";
 
 type Props = {
   documents: VitrineDocument[];
@@ -20,22 +21,28 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
 export default function DashboardIndexPage({ documents }: Props) {
   return (
-    <div className="container w-full mx-auto">
+    <div className="container w-full mx-auto mt-8">
+      <Heading tag="h1" className="text-3xl mb-4">
+        Documents
+      </Heading>
       <ul className="grid grid-cols-1 md:grid-cols-4 gap-8">
         {documents.map((x) => {
           const date = Dates.localeDate(x.createdAt);
+          const link = Links.dashboard.document(x.id);
           return (
-            <li key={x.id} className="link:border-main-300 rounded-xl border-slate-200 border p-4">
-              <Link href={Links.dashboard.document(x.id)} passHref>
-                <a className="link:text-main-500 transition-colors duration-300" href={Links.dashboard.document(x.id)}>
-                  <Heading tag="h2" className="text-3xl">
+            <Card as="li" key={x.id} className="">
+              <Heading tag="h2" className="text-3xl">
+                <Link href={link} passHref>
+                  <a className="link:text-main-500 transition-colors duration-300" href={link}>
                     {x.title}
-                  </Heading>
-                </a>
-              </Link>
-              <p>{x.description}</p>
+                  </a>
+                </Link>
+              </Heading>
+              <p className={x.description ? "opacity-70 my-4" : "opacity-40 my-4"}>
+                {x.description || "- No description -"}
+              </p>
               <time datatype={date}>{date}</time>
-            </li>
+            </Card>
           );
         })}
       </ul>

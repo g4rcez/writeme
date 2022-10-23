@@ -4,23 +4,19 @@ import { promisify } from "util";
 import fs from "fs";
 import { Markdown } from "../../lib/markdown/markdown";
 import { parse as ymlParse, stringify as ymlStringify } from "yaml";
+import { Is } from "../../lib/is";
 
 const glob = promisify(require("glob"));
 
 export class FsStorage implements IStorage {
   public sorted: boolean = false;
   private root = path.join(path.resolve(process.cwd()), "docs");
-  private postsDirectory = path.join(this.root, "**", "*.?(md|mdx)");
+  private postsDirectory = path.join(this.root, "**", "*.mdx");
   private categoryFile = path.join(this.root, "categories.yml");
 
-  public async updateDocument(document: MarkdownDocument, id: string) {
-    const allDocs = await this.enumerate();
-    const find = allDocs.find((document) => {
-      const text = fs.readFileSync(document, "utf-8");
-      const result = Markdown.frontMatter(text);
-      return result.id === id;
-    });
-    if (find === undefined) return null;
+  public async updateDocumentById(document: MarkdownDocument, id: string) {
+    const find = await this.findDocument(id);
+    if (Is.NilOrEmpty(find)) return null;
     const { content, ...frontMatter } = document;
     const text = fs.readFileSync(find, "utf-8");
     const result = Markdown.frontMatter(text);
@@ -33,55 +29,22 @@ export class FsStorage implements IStorage {
   }
 
   public async getDocumentById(id: string): Promise<MarkdownDocument | null> {
-    const allDocs = await this.enumerate();
-    const find = allDocs.find((document) => {
-      const text = fs.readFileSync(document, "utf-8");
-      const result = Markdown.frontMatter(text);
-      return result.id === id;
-    });
-    if (find === undefined) return null;
-    const filename = path.join(this.root, find);
-    const text = fs.readFileSync(filename, "utf-8");
-    const { content, frontMatter } = Markdown.document(text);
-    return {
-      index: frontMatter.index,
-      url: frontMatter.url,
-      id: frontMatter.id,
-      content,
-      description: frontMatter.description ?? "",
-      title: frontMatter.title,
-      category: frontMatter.category,
-      createdAt: new Date(frontMatter.createdAt).toISOString(),
-      tags: frontMatter.tags || [],
-      authors: frontMatter.authors || [],
-    };
+    const find = await this.findDocument(id);
+    if (Is.NilOrEmpty(find)) return null;
+    const filename = path.join(this.root, this.filename(id));
+    return this.buildDocument(filename);
   }
 
   async getAllDocuments(): Promise<VitrineDocument[]> {
     const allDocs = await this.enumerate();
-    return allDocs.map((document): VitrineDocument => {
-      const text = fs.readFileSync(document, "utf-8");
-      const result = Markdown.frontMatter(text);
-      const id = this.basename(document);
-      return {
-        index: result.index,
-        title: result.title,
-        category: result.category,
-        url: id,
-        tags: result.tags ?? [],
-        description: result.description ?? "",
-        authors: result.authors ?? [],
-        id: id,
-        createdAt: new Date(result.createdAt).toISOString(),
-      };
-    });
+    return allDocs.map((document): VitrineDocument => this.buildDocument(document));
   }
 
   public async saveDocument(document: MarkdownDocument): Promise<void> {
     const { content, ...data } = document;
     const yaml = ymlStringify(data);
     const text = "--- yaml\n" + yaml + "---\n" + content;
-    fs.writeFileSync(path.join(this.root, `${document.url}.md`), text, "utf-8");
+    fs.writeFileSync(path.join(this.root, this.filename(document.url)), text, "utf-8");
   }
 
   public async deleteCategory(id: string): Promise<boolean> {
@@ -117,11 +80,11 @@ export class FsStorage implements IStorage {
     });
   }
 
-  public async getDocument(name: string): Promise<MarkdownDocument | null> {
+  public async getDocumentByName(name: string): Promise<MarkdownDocument | null> {
     const paths: string[] = await this.enumerate();
-    const document = paths.find((x) => name === this.basename(x));
-    if (document === undefined) return null;
-    return Markdown.extract(fs.readFileSync(document, "utf-8"), name);
+    const document = paths.find((x) => name === this.basename(x)) ?? null;
+    if (Is.Null(document)) return null;
+    return this.buildDocument(document);
   }
 
   public async getAllDocumentPaths(): Promise<string[]> {
@@ -136,18 +99,53 @@ export class FsStorage implements IStorage {
       (x): Categories => ({
         id: x.id,
         url: x.url,
-        icon: x.icon,
+        icon: x.icon ?? "",
         title: x.title,
         index: x.index,
-        banner: x.banner,
+        banner: x.banner ?? "",
         description: x.description ?? "",
       })
     );
   }
 
+  private filename = (basename: string) => `${basename}.mdx`;
+
+  private findDocument = async (id: string) => {
+    const file = path.join(this.root, this.filename(id));
+    if (fs.existsSync(file)) return file;
+    const allDocs = await this.enumerate();
+    return (
+      allDocs.find((document) => {
+        const alternativeId = this.basename(document);
+        const text = fs.readFileSync(document, "utf-8");
+        const result = Markdown.frontMatter(text);
+        return result.id === id || id === alternativeId;
+      }) ?? null
+    );
+  };
+
+  private buildDocument = (document: string) => {
+    const text = fs.readFileSync(document, "utf-8");
+    const { content, frontMatter } = Markdown.document(text);
+    const url = this.basename(document);
+    const idDoc = frontMatter.id || url;
+    return {
+      content,
+      id: idDoc,
+      index: frontMatter.index,
+      url: frontMatter.url ?? url,
+      title: frontMatter.title,
+      category: frontMatter.category,
+      tags: frontMatter.tags || [],
+      authors: frontMatter.authors || [],
+      description: frontMatter.description ?? "",
+      createdAt: new Date(frontMatter.createdAt).toISOString(),
+    };
+  };
+
   private writeCategory = (yaml: any) => fs.writeFileSync(this.categoryFile, ymlStringify(yaml));
 
-  private basename = (file: string) => path.basename(file).replace(/\.mdx?$/, "");
+  private basename = (file: string) => path.basename(file).replace(/\.mdx$/, "");
 
   private enumerate = async (): Promise<string[]> => glob(this.postsDirectory);
 

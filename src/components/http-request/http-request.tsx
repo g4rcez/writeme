@@ -9,7 +9,9 @@ import { Body } from "./body";
 import { convert, Header } from "./curl-parser";
 import { Headers } from "./headers";
 import { HttpMethod } from "./http-method";
-import { HttpDefault, HttpLanguages } from "./languages";
+import { HttpLanguages } from "./languages";
+import { Button } from "../button";
+import { useCodeLanguage } from "../preferences/code-language";
 
 const CodeHighlight = dynamic(() => import("../prism"));
 
@@ -26,21 +28,17 @@ const convertRequest = (curl: string) => {
 };
 
 export const HttpRequest: React.FC<Props> = ({ curl }) => {
-  const [language, setLanguage] = useState<HttpSnippet.Languages>(HttpDefault.language as HttpSnippet.Languages);
-  const [framework, setFramework] = useState(HttpDefault.framework);
   const [req, setReq] = useState(() => convertRequest(curl));
   const { onRequest } = useHttpContext();
+  const [state, set] = useCodeLanguage();
 
   useEffect(() => setReq(() => convertRequest(curl)), [curl]);
 
   const requestCode = useMemo(() => {
     if (req === null) return "";
     try {
-      const snippet = new HttpSnippet({
-        ...req,
-        postData: req.body,
-      });
-      const text = snippet.convert(language, framework as never) || "";
+      const snippet = new HttpSnippet({ ...req, postData: req.body });
+      const text = snippet.convert(state.language as never, state.framework as never) || "";
       return text
         .replace(/(\r?\n)+/g, "\n")
         .replace(/^[ \t]\+/, "")
@@ -48,16 +46,19 @@ export const HttpRequest: React.FC<Props> = ({ curl }) => {
     } catch (error) {
       return "";
     }
-  }, [language, framework, req]);
+  }, [req, state]);
 
   const onChangeLang = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value as HttpSnippet.Languages;
-    setLanguage(val);
+    set.language(val);
     const lang = HttpLanguages.find((x) => x.value === val)!;
-    setFramework(lang.frameworks[0].value);
+    set.framework(lang.frameworks[0].value);
   }, []);
 
-  const frameworks = useMemo(() => HttpLanguages.find((x) => x.value === language)!.frameworks, [language]);
+  const frameworks = useMemo(
+    () => HttpLanguages.find((x) => x.value === state.language)!.frameworks,
+    [state.framework]
+  );
 
   const onChangeRequestBody = useCallback((body: any) => {
     setReq((prev) =>
@@ -97,26 +98,29 @@ export const HttpRequest: React.FC<Props> = ({ curl }) => {
 
   const onlyPathApi = useMemo(() => (req?.url ? new URL(req.url).pathname : ""), [req?.url]);
 
+  const body = (req?.body as any).text ?? "";
+
   return (
     <section className="http-request">
-      <section className="w-full">
-        <header className="my-4">
-          <h3 data-toc="false" className="text-xs" data-text={`${req?.method} ${onlyPathApi}`}>
-            <HttpMethod method={req?.method} /> <span className="text-sm">{onlyPathApi}</span>
-          </h3>
-        </header>
-        <div className="my-2">
-          <MiniTitle data-toc="false">Headers</MiniTitle>
-          <Headers headers={headers} onChange={onChangeRequestHeaders} />
-        </div>
-        <div className="my-2">
+      <header className="my-2">
+        <h3 data-toc="false" className="text-xs" data-text={`${req?.method} ${onlyPathApi}`}>
+          <HttpMethod method={req?.method} /> <span className="text-sm">{onlyPathApi}</span>
+        </h3>
+      </header>
+      <div className="mt-8">
+        <MiniTitle data-toc="false">Headers</MiniTitle>
+        <Headers headers={headers} onChange={onChangeRequestHeaders} />
+      </div>
+
+      {body !== "" ? (
+        <div className="mt-8 mb-4">
           <MiniTitle data-toc="false">Body</MiniTitle>
-          <Body onChange={onChangeRequestBody} text={(req?.body as any).text ?? ""} />
+          <Body onChange={onChangeRequestBody} text={body} />
         </div>
-      </section>
+      ) : null}
       <aside className="http-request-code">
         <form onSubmit={onSubmit} className="flex gap-x-4 items-center">
-          <Select value={language} placeholder="Language" onChange={onChangeLang}>
+          <Select value={state.language} placeholder="Language" onChange={onChangeLang}>
             {HttpLanguages.map((x) => (
               <option key={`lang-${x.value}`} value={x.value}>
                 {x.label}
@@ -124,7 +128,7 @@ export const HttpRequest: React.FC<Props> = ({ curl }) => {
             ))}
           </Select>
           {frameworks.length > 1 && (
-            <Select value={framework} placeholder="Framework" onChange={(e) => setFramework(e.target.value)}>
+            <Select value={state.framework} placeholder="Framework" onChange={(e) => set.framework(e.target.value)}>
               {frameworks.map((x) => (
                 <option key={`framework-${x.value}`} value={x.value}>
                   {x.label}
@@ -132,14 +136,9 @@ export const HttpRequest: React.FC<Props> = ({ curl }) => {
               ))}
             </Select>
           )}
-          <button
-            type="submit"
-            className="px-4 py-3 my-0 leading-3 text-sm bg-main-normal transition-colors duration-300 ease-out hover:bg-main-hover-border active:bg-main-hover-border text-main-accent rounded-lg"
-          >
-            Request API
-          </button>
+          <Button type="submit">Request API</Button>
         </form>
-        <CodeHighlight code={requestCode} language={language} />
+        <CodeHighlight code={requestCode} language={state.language} />
       </aside>
     </section>
   );

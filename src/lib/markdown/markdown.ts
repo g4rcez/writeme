@@ -7,6 +7,7 @@ import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { remarkVariables } from "./remark-variables";
 import { remarkTabs } from "./remark-tabs";
 import remarkDef from "remark-deflist";
+import { remarkCode } from "./remark-code";
 
 export namespace Markdown {
   export const frontMatter = (content: string) => {
@@ -31,7 +32,15 @@ export namespace Markdown {
       mdxOptions: {
         format: "mdx",
         useDynamicImport: true,
-        remarkPlugins: [remarkTabs, remarkGfm, remarkVariables(scope), remarkGemoji, remarkDef, remarkFootnotes] as any,
+        remarkPlugins: [
+          remarkTabs,
+          remarkCode,
+          remarkVariables(scope),
+          remarkGfm,
+          remarkGemoji,
+          remarkDef,
+          remarkFootnotes,
+        ] as any,
       },
     });
 }

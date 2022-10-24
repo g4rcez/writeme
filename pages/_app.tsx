@@ -8,6 +8,8 @@ import { VscGithub } from "react-icons/vsc";
 import { DarkMode } from "../src/hooks/use-dark-mode";
 import { Preferences } from "../src/components/preferences/preferences";
 import { IconContext } from "react-icons";
+import { Playground } from "../src/components";
+import { CodeLanguageProvider } from "../src/components/preferences/code-language";
 
 function Content({ Component, pageProps }: { Component: NextComponentType<NextPageContext, any, {}>; pageProps: any }) {
   return (
@@ -45,7 +47,9 @@ export default function App({ Component, pageProps }: AppProps) {
     <Preferences>
       <DarkMode>
         <IconContext.Provider value={iconContextValue}>
-          <Content Component={Component} pageProps={pageProps} />
+          <CodeLanguageProvider>
+            <Content Component={Component} pageProps={pageProps} />
+          </CodeLanguageProvider>
         </IconContext.Provider>
       </DarkMode>
     </Preferences>

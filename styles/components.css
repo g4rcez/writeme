@@ -34,7 +34,7 @@
     }
 
     .button[data-theme=primary] {
-        @apply bg-main-500 link:bg-main-300 border-main-500;
+        @apply bg-main-500 link:bg-main-300 border-main-500 text-white;
     }
 
     /* HttpRequest */

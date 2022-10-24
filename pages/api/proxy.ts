@@ -25,6 +25,7 @@ export default Http.handler({
         method: body.method,
       });
     } catch (error: any) {
+      console.log(error);
       const end = Date.now();
       return Either.success({
         status: Http.InternalServerError,

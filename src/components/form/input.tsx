@@ -4,7 +4,11 @@ export type InputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function C({ className = "", ...props }, ref) {
   return (
-    <fieldset disabled={props.disabled} form={props.form} className="relative h-16 isolate w-full">
+    <fieldset
+      form={props.form}
+      disabled={props.disabled}
+      className={`relative ${props.placeholder ? "h-16" : "h-8"} isolate w-full`}
+    >
       <input
         {...props}
         ref={ref}

@@ -19,17 +19,16 @@ const Field: React.FC<FieldProps> = ({ item: x, onChangeInput }) => {
   const firstPrototype = useRef(Is.Prototype(x.value));
   return (
     <section className="http-body-field">
-      <label>
-        <span className="cursor-text w-fit">
-          <span className="font-extrabold">{x.key}</span> <Type>{firstPrototype.current}</Type>
+      <label className="flex w-full gap-2 items-center">
+        <span className="cursor-text flex items-baseline gap-x-2">
+          <b>{x.key}</b> <Type>{firstPrototype.current}</Type>
         </span>
         <Input
+          name={x.key}
+          onChange={onChangeInput}
           style={{ width: `${x.value.toString().length + 3}ch` }}
           type={firstPrototype.current === "Number" ? "number" : "text"}
           value={x.value}
-          onChange={onChangeInput}
-          className="block"
-          name={x.key}
         />
       </label>
     </section>
@@ -45,20 +44,14 @@ type Props = {
   originalRef?: any;
 };
 
-const BodyRecursive: React.VFC<Props> = ({ parentPath = [], onChange, parentIsArray, ...props }) => {
+const BodyRecursive: React.FC<Props> = ({ parentPath = [], onChange, parentIsArray, ...props }) => {
   const uuid = useRef(Strings.uuid());
 
-  const [body, setBody] = useState(() => {
-    const txt = props.text ?? "";
-    return Is.Json(txt) ? JSON.parse(txt) : {};
-  });
+  const json = useCallback((a: any) => (Is.Json(a) ? JSON.parse(a) : {}), []);
 
-  useEffect(() => {
-    setBody(() => {
-      const txt = props.text ?? "";
-      return Is.Json(txt) ? JSON.parse(txt) : {};
-    });
-  }, [props.text]);
+  const [body, setBody] = useState(() => json(props.text));
+
+  useEffect(() => setBody(json(props.text)), [props.text]);
 
   const index = useMemo(() => (props.index === undefined ? 0 : props.index + 1), [props.index]);
 

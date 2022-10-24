@@ -2,7 +2,6 @@ import { Compartment, Extension } from "@codemirror/state";
 import { keymap, lineNumbers, placeholder } from "@codemirror/view";
 import { defaultKeymap } from "@codemirror/commands";
 import { indentOnInput, syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language";
-import { bracketMatching } from "@codemirror/matchbrackets";
 import { darkTheme } from "./themes";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
@@ -21,7 +20,6 @@ export const themeSwitcher = new Compartment();
 export const extraExtensions: EditorNamedExtension[] = [
   { name: "lineNumbers", ext: lineNumbers() },
   { name: "indentOnInput", ext: indentOnInput() },
-  { name: "bracketMatching", ext: bracketMatching() },
 ];
 
 export const coreExtensions: Extension[] = [

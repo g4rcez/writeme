@@ -9,27 +9,6 @@ const OpenGraph = dynamic(() => import("./open-graph/open-graph"));
 const CodeHighlight = dynamic(() => import("./prism"));
 const Flowchart = dynamic(() => import("./flowchart"));
 
-const re = /((\w+)=(\w+|"[\w+ -]+"))/gi;
-
-const parseMetaString = (str: string | undefined): Types.Dict => {
-  if (str === undefined) return {};
-  const matches = str.split(re);
-  return matches.reduce((acc, el) => {
-    if (!el.includes("=")) {
-      return acc;
-    }
-    const [property, ...values] = el.split("=");
-    return {
-      ...acc,
-      [property]: values
-        .join()
-        .replace(/^(["'])/, "")
-        .replace(/(["'])$/, "")
-        .trim(),
-    };
-  }, {});
-};
-
 const ConnectedHttp: React.FC<{ code: string }> = ({ code }) => {
   const { response, loading } = useHttpContext();
   return (
@@ -40,37 +19,36 @@ const ConnectedHttp: React.FC<{ code: string }> = ({ code }) => {
   );
 };
 
-export const MdPre = (props: any) => {
-  const componentProps = props.children.props;
-  const language = /\w+-(\w+)/.exec(componentProps.className)?.[1];
-  const metaProps = parseMetaString(componentProps.metastring);
-  const type = metaProps.type;
+const isHttpCurlCommand = (command: string) => command.startsWith("curl") || command.startsWith("http");
 
-  if (language === undefined)
+type Props = Partial<{
+  code: string;
+  lang: string;
+  theme: string;
+  type: string;
+  className: string;
+}>;
+
+export const MdPre = ({ className = "", lang = "", theme = "", type = "", code = "" }: Props) => {
+  const isCurlRequest = isHttpCurlCommand(code);
+
+  if (lang === undefined)
     return (
       <pre className="block w-full border border-border-slight">
-        <code>{componentProps.children}</code>
+        <code>{code}</code>
       </pre>
     );
-
-  if (language === "chart") return <Flowchart code={componentProps.children} />;
-  if (type === "request") {
+  if (lang === "chart") return <Flowchart code={code} />;
+  if (type === "request" || isCurlRequest) {
+    const command = code.replace(/^http /, "curl ") ?? "";
     return (
       <HttpContext>
-        <ConnectedHttp code={props.children.props.children ?? ""} />
+        <ConnectedHttp code={command} />
       </HttpContext>
     );
   }
-  if (language === "ogp")
-    return (
-      <OpenGraph
-        {...metaProps}
-        className={metaProps.className}
-        url={`${componentProps.children.replace("\n", "").trim()}`}
-      />
-    );
-
-  return <CodeHighlight code={componentProps.children.replace(/\n$/, "").replace(/^\n/, "")} language={language} />;
+  if (lang === "ogp") return <OpenGraph className={className} url={`${code.replace("\n", "").trim()}`} />;
+  return <CodeHighlight code={code.replace(/\n$/, "").replace(/^\n/, "")} language={lang} />;
 };
 
 export default MdPre;

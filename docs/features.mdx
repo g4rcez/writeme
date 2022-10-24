@@ -30,6 +30,10 @@ description: All writeme features
 ![Here is an example](https://via.placeholder.com/150)
 Image example
 
+# MDX
+- Expressions resolved: `{6 * Math.PI}` === {6 * Math.PI}
+- [Comments](https://reactjs.org/docs/faq-build.html#how-can-i-write-comments-in-jsx) like in a React app
+
 # Emojis :smile:
 
 Support emojis using [remark-gemoji](https://github.com/remarkjs/remark-gemoji). You can view
@@ -73,11 +77,15 @@ curl -X POST "{{host}}/api/test" -H "Content-Type: application/json" -d '{"email
 ```
 ````
 
-```bash type=request theme=dark
-curl -X POST "localhost:5000/api/test" -H "Content-Type: application/json" -d '{"email":"write@me.com"}'
+```bash type=request
+curl -X POST "http://localhost:5000/api/test" -H "Content-Type: application/json" -d '{"email":"write@me.com"}'
 ```
 
-HttpRequest and HttpResponse now is a single component to use without any configuration.
+Request to another domain
+
+```bash type=request
+curl -X GET "https://api.postmon.com.br/v1/cep/00000000" -H "Content-Type: application/json"
+```
 
 # Playground
 

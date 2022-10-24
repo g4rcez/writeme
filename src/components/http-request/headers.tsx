@@ -24,16 +24,14 @@ export const Headers: React.FC<Props> = ({ headers, onChange }) => {
       {(headers.length > 0 &&
         headers.map((header, index) => (
           <li key={`header-${header.name}`} className="http-headers-item">
-            <label>
-              <span className="text-text-text-normal mr-1 italic cursor-text">{header.name}: </span>
-              <Input
-                className="font-bold text-text-paragraph p-1"
-                data-index={index}
-                style={{ width: `${header.value.length + 3}ch` }}
-                value={header.value}
-                onChange={onChangeInput}
-              />
-            </label>
+            <Input
+              className="text-text-paragraph p-1"
+              data-index={index}
+              placeholder={header.name}
+              style={{ width: `${header.value.length + 3}ch` }}
+              value={header.value}
+              onChange={onChangeInput}
+            />
           </li>
         ))) || (
         <li data-empty="true" className="http-headers-item">

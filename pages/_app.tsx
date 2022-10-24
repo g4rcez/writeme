@@ -8,6 +8,7 @@ import { VscGithub } from "react-icons/vsc";
 import { DarkMode } from "../src/hooks/use-dark-mode";
 import { Preferences } from "../src/components/preferences/preferences";
 import { IconContext } from "react-icons";
+import { Playground } from "../src/components";
 
 function Content({ Component, pageProps }: { Component: NextComponentType<NextPageContext, any, {}>; pageProps: any }) {
   return (

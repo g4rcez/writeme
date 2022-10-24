@@ -14,13 +14,14 @@ export const getStaticProps: GetStaticProps<{ categories: Categories[] }> = asyn
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-export default function Home({ categories }: Props) {
+export default function Home ({ categories }: Props) {
   return (
     <main className="flex flex-col h-screen justify-between">
       <section className="my-12 w-full grid grid-cols-1 md:grid-cols-2 gap-12 px-6 mx-auto container">
-        {categories.map((category) => (
-          <Link key={category.id} passHref href={Links.toDoc(category.url)}>
-            <a className="transition-colors duration-300 block shadow-sm rounded-lg p-8 max-w-5xl bg-white dark:bg-transparent backdrop-blur-md border border-slate-200 link:border-slate-300 dark:border-zinc-700 dark:link:border-zinc-500">
+        {categories.map ((category) => (
+          <Link key={category.id} passHref href={Links.toDoc (category.url)}>
+            <a
+              className="transition-colors duration-300 block shadow-sm rounded-lg p-8 max-w-5xl bg-white dark:bg-transparent backdrop-blur-md border border-slate-200 link:border-slate-300 dark:border-zinc-700 dark:link:border-zinc-500">
               {category.icon && (
                 <Img
                   src={category.icon}

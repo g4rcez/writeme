@@ -73,8 +73,8 @@ curl -X POST "{{host}}/api/test" -H "Content-Type: application/json" -d '{"email
 ```
 ````
 
-```bash type=request
-curl -X POST "{{host}}/api/test" -H "Content-Type: application/json" -d '{"email":"write@me.com"}'
+```bash type=request theme=dark
+curl -X POST "localhost:5000/api/test" -H "Content-Type: application/json" -d '{"email":"write@me.com"}'
 ```
 
 HttpRequest and HttpResponse now is a single component to use without any configuration.

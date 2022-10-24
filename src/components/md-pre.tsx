@@ -40,7 +40,7 @@ const ConnectedHttp: React.FC<{ code: string }> = ({ code }) => {
   );
 };
 
-export const MdPre = (props: any, otherProps: any) => {
+export const MdPre = (props: any) => {
   const componentProps = props.children.props;
   const language = /\w+-(\w+)/.exec(componentProps.className)?.[1];
   const metaProps = parseMetaString(componentProps.metastring);

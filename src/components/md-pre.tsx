@@ -19,7 +19,7 @@ const ConnectedHttp: React.FC<{ code: string }> = ({ code }) => {
   );
 };
 
-const isHttpCurlCommand = (command: string) => command.startsWith("curl") || command.startsWith("http");
+const isHttpCurlCommand = (command: string) => command.startsWith("curl ") || command.startsWith("http ");
 
 type Props = Partial<{
   code: string;
@@ -29,9 +29,9 @@ type Props = Partial<{
   className: string;
 }>;
 
-export const MdPre = ({ className = "", lang = "", theme = "", type = "", code = "" }: Props) => {
+export const MdPre = ({ className = "", lang = "", type = "", code = "" }: Props) => {
   const isCurlRequest = isHttpCurlCommand(code);
-
+  if (lang === "ogp") return <OpenGraph className={className} url={`${code.replace("\n", "").trim()}`} />;
   if (lang === undefined)
     return (
       <pre className="block w-full border border-border-slight">
@@ -47,7 +47,6 @@ export const MdPre = ({ className = "", lang = "", theme = "", type = "", code =
       </HttpContext>
     );
   }
-  if (lang === "ogp") return <OpenGraph className={className} url={`${code.replace("\n", "").trim()}`} />;
   return <CodeHighlight code={code.replace(/\n$/, "").replace(/^\n/, "")} language={lang} />;
 };
 

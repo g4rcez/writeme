@@ -1,0 +1,56 @@
+---
+title: Tabs
+createdAt: 2022-10-24T23:41:57.064Z
+index: 2
+category: features
+tags: []
+authors: []
+url: tabs-component
+description: How can I use <Tabs/>?
+---
+
+Using comments MDX comments + token `{/* |tabs */}` you can use the `<Tabs/>` components without any JSX, only old and plain markdown.
+
+You have two options when start a tabs syntax
+
+- Set default tab: `{/* |tabs TITLE */}` this make your tab with id `TITLE` as a active tab
+- Without default tab: `{/* |tabs */}` this make your first heading active in your tab
+
+# Set default tab
+
+{/* |tabs active */}
+
+## Title
+
+Not important text
+
+## Active
+
+This is your active tab by default
+
+## Slug
+
+Not important text
+
+{/* /tabs */}
+
+# Without default tab
+
+{/* |tabs */}
+
+## First
+
+This is your active tab by default
+
+## Second
+
+This is your active tab by default
+
+{/* /tabs */}
+
+To reconize title ids, writeme convert the string of title to a `slugified` string.
+
+- Title -> title
+- Hack the planet -> {Strings.slug("Hack the planet")}
+- é especial -> {Strings.slug("é-especial")}
+

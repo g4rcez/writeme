@@ -1,43 +1,90 @@
---- yaml
+---
 title: Features
-createdAt: 2022-10-17T21:41:57.064Z
-index: 2
-category: getting-started
+createdAt: 2022-10-24T21:41:57.064Z
+index: 1
+category: features
 tags: []
 authors: []
 url: features
 description: All writeme features
 ---
+
 <TableOfContent />
 
 # Common Markdown
 
-- [I'm a link](https://github.com/g4rcez)
-- **Bold**
-- *Italic*
-- ***Bold + Italic***
+All basic features available in Markdown.
+
+## Basic
+
+- [I'm a link](https://github.com/g4rcez "My repository")
+- **I'm a bold text**
+- _I'm a italic text_
+- **_Bold + Italic_**
 - ~~Strike~~
+- `Inline code`
+
+## Horizontal line
+
+Try
+
+---
+
+This
+
+## Ordered list
 
 1. List
 2. With
 3. Numbers
 
+## To-Do List
+
+You can create a simple [todo list](https://en.wikipedia.org/wiki/Wikipedia:To-do_list#:~:text=This%20is%20an%20information%20page.&text=It%20may%20reflect%20varying%20levels,%7B%7BTo%20do%7D%7D%20template. "Wikipedia link for to-do list")
+
 - [ ] Task pending
 - [x] Task completed
 
-> Blockquote
+## Blockquote
+
+You can create simple blockquotes to referer a sentence
+
+{/* https://www.goodreads.com/author/quotes/9810.Albert_Einstein */}
+
+> Life is like riding a bicycle. To keep your balance, you must keep moving - Albert Eistein
+
+## Images
 
 ![Here is an example](https://via.placeholder.com/150)
-Image example
+Simple image, without title
 
-# MDX
-- Expressions resolved: `{6 * Math.PI}` === {6 * Math.PI}
-- [Comments](https://reactjs.org/docs/faq-build.html#how-can-i-write-comments-in-jsx) like in a React app
+![Here is an example](https://via.placeholder.com/150)
+Image using [html title](https://www.w3schools.com/tags/tag_title.asp)
+
+[![An old rock in the desert](https://via.placeholder.com/150 "Shiprock, New Mexico by Beau Rogers")](https://via.placeholder.com/)
+Image using link
+
+# Extended syntax
+
+Advanced features of markdown, using extended syntax + [Github Flavored Markdown](https://github.github.com/gfm/ "GFM Spec")
+
+## Tables
+
+| Syntax      | Description |
+| ----------- | ----------- |
+| Header      | Title       |
+| Paragraph   | Text        |
+
+# Footnotes
+
+Here's a simple footnote,[^1]. Click and go to their definition.
+
+[^1]: This is the first footnote.
 
 # Emojis :smile:
 
 Support emojis using [remark-gemoji](https://github.com/remarkjs/remark-gemoji). You can view
-the [Emoji CheatSheet](https://www.webfx.com/tools/emoji-cheat-sheet/). Note: **not all emojis is supported**
+the [Emoji CheatSheet](https://www.webfx.com/tools/emoji-cheat-sheet/) or in [Emojipedia](https://emojipedia.org/ "Emojipedia link"). Note: **not all emojis is supported**
 
 :smile: :laughing: :blush: :smiley: :smirk: :heart_eyes: :kissing_heart: :kissing_closed_eyes: :flushed: :relieved: :
 satisfied: :grin: :wink: :stuck_out_tongue_winking_eye: :stuck_out_tongue_closed_eyes: :alien: :virgo: :ghost: :
@@ -45,7 +92,12 @@ signal_strength:
 
 There's no place like :house:
 
-# Tabs
+# MDX
+
+- Javascript expressions: `{6 * Math.PI}` === {6 * Math.PI}
+- [Comments](https://reactjs.org/docs/faq-build.html#how-can-i-write-comments-in-jsx) like in a React app
+
+## Tabs
 
 Support tabs with MDX or using comment with `{/* |tabs */}` to open and `{/* /tabs */}` to close. In comment mode, you
 can pass the default tab after `|tabs`, just like this `{/* |tabs your-id */}`
@@ -62,14 +114,19 @@ This is second tab content
 
 {/* /tabs */}
 
-## Titles
+## How Tab titles work?
 
-Titles inside of tabs aren't displayed in `<TableOfContent />` component
+Titles inside of tabs comments aren't displayed in `<TableOfContent />` component. You can see the title of this section, because the title is out of `<Tabs/>` comments.
+
+## Playground
+
+Use [Sandpack](https://github.com/codesandbox/sandpack/ "Sandpack github page") playground to run Javascript/Typescrit code using your favorite [template](https://sandpack.codesandbox.io/docs/getting-started/custom-content#templates)
+
+<Playground test="AA" />
 
 # Http Request
 
-Focus in web API docs, this component receive a `curl` command and transform in amazing http request visualizer. Create
-a code mark with bash language and pass `type=request`
+Focus in web API docs, this component receive a `curl` or `http` command and transform in amazing http request visualizer. Create a code mark with bash language and pass `type=request` or just paste your code with `curl` or `http` at start of command.
 
 ````bash
 ```bash type=request
@@ -77,18 +134,25 @@ curl -X POST "{{host}}/api/test" -H "Content-Type: application/json" -d '{"email
 ```
 ````
 
-```bash type=request
-curl -X POST "http://localhost:5000/api/test" -H "Content-Type: application/json" -d '{"email":"write@me.com"}'
-```
-
 Request to another domain
 
 ```bash type=request
-curl -X GET "https://api.postmon.com.br/v1/cep/00000000" -H "Content-Type: application/json"
+curl -X GET "https://api.postmon.com.br/v1/cep/55641715" -H "Content-Type: application/json"
 ```
 
-# Playground
+# Open Graph
 
-You use a default playground to execute Javascript code inside your browser
+Writeme can understand [Open Graph Protocol or OGP](https://ogp.me/) and show an amazing banner of link.
 
-<Playground test="AA" />
+**Tested only for Youtube and Github for now**
+
+Just paste the link of your Youtube video
+```ogp
+https://www.youtube.com/watch?v=EUJ5vWBT2iA
+```
+
+Or your Github repository
+
+```ogp
+https://github.com/github/training-kit
+```

@@ -49,7 +49,7 @@ export const Sidebar = ({ pathname, groups }: Types.Only<Props, "groups"> & { pa
   }, [router.asPath]);
 
   return (
-    <aside className="fixed left-4 w-72 hidden sm:block pt-7">
+    <aside className="fixed left-4 w-72 hidden md:block pt-7">
       <input
         ref={input}
         value={filter}
@@ -132,7 +132,7 @@ export default function Component({ mdx, post, groups, next, previous }: Props) 
   return (
     <div className="mx-auto w-full">
       <Sidebar groups={groups} pathname={router.query.title as string} />
-      <main className="w-full mx-auto container pl-0 pr-0 sm:pl-24 sm:pr-4 max-w-7xl">
+      <main className="w-full mx-auto container pl-8 pr-8 md:pl-72 max-w-8xl">
         <header className="my-4">
           <h1 className="text-5xl leading-loose lining-nums font-extrabold">{post.title}</h1>
           {post.description && <p className="text-base text-text-paragraph mb-2">{post.description}</p>}

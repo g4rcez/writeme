@@ -1,6 +1,7 @@
 import { useHttpContext } from "./http.context";
 import dynamic from "next/dynamic";
 import React, { Fragment } from "react";
+import Playground from "./playground";
 
 const HttpContext = dynamic(() => import("./http.context") as any) as any;
 const HttpRequest = dynamic(() => import("./http-request/http-request"));
@@ -31,6 +32,8 @@ type Props = Partial<{
 
 export const MdPre = ({ className = "", lang = "", type = "", code = "" }: Props) => {
   const isCurlRequest = isHttpCurlCommand(code);
+  console.log({ lang, type, code });
+  if (lang === "playground") return <Playground code={code} template={(type as any) || "react-ts"} />;
   if (lang === "ogp") return <OpenGraph className={className} url={`${code.replace("\n", "").trim()}`} />;
   if (lang === undefined)
     return (

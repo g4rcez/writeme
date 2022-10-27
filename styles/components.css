@@ -1,25 +1,6 @@
 @tailwind components;
 
 @layer components {
-    /* order docs */
-    .order-doc {
-        @apply p-4 border border-border-slight rounded-lg;
-        @apply hover:border-main-hover-border hover:bg-main-slight;
-        @apply hover:border-main-hover-border dark:hover:bg-navbar-bg;
-    }
-
-    /* Search bar */
-    .wall-overlay {
-        @apply absolute top-0 left-0 h-screen w-screen z-20 bg-black/90;
-    }
-
-    .wall-content-container {
-        @apply fixed flex z-20 flex-col max-w-xl w-auto max-h-96 rounded-lg;
-        @apply shadow-2xl p-3 bg-main-bg text-text-normal;
-        top: 10%;
-        margin: auto;
-    }
-
     /* Select */
     .select {
         @apply block form-select mt-1 rounded-md border-border-neutral;

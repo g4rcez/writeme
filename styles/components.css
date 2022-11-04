@@ -47,10 +47,6 @@
         @apply flex flex-col;
     }
 
-    .http-request-code {
-        @apply my-2;
-    }
-
     /* Http Response */
     .http-response {
         @apply mt-4 mb-2;

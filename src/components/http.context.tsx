@@ -31,7 +31,7 @@ export const HttpContext = ({ children }: any) => {
         headers: data.headers,
       });
       setResponse({
-        statusCode: res.status,
+        statusCode: res.data.status,
         url: data.url,
         method: data.method ?? "GET",
         body: res.data,
@@ -41,8 +41,10 @@ export const HttpContext = ({ children }: any) => {
     } catch (error) {
       if ((error as AxiosError).isAxiosError) {
         const e = error as AxiosError;
+        console.log(e);
+        const data = e.response?.data as any;
         setResponse({
-          statusCode: e.response?.status ?? 500,
+          statusCode: data?.statusCode ?? 500,
           url: data.url,
           method: data.method ?? "GET",
           body: e.response?.data ?? null,

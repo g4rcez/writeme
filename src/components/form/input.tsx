@@ -15,7 +15,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function C({ class
         id={props.id ?? props.name}
         className={`input w-full bg-form-bg-input text-form-text-input border p-1 dark:border-zinc-600 border-border-neutral rounded-md absolute bottom-0 ${className}`}
       />
-      <label htmlFor={props.id || props.name} aria-disabled={props.disabled} className="absolute top-0 cursor-text">
+      <label htmlFor={props.id || props.name} aria-disabled={props.disabled} className="absolute top-2 cursor-text text-sm">
         {props.placeholder}
       </label>
     </fieldset>

@@ -1,0 +1,37 @@
+---
+title: JSX and Expressions
+createdAt: "2022-11-02T12:41:57.064Z"
+index: 4
+category: features
+tags: []
+authors: []
+url: jsx-and-expressions
+description: "You can write Javascript expressions and JSX inside of your document..."
+---
+
+<TableOfContent />
+
+Thanks to [MDX 2](https://mdxjs.com/blog/v2/), now we can write expressions inside of our document.
+
+# Expressions
+
+You can write Javascript inside of your document and calculate some results inline. Like this:
+
+- @today - {new Date().toISOString()}
+- π === {Math.PI}
+- 2^10 === {2**10}
+
+# JSX
+
+You can write Javascript and your [React](https://reactjs.org/) components using [JSX](https://reactjs.org/docs/introducing-jsx.html).
+
+- <b>Bold Text</b>
+- <i>Italic Text</i>
+- <s>Strikethrough Text</s>
+
+<h6>H6 Tag</h6>
+
+<ul style={{ listStyle: "disc" }}>
+  <li>List Using HTML/JSX</li>
+  <li>List Using HTML/JSX</li>
+</ul>

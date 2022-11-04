@@ -1,0 +1,62 @@
+---
+title: HTTP Request
+createdAt: "2022-11-03T12:41:57.064Z"
+index: 5
+category: features
+tags: []
+authors: []
+url: http-request
+description: "Transform your Curl request in an amazing component..."
+---
+
+<TableOfContent />
+
+Using Writeme, you can convert your [Curl](https://curl.se/) command in an amazing component.
+
+# How this works?
+
+To avoid [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), Writeme use proxy in `/api/proxy` to forward headers and body for target endpoint.
+
+# Requests
+
+## HTTP Get
+
+```bash type=request
+curl 'https://example.org/'  -H 'Content-Type: application/html' --compressed
+```
+
+## HTTP POST
+
+```bash type=request
+curl -X POST 'https://example.org/'  -H 'Content-Type: application/html' --compressed
+```
+
+## HTTP PATCH
+
+```bash type=request
+curl -X PATCH 'https://example.org/'  -H 'Content-Type: application/html' --compressed
+```
+
+## HTTP PUT
+
+```bash type=request
+curl -X PUT 'https://example.org/'  -H 'Content-Type: application/html' --compressed
+```
+
+## HTTP DELETE
+
+```bash type=request
+curl -X DELETE 'https://example.org/'  -H 'Content-Type: application/html' --compressed
+```
+
+## HTTP HEAD
+
+```bash type=request
+curl -X HEAD 'https://example.org/'  -H 'Content-Type: application/html' --compressed
+```
+
+## HTTP OPTIONS
+
+```bash type=request
+curl -X OPTIONS 'https://example.org/'  -H 'Content-Type: application/html' --compressed
+```

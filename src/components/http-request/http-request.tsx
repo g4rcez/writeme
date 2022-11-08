@@ -29,7 +29,7 @@ const convertRequest = (curl: string) => {
 
 export const HttpRequest: React.FC<Props> = ({ curl }) => {
   const [req, setReq] = useState(() => convertRequest(curl));
-  const { onRequest } = useHttpContext();
+  const { onRequest, loading } = useHttpContext();
   const [state, set] = useCodeLanguage();
 
   useEffect(() => setReq(() => convertRequest(curl)), [curl]);
@@ -57,7 +57,7 @@ export const HttpRequest: React.FC<Props> = ({ curl }) => {
 
   const frameworks = useMemo(
     () => HttpLanguages.find((x) => x.value === state.language)!.frameworks,
-    [state.framework]
+    [state.language]
   );
 
   const onChangeRequestBody = useCallback((body: any) => {
@@ -104,16 +104,18 @@ export const HttpRequest: React.FC<Props> = ({ curl }) => {
     <section className="http-request">
       <header className="my-2">
         <h3 data-toc="false" className="text-xs" data-text={`${req?.method} ${onlyPathApi}`}>
-          <HttpMethod method={req?.method} /> <span className="text-sm">{onlyPathApi}</span>
+          <HttpMethod method={req?.method} /> <span className="ml-1 text-sm">{req?.url}</span>
         </h3>
       </header>
-      <div className="mt-8">
-        <MiniTitle data-toc="false">Headers</MiniTitle>
-        <Headers headers={headers} onChange={onChangeRequestHeaders} />
-      </div>
+      {headers.length > 0 && (
+        <div className="my-4">
+          <MiniTitle data-toc="false">Headers</MiniTitle>
+          <Headers headers={headers} onChange={onChangeRequestHeaders} />
+        </div>
+      )}
 
       {body !== "" ? (
-        <div className="mt-8 mb-4">
+        <div className="my-4">
           <MiniTitle data-toc="false">Body</MiniTitle>
           <Body onChange={onChangeRequestBody} text={body} />
         </div>
@@ -136,7 +138,9 @@ export const HttpRequest: React.FC<Props> = ({ curl }) => {
               ))}
             </Select>
           )}
-          <Button type="submit">Request API</Button>
+          <Button loading={loading} type="submit">
+            Request API
+          </Button>
         </form>
         <CodeHighlight code={requestCode} language={state.language} />
       </aside>

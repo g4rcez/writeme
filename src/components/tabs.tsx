@@ -102,11 +102,12 @@ const calculateWidthSize = (ul: HTMLUListElement, id: string) => {
 };
 
 export const Tabs = (props: PropsWithChildren<TabsProps>) => {
+  console.log(props);
   const inkBar = useRef<HTMLDivElement>(null);
   const header = useRef<HTMLUListElement>(null);
   const container = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(
-    () => props.default ?? (React.Children.toArray(props.children)[0] as any)?.props.id
+    () => props.default || (React.Children.toArray(props.children)[0] as any)?.props.id
   );
 
   useEffect(() => {

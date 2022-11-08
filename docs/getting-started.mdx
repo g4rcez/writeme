@@ -1,39 +1,31 @@
 --- yaml
-title: How to install
-createdAt: 2022-10-17T19:26:57.064Z
-index: 1
+title: Getting started
+createdAt: 2022-10-24T23:19:39.498Z
+index: 2
 category: getting-started
 tags: []
 authors: []
-url: getting-started
-description: New description
+url: how-to-install
+description: How can I start my project?
+id: how-to-install
 ---
 
 <TableOfContent />
 
-[Writeme](https://github.com/g4rcez/writeme) is under development, so you can't install. But you can use online in [online demo](https://writeme.vercel.app).
+# Start devolopment
+First of all, you need to start the writeme web server.
 
-# Clone
-
-```shell
-git clone https://github.com/g4rcez/writeme
-```
-
-# Install
-
-First, we need to install dependencies
-```shell
-# I prefer to use pnpm, but you can use yarn or npm
-pnpm install
-# or with yarn
-yarn install
-# or with npm
-npm install
-```
-
-# Enjoy
-
-After install, just run the project
-```shell
+```bash
 npm run dev
 ```
+
+# Writeme model
+
+In writeme we have two main models, the **Document** and the **Category**. Both are very important to build and filter documents by category and aggregate all of them in a single category section...
+
+## Category
+
+You can go to `http://localhost:3000/dashboard/categories` and create your first category
+
+## Document
+You can go to `http://localhost:3000/dashboard/documents/new` and create your first document. *This part is still under development. The select for category will be integrated*

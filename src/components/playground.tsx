@@ -83,11 +83,20 @@ const themes = {
 export const Playground = (props: Props) => {
   const theme = useDarkMode();
   return (
-    <Sandpack
-      theme={themes[theme.mode] as any}
-      template={props.template ?? "react-ts"}
-      options={{ showTabs: true, showLineNumbers: true, initMode: "user-visible" }}
-    />
+    <section className="my-8">
+      <Sandpack
+        theme={themes[theme.mode] as any}
+        template={props.template ?? "react-ts"}
+        options={{
+          showTabs: true,
+          showLineNumbers: true,
+          initMode: "user-visible",
+          showConsole: true,
+          showInlineErrors: true,
+          showRefreshButton: true,
+        }}
+      />
+    </section>
   );
 };
 

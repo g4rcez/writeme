@@ -44,7 +44,7 @@ export const CodeHighlight: React.FC<Props> = ({ code = "", language }) => {
               return (
                 <div key={i} {...lineProps} className={`${lineProps.className} table-row`}>
                   <span className="table-cell text-right pr-4 select-none opacity-50">{i + 1}</span>
-                  <span className="table-cell whitespace-pre-wrap">
+                  <span className="table-cell whitespace-pre-wrap break-all">
                     {line.map((token, key) => (
                       <span key={key} {...getTokenProps({ token, key })} />
                     ))}

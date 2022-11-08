@@ -1,14 +1,21 @@
 - id: getting-started
-  url: getting-started
+  url: how-to-install
   icon: /rocket-240.png?__dark=rocket-dark-240.png
   title: Getting Started
   index: 1
   banner: ""
-  description: How can I use writeme? Learn how to use.
+  description: How can I use writeme? Learn how to use it.
+- id: features
+  url: features
+  icon: /rocket-240.png?__dark=rocket-dark-240.png
+  title: Features
+  index: 2
+  banner: ""
+  description: See all of them. New features coming soon.
 - id: roadmap
   url: roadmap
   icon: /rocket-240.png?__dark=rocket-dark-240.png
   title: Roadmap
-  index: 1
+  index: 3
   banner: ""
-  description: Checkout our plans. See our features for the future.
+  description: Checkout our plans. See our upcoming features.

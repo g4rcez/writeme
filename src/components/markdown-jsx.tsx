@@ -6,6 +6,7 @@ import { CodeResponse } from "./http-response/code-response";
 import { Heading } from "./text";
 import { TableOfContent } from "./table-of-content";
 import { MDXRemote } from "next-mdx-remote";
+import { Strings } from "src/lib/strings";
 
 type MDXRemoteProps = Types.Hide<NonNullable<Parameters<typeof MDXRemote>[0]>, "components">;
 
@@ -25,6 +26,7 @@ const playgroundScope = {
   HttpRequest,
   CodeResponse,
   CodeHighlight,
+  Strings
 };
 
 const defaultComponents = {
@@ -58,4 +60,6 @@ const defaultComponents = {
 
 export const MarkdownJsxComponents = { ...defaultComponents, GithubOgp, YoutubeOgp } as any;
 
-export const MarkdownJsx = (source: MDXRemoteProps) => <MDXRemote {...source} components={MarkdownJsxComponents} />;
+export const MarkdownJsx = (source: MDXRemoteProps) => (
+  <MDXRemote {...source} scope={{ ...source.scope, ...playgroundScope }} components={MarkdownJsxComponents} />
+);

@@ -18,7 +18,7 @@ const renderTabs = (defaultId: string | undefined, tabs: any[], nodes: any[]) =>
   {
     name: "Tabs",
     type: JSX_NODE_TYPE,
-    attributes: [{ type: JSX_ATTRIBUTE, name: "default", value: defaultId }],
+    attributes: [{ type: JSX_ATTRIBUTE, name: "default", value: defaultId === undefined ? "" : `${defaultId}` }],
     children: tabs.map((t) => {
       const tab = nodes[t.start];
       const title = tab.children[0].value;
@@ -71,12 +71,12 @@ export function remarkTabs() {
   return (tree: any) => {
     const { children } = tree;
     let index = -1;
-    let defaultIdTab: string | undefined = undefined;
     while (++index < children.length) {
       const child = children[index];
       const type = child.type;
       if (allowedType(type)) {
         if (isOpenedTab(child.value)) {
+          let defaultIdTab: string | undefined = undefined;
           const val = child?.value?.trim() ?? "";
           let defaultId = val.split(" ")[1];
           if (type === "html") {

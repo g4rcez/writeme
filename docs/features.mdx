@@ -6,7 +6,7 @@ category: features
 tags: []
 authors: []
 url: features
-description: All writeme features
+description: All Writeme features
 ---
 
 <TableOfContent />
@@ -47,7 +47,7 @@ You can create a simple [todo list](https://en.wikipedia.org/wiki/Wikipedia:To-d
 
 ## Blockquote
 
-You can create simple blockquotes to referer a sentence
+You can use `> ` to quote someone
 
 {/* https://www.goodreads.com/author/quotes/9810.Albert_Einstein */}
 
@@ -77,18 +77,16 @@ Advanced features of markdown, using extended syntax + [Github Flavored Markdown
 
 # Footnotes
 
-Here's a simple footnote,[^1]. Click and go to their definition.
+Here's a simple footnote[^1]. Click and go to the definition.
 
 [^1]: This is the first footnote.
 
 # Emojis :smile:
 
 Support emojis using [remark-gemoji](https://github.com/remarkjs/remark-gemoji). You can view
-the [Emoji CheatSheet](https://www.webfx.com/tools/emoji-cheat-sheet/) or in [Emojipedia](https://emojipedia.org/ "Emojipedia link"). Note: **not all emojis is supported**
+the [Emoji CheatSheet](https://www.webfx.com/tools/emoji-cheat-sheet/) or in [Emojipedia](https://emojipedia.org/ "Emojipedia link"). Note: **not all emojis are supported**
 
-:smile: :laughing: :blush: :smiley: :smirk: :heart_eyes: :kissing_heart: :kissing_closed_eyes: :flushed: :relieved: :
-satisfied: :grin: :wink: :stuck_out_tongue_winking_eye: :stuck_out_tongue_closed_eyes: :alien: :virgo: :ghost: :
-signal_strength:
+:smile: :laughing: :blush: :smiley: :smirk: :heart_eyes: :kissing_heart: :kissing_closed_eyes: :flushed: :relieved: :grin: :wink: :stuck_out_tongue_winking_eye: :stuck_out_tongue_closed_eyes: :alien: :virgo: :ghost:
 
 There's no place like :house:
 
@@ -99,7 +97,7 @@ There's no place like :house:
 
 ## Tabs
 
-Support tabs with MDX or using comment with `{/* |tabs */}` to open and `{/* /tabs */}` to close. In comment mode, you
+Support tabs with [MDX](https://mdxjs.com/) or using comment with `{/* |tabs */}` to open and `{/* /tabs */}` to close. In comment mode, you
 can pass the default tab after `|tabs`, just like this `{/* |tabs your-id */}`
 
 {/* |tabs second */}
@@ -116,7 +114,7 @@ This is second tab content
 
 ## How Tab titles work?
 
-Titles inside of tabs comments aren't displayed in `<TableOfContent />` component. You can see the title of this section, because the title is out of `<Tabs/>` comments.
+Titles inside tabs comments aren't displayed in `<TableOfContent />` component. You can see the title of this section, because the title is out of `<Tabs/>` comments.
 
 ## Playground
 
@@ -126,7 +124,7 @@ Use [Sandpack](https://github.com/codesandbox/sandpack/ "Sandpack github page") 
 
 # Http Request
 
-Focus in web API docs, this component receive a `curl` or `http` command and transform in amazing http request visualizer. Create a code mark with bash language and pass `type=request` or just paste your code with `curl` or `http` at start of command.
+Focus in web API docs, this component receive a `curl` or `http` command and transform in amazing HTTP Request visualizer. Create a code mark with bash language and pass `type=request` or just paste your code with `curl` or `http` at the beginning of the command.
 
 ````bash
 ```bash type=request
@@ -146,12 +144,12 @@ Writeme can understand [Open Graph Protocol or OGP](https://ogp.me/) and show an
 
 **Tested only for Youtube and Github for now**
 
-Just paste the link of your Youtube video
+Just paste the link of your YouTube video
 ```ogp
 https://www.youtube.com/watch?v=EUJ5vWBT2iA
 ```
 
-Or your Github repository
+Or your GitHub repository
 
 ```ogp
 https://github.com/github/training-kit

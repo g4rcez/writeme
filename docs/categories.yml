@@ -4,18 +4,18 @@
   title: Getting Started
   index: 1
   banner: ""
-  description: How can I use writeme? Learn how to use.
+  description: How can I use writeme? Learn how to use it.
 - id: features
   url: features
   icon: /rocket-240.png?__dark=rocket-dark-240.png
-  title: Writeme Features
+  title: Features
   index: 2
   banner: ""
-  description: See all writeme features. This list will grow up in the future.
+  description: See all of them. New features coming soon.
 - id: roadmap
   url: roadmap
   icon: /rocket-240.png?__dark=rocket-dark-240.png
   title: Roadmap
   index: 3
   banner: ""
-  description: Checkout our plans. See our features for the future.
+  description: Checkout our plans. See our upcoming features.

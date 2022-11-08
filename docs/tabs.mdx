@@ -11,9 +11,9 @@ description: "How can I use <Tabs/>?"
 
 <TableOfContent />
 
-Using comments MDX comments + token `{/* |tabs */}` you can use the `<Tabs/>` components without any JSX, only old and plain markdown.
+Using MDX comments + token `{/* |tabs */}` so you can use the `<Tabs/>` components without any JSX, only old and plain markdown.
 
-You have two options when start a tabs syntax
+You have two options when starting a tab's syntax:
 
 - Set default tab: `{/* |tabs TITLE */}` this make your tab with id `TITLE` as a active tab
 - Without default tab: `{/* |tabs */}` this make your first heading active in your tab
@@ -50,7 +50,7 @@ Content of second tab
 
 {/* /tabs */}
 
-To recognize title ids, writeme convert the string of title to a `slugified` string.
+To recognize title ids, Writeme convert the string of title to a `slugified` string.
 
 - Title -> title
 - Hack the planet -> {Strings.slug("Hack the planet")}

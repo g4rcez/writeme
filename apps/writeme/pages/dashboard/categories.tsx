@@ -18,7 +18,7 @@ const CreateCategory = ({ category, setCategory }: CategoryProps) => {
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
-    const inputs = [...form.elements].filter((x) => x.tagName.toLowerCase() === "input") as HTMLInputElement[];
+    const inputs = Array.from(form.elements).filter((x) => x.tagName.toLowerCase() === "input") as HTMLInputElement[];
     const state = inputs.reduce((acc, el) => ({ ...acc, [el.name]: el.value ?? "" }), {} as Categories);
     try {
       const fn = nullCategory ? httpClient.post : httpClient.patch;

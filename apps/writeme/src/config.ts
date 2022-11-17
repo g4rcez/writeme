@@ -1,6 +1,6 @@
 import fs from "fs";
 import Path from "path";
-import type { WritemeRcConfig } from "./writemerc";
+import type { WritemeRcConfig } from "@writeme/core";
 
 export namespace Config {
   export const get = (): WritemeRcConfig => {

@@ -57,11 +57,7 @@ export type QueryString = Comment & {
   name: string;
 };
 
-export type ImportRequestType =
-  | "environment"
-  | "request"
-  | "request_group"
-  | "workspace";
+export type ImportRequestType = "environment" | "request" | "request_group" | "workspace";
 
 export type ImportRequest<T extends {} = {}> = Comment & {
   _id?: string;
@@ -83,9 +79,7 @@ export type ImportRequest<T extends {} = {}> = Comment & {
   url?: string;
 };
 
-export type Converter<T extends {} = {}> = (
-  rawData: string
-) => ImportRequest<T> | null;
+export type Converter<T extends {} = {}> = (rawData: string) => ImportRequest<T> | null;
 
 export type Importer = {
   id: string;
@@ -169,8 +163,7 @@ const importCommand = (parseEntries: ParseEntry[]): ImportRequest => {
 
   /// /////// Url & parameters //////////
   let parameters: Parameter[] = [];
-  let url =
-    (singletons.find((x) => `${x}`.match(/^https?:\/\//)) as string) ?? "";
+  let url = (singletons.find((x) => `${x}`.match(/^https?:\/\//)) as string) ?? "";
 
   try {
     const { searchParams, href, search } = new URL(url);
@@ -181,10 +174,7 @@ const importCommand = (parseEntries: ParseEntry[]): ImportRequest => {
   } catch (error) {}
 
   /// /////// Authentication //////////
-  const [username, password] = getPairValue(pairsByName, "", [
-    "u",
-    "user",
-  ]).split(/:(.*)$/);
+  const [username, password] = getPairValue(pairsByName, "", ["u", "user"]).split(/:(.*)$/);
 
   const authentication = username
     ? {
@@ -218,9 +208,7 @@ const importCommand = (parseEntries: ParseEntry[]): ImportRequest => {
     .join("; ");
 
   // Convert cookie value to header
-  const existingCookieHeader = headers.find(
-    (header) => header.name.toLowerCase() === "cookie"
-  );
+  const existingCookieHeader = headers.find((header) => header.name.toLowerCase() === "cookie");
 
   if (cookieHeaderValue && existingCookieHeader) {
     // Has existing cookie header, so let's update it
@@ -235,14 +223,7 @@ const importCommand = (parseEntries: ParseEntry[]): ImportRequest => {
 
   /// /////// Body (Text or Blob) //////////
   let textBodyParams: Pair[] = [];
-  const paramNames = [
-    "d",
-    "data",
-    "data-raw",
-    "data-urlencode",
-    "data-binary",
-    "data-ascii",
-  ];
+  const paramNames = ["d", "data", "data-raw", "data-urlencode", "data-binary", "data-ascii"];
 
   for (const paramName of paramNames) {
     const pair = pairsByName[paramName];
@@ -254,12 +235,8 @@ const importCommand = (parseEntries: ParseEntry[]): ImportRequest => {
 
   // join params to make body
   const textBody = textBodyParams.join("&");
-  const contentTypeHeader = headers.find(
-    (header) => header.name.toLowerCase() === "content-type"
-  );
-  const mimeType = contentTypeHeader
-    ? contentTypeHeader.value.split(";")[0]
-    : null;
+  const contentTypeHeader = headers.find((header) => header.name.toLowerCase() === "content-type");
+  const mimeType = contentTypeHeader ? contentTypeHeader.value.split(";")[0] : null;
 
   /// /////// Body (Multipart Form Data) //////////
   const formDataParams = [
@@ -312,10 +289,7 @@ const importCommand = (parseEntries: ParseEntry[]): ImportRequest => {
   }
 
   /// /////// Method //////////
-  let method = getPairValue(pairsByName, "__UNSET__", [
-    "X",
-    "request",
-  ]).toUpperCase();
+  let method = getPairValue(pairsByName, "__UNSET__", ["X", "request"]).toUpperCase();
 
   if (method === "__UNSET__") {
     method = body.text || body.params ? "POST" : "GET";
@@ -323,7 +297,10 @@ const importCommand = (parseEntries: ParseEntry[]): ImportRequest => {
 
   const urlSearchParams = new URLSearchParams(url);
   const qs = Array.from(urlSearchParams.keys()).reduce(
-    (acc, el) => ({ ...acc, [el]: urlSearchParams.get(el) }),
+    (acc, el) => ({
+      ...acc,
+      [el]: urlSearchParams.get(el),
+    }),
     {}
   );
 
@@ -339,11 +316,7 @@ const importCommand = (parseEntries: ParseEntry[]): ImportRequest => {
   };
 };
 
-const getPairValue = <T extends string | boolean>(
-  parisByName: PairsByName,
-  defaultValue: T,
-  names: string[]
-) => {
+const getPairValue = <T extends string | boolean>(parisByName: PairsByName, defaultValue: T, names: string[]) => {
   for (const name of names) {
     if (parisByName[name] && parisByName[name].length) {
       return parisByName[name][0] as T;
@@ -382,9 +355,7 @@ export const convert: Converter = (rawData) => {
       return;
     }
 
-    const { op } = parseEntry as
-      | { op: "glob"; pattern: string }
-      | { op: ControlOperator };
+    const { op } = parseEntry as { op: "glob"; pattern: string } | { op: ControlOperator };
 
     // `;` separates commands
     if (op === ";") {
@@ -396,22 +367,17 @@ export const convert: Converter = (rawData) => {
     if (op?.startsWith("$")) {
       // Handle the case where literal like -H $'Header: \'Some Quoted Thing\''
       const str = op.slice(2, op.length - 1).replace(/\\'/g, "'");
-
       currentCommand.push(str);
       return;
     }
 
     if (op === "glob") {
-      currentCommand.push(
-        (parseEntry as { op: "glob"; pattern: string }).pattern
-      );
+      currentCommand.push((parseEntry as { op: "glob"; pattern: string }).pattern);
       return;
     }
   });
 
   // Push the last unfinished command
 
-  return [...commands, currentCommand]
-    .filter((command) => command[0] === "curl")
-    .map(importCommand)[0]!;
+  return [...commands, currentCommand].filter((command) => command[0] === "curl").map(importCommand)[0]!;
 };

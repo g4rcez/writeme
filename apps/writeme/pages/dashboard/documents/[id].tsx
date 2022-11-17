@@ -37,7 +37,7 @@ export default function DashboardEditDocumentPage(props: Props) {
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
-    const inputs = [...form.querySelectorAll(`input[form=${FORM_NAME}],textarea[form=${FORM_NAME}]`)] as Array<
+    const inputs = Array.from(form.querySelectorAll(`input[form=${FORM_NAME}],textarea[form=${FORM_NAME}]`)) as Array<
       HTMLInputElement | HTMLTextAreaElement
     >;
     const state = inputs.reduce(

@@ -9,6 +9,7 @@
     "downlevelIteration": true,
     "lib": [
       "ESNext",
+      "DOM.Iterable",
       "DOM"
     ],
     "module": "ESNext",

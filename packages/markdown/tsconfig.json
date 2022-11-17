@@ -11,6 +11,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "lib": [
+      "DOM.Iterable",
       "DOM",
       "ESNext"
     ]

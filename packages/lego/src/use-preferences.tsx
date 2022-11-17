@@ -1,7 +1,7 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useState } from "react";
 import { LocalStorage } from "storage-manager-js";
 
-const context = createContext<[state: Record<string, any>, setPreference: <T>(key: string, val: T) => void]>([
+const context = createContext<[state: Record<string, any>, setPreference: (key: string, val: any) => void]>([
   {},
   () => {},
 ]);

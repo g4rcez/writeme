@@ -1,4 +1,4 @@
-const Colors = require("./styles/themes/light.json");
+const Colors = require("./packages/lego/src/themes/light.ts");
 const plugin = require("tailwindcss/plugin");
 
 function remap(colors, prefix) {

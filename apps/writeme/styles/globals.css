@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "../../../styles/markdown.css";
+@import "../../../styles/prism.css";
+@import "../../../styles/components.css";
+
+html {
+    @apply duration-300 transition-colors ease-in bg-slate-100 text-slate-600;
+}
+
+html.dark {
+    @apply text-white bg-zinc-900;
+}
+
+.dark {
+    color-scheme: dark;
+}
+
+html,
+body,
+#__next {
+    min-height: 100%;
+    scroll-padding: 4.5rem;
+    font-family: "Inter", sans-serif;
+}
+
+.cm-editor {
+    font-size: 1.05rem;
+}
+
+.translate-1\/2 {
+    transform: translate(-50%, -50%);
+}
+
+.react-icons {
+    vertical-align: middle;
+}

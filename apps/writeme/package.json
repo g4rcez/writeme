@@ -1,0 +1,32 @@
+{
+  "name": "writeme",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@codesandbox/sandpack-react": "1.17.0",
+    "@writeme/core": "workspace:*",
+    "@writeme/lego": "workspace:*",
+    "@writeme/services": "workspace:*",
+    "@writeme/admin": "workspace:*",
+    "@writeme/api": "workspace:*",
+    "@writeme/markdown": "workspace:*",
+    "next": "13.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-icons": "4.6.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.0.0",
+    "@types/node": "17.0.12",
+    "@types/react": "18.0.22",
+    "@types/react-dom": "18.0.7",
+    "tsconfig": "workspace:*",
+    "typescript": "4.5.3"
+  }
+}

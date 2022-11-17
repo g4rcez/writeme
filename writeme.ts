@@ -1,4 +1,4 @@
-import { config } from "src/writemerc";
+import { config } from "packages/core/src/writemerc";
 
 export default config({
   title: "writeme",

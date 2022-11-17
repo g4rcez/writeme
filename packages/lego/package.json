@@ -1,0 +1,28 @@
+{
+  "name": "@writeme/lego",
+  "version": "0.0.0",
+  "main": "./index.tsx",
+  "types": "./index.tsx",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint *.ts*"
+  },
+  "devDependencies": {
+    "@types/react": "18.0.17",
+    "@types/react-dom": "18.0.6",
+    "@writeme/core": "workspace:*",
+    "@writeme/services": "workspace:*",
+    "eslint": "7.32.0",
+    "react": "18.2.0",
+    "tsconfig": "workspace:*",
+    "typescript": "4.5.2"
+  },
+  "dependencies": {
+    "@radix-ui/react-checkbox": "1.0.1",
+    "@radix-ui/react-dialog": "1.0.2",
+    "next": "13.0.0",
+    "next-mdx-remote": "4.2.0",
+    "react-icons": "4.6.0",
+    "storage-manager-js": "4.0.7"
+  }
+}

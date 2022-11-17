@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Either, Helpers } from "@writeme/core";
+import { Either, Helpers } from "@writeme/core/index";
 
 export namespace Http {
   export const InternalServerError = 500;

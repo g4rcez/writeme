@@ -1,8 +1,4 @@
 import HttpSnippet from "@g4rcez/httpsnippet";
-import { useHttpContext } from "src/http.context";
-import { MiniTitle } from "packages/lego/src/mini-title";
-import { Select } from "packages/lego/src/select";
-import { Is } from "packages/core/src/is";
 import dynamic from "next/dynamic";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Body } from "./body";
@@ -10,8 +6,10 @@ import { convert, Header } from "./curl-parser";
 import { Headers } from "./headers";
 import { HttpMethod } from "./http-method";
 import { HttpLanguages } from "./languages";
-import { Button } from "../../../lego/src/button";
 import { useCodeLanguage } from "../code-language";
+import { useHttpContext } from "../http.context";
+import { Is } from "@writeme/core";
+import { Button, MiniTitle, Select } from "@writeme/lego";
 
 const CodeHighlight = dynamic(() => import("../prism"));
 
@@ -55,10 +53,7 @@ export const HttpRequest: React.FC<Props> = ({ curl }) => {
     set.framework(lang.frameworks[0].value);
   }, []);
 
-  const frameworks = useMemo(
-    () => HttpLanguages.find((x) => x.value === state.language)!.frameworks,
-    [state.language]
-  );
+  const frameworks = useMemo(() => HttpLanguages.find((x) => x.value === state.language)!.frameworks, [state.language]);
 
   const onChangeRequestBody = useCallback((body: any) => {
     setReq((prev) =>

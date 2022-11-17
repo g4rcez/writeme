@@ -3,9 +3,10 @@ import {
   Categories,
   categoriesService,
   DocumentsJoinCategory,
-  MarkdownDocument, postsService,
+  MarkdownDocument,
+  postsService,
   SimplerDocument,
-  storage
+  storage,
 } from "@writeme/services";
 import Link from "next/link";
 import { useRouter } from "next/router";

@@ -1,7 +1,6 @@
-import { MiniTitle } from "packages/lego/src/mini-title";
-import { CodeHighlight } from "src/prism";
-import { Text } from "packages/lego/src/text";
 import React, { PropsWithChildren, useMemo } from "react";
+import { MiniTitle, Text } from "@writeme/lego";
+import CodeHighlight from "../prism";
 
 type Props = {
   body: any;

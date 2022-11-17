@@ -1,6 +1,7 @@
-import { Input, OpenGraph } from "src/components";
-import { debounce } from "packages/core/src/debounce";
 import { useEffect, useRef, useState } from "react";
+import { debounce } from "@writeme/core";
+import { Input } from "@writeme/lego";
+import OpenGraph from "./open-graph";
 
 export default function YoutubeOgp() {
   const [link, setLink] = useState("");

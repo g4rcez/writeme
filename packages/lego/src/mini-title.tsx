@@ -1,5 +1,5 @@
 import React from "react";
-import { Types } from "@writeme/core";
+import type { Types } from "@writeme/core";
 
 export const MiniTitle: React.FC<
   Types.Hide<React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>, "className">

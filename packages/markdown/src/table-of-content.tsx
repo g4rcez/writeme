@@ -1,5 +1,5 @@
-import { Strings } from "packages/core/src/strings";
 import { PropsWithChildren, useEffect, useState } from "react";
+import { Strings } from "@writeme/core";
 
 const Tags = {
   h1: "ml-0",

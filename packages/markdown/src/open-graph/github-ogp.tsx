@@ -1,6 +1,9 @@
-import { Input, OpenGraph } from "src/components";
-import { debounce } from "packages/core/src/debounce";
 import { useEffect, useRef, useState } from "react";
+import { debounce } from "@writeme/core";
+import { Input } from "@writeme/lego";
+import dynamic from "next/dynamic";
+
+const OpenGraph = dynamic(() => import("./open-graph"));
 
 export default function GithubOgp() {
   const [repo, setRepo] = useState("octocat/Hello-World");

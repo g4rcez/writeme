@@ -1,6 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
 import { httpClient } from "@writeme/core/src/http-client";
 import { Fragment, PropsWithChildren, useEffect, useMemo, useState, VFC } from "react";
+import { Types } from "@writeme/core";
 
 type Props = {
   url: string;

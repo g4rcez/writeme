@@ -6,7 +6,7 @@ export const Flowchart = ({ code }: { code: string }) => {
   useEffect(() => {
     const mount = async () => {
       try {
-        const FlowChart = await import("src/flowchart");
+        const FlowChart = await import("flowchart.js");
         if (ref.current === null) return;
         const chart = FlowChart.parse(code);
         chart.drawSVG(ref.current);

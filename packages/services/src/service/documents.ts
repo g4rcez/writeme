@@ -9,7 +9,7 @@ import {
 import { Service } from "./service";
 import { IRepository } from "./irepository";
 import { z } from "zod";
-import { Validator, Strings, Either } from "@writeme/core";
+import { Validator, Strings, Either } from "@writeme/core/index";
 
 class PostsService extends Service implements IRepository<MarkdownDocument, MarkdownDocumentRaw, VitrineDocument> {
   private saveSchema = z.object({

@@ -1,7 +1,7 @@
-import { HttpResponseProps, MiniTitle } from "src/components";
-import { HttpCircleStatus } from "packages/lego/src/circle";
-import { CodeHighlight } from "src/prism";
 import React, { useMemo } from "react";
+import { HttpResponseProps } from "../http.context";
+import { HttpCircleStatus, MiniTitle } from "@writeme/lego";
+import CodeHighlight from "../prism";
 
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
 const MessageFromStatus: Record<number, string> = {

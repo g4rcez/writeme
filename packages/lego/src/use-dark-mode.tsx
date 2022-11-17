@@ -2,6 +2,7 @@ import React, { createContext, PropsWithChildren, useCallback, useContext, useEf
 import { setCssVars } from "./themes/themes";
 import { LightTheme } from "./themes/light";
 import { DarkTheme } from "./themes/dark";
+import { usePreferences } from "./use-preferences";
 
 type Modes = "light" | "dark";
 
@@ -12,9 +13,7 @@ const Context = createContext({
 });
 
 const useInternalDarkMode = () => {
-  const [preferences, setPreference] = usePreferences();
-  const setMode = useCallback((theme: string) => setPreference("theme", theme), [setPreference]);
-  const mode = preferences.theme;
+  const [mode, setMode] = usePreferences<string>("theme", "light");
 
   useEffect(() => {
     const onChange = (event: any) => setMode(event.matches ? "dark" : "light");

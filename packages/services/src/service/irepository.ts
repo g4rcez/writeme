@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Either } from "@writeme/core";
+import { Either } from "@writeme/core/index";
 
 type ID = string;
 

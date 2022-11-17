@@ -1,10 +1,9 @@
 //@ts-ignore
 import Highlight, { defaultProps } from "@g4rcez/prism-react-renderer";
-import { copyToClipboard, useDarkMode } from "@writeme/lego";
+import { copyToClipboard, useDarkMode, themes } from "@writeme/lego";
 import React, { useMemo, useState } from "react";
 import { BsClipboard } from "react-icons/bs";
 import { FaCheck } from "react-icons/fa";
-import { themes } from "@writeme/core";
 
 type Props = {
   code: string;

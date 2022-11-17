@@ -1,4 +1,4 @@
-import { Types } from "@writeme/core";
+import { Types } from "@writeme/core/index";
 
 export type FrontMatterValues = boolean | number | string | Date | FrontMatterValues[];
 

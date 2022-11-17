@@ -1,7 +1,7 @@
-import { Input } from "packages/lego/src/form/input";
-import { Helpers } from "../../../core/src/helpers";
 import React, { useCallback } from "react";
 import { Header } from "./curl-parser";
+import { Helpers } from "@writeme/core";
+import { Input } from "@writeme/lego";
 
 type Props = {
   headers: Header[];

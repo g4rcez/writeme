@@ -1,6 +1,6 @@
-import { AxiosError } from "axios";
 import { httpClient } from "@writeme/core/src/http-client";
 import { createContext, Fragment, useCallback, useContext, useState } from "react";
+import { Types } from "@writeme/core";
 
 type Http = Types.Nullable<Types.BodyProxy>;
 
@@ -38,9 +38,9 @@ export const HttpContext = ({ children }: any) => {
         headers: res.headers,
         isError: false,
       });
-    } catch (error) {
-      if ((error as AxiosError).isAxiosError) {
-        const e = error as AxiosError;
+    } catch (error: any) {
+      if (error.isAxiosError) {
+        const e = error;
         console.log(e);
         const data = e.response?.data as any;
         setResponse({

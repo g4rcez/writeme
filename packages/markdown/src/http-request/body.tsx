@@ -1,8 +1,6 @@
-import { Input } from "packages/lego/src/form/input";
-import { Is } from "packages/core/src/is";
-import { Strings } from "packages/core/src/strings";
 import React, { PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Helpers } from "../../../core/src/helpers";
+import { Is, Helpers, Strings } from "@writeme/core";
+import { Input } from "@writeme/lego";
 
 const getKeys = <T extends object>(obj: T) => Object.entries(obj).map((x) => ({ key: x[0], value: x[1] }));
 

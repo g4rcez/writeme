@@ -87,6 +87,8 @@ module.exports = {
   content: [
     "./pages/**/*.{jsx,tsx,html,md,mdx}",
     "./src/**/*.{jsx,tsx,html,md,mdx}",
+    "../packages/lego/**/*.{jsx,tsx,html,md,mdx}",
+    "../packages/markdown/**/*.{jsx,tsx,html,md,mdx}",
     "./src/components/**/*.{jsx,tsx,html,md,mdx}",
   ],
   theme: {

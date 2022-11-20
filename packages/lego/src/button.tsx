@@ -11,9 +11,16 @@ type Props = React.DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HT
   theme?: keyof typeof themes;
 };
 
-export const Button = ({ theme = "primary", ...props }: Props) => {
-  const disabled = props.disabled || props.loading;
+export const Button = ({ theme = "primary", loading, ...props }: Props) => {
+  const disabled = props.disabled || loading;
   return (
-    <button {...props} data-theme={theme} disabled={disabled} className={`button ${props.className ?? ""}`}></button>
+    <button
+      {...props}
+      data-theme={theme}
+      disabled={disabled}
+      className={`button px-3 py-2 my-0 leading-3 text-sm rounded-lg transition-colors duration-500 ease-in-out font-medium min-w-[150px] border text-base ${
+        props.className ?? ""
+      }`}
+    ></button>
   );
 };

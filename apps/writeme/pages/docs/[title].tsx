@@ -64,19 +64,18 @@ export const Sidebar = ({ pathname, groups }: Types.Only<Props, "groups"> & { pa
           <nav className="mb-4" key={`${group.category.url}-group-category`}>
             <h3 className="font-medium text-lg mb-4">
               <Link href={Links.toDoc(group.category.url)} passHref>
-                <a href={Links.toDoc(group.category.url)}>{group.category.title}</a>
+                {group.category.title}
               </Link>
             </h3>
             <ul className="ml-4">
               {list.map((document) => (
                 <li key={document.url} className="mb-2 font-thin">
-                  <Link href={Links.toDoc(document.url)} passHref>
-                    <a
-                      href={Links.toDoc(document.url)}
-                      className={`my-4 link:underline ${document.url === pathname ? "text-main-500" : ""}`}
-                    >
-                      {document.title}
-                    </a>
+                  <Link
+                    className={`my-4 link:underline ${document.url === pathname ? "text-main-500" : ""}`}
+                    href={Links.toDoc(document.url)}
+                    passHref
+                  >
+                    {document.title}
                   </Link>
                 </li>
               ))}

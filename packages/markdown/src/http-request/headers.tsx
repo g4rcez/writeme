@@ -20,10 +20,10 @@ export const Headers: React.FC<Props> = ({ headers, onChange }) => {
   );
 
   return (
-    <ul className="http-headers">
+    <ul className="list-inside">
       {(headers.length > 0 &&
         headers.map((header, index) => (
-          <li key={`header-${header.name}`} className="http-headers-item">
+          <li key={`header-${header.name}`} className="my-2 list-none list-item">
             <Input
               className="text-text-paragraph p-1"
               data-index={index}

@@ -70,14 +70,14 @@ const BodyRecursive: React.FC<Props> = ({ parentPath = [], onChange, parentIsArr
   const objectKeys = useMemo(() => getKeys(body), [body]);
 
   return (
-    <section className="http-body">
+    <section className="flex flex-col gap-y-2">
       {objectKeys.map((x) => {
         if (Array.isArray(x.value)) {
           return (
             <div className="w-full my-1 http-body-array" key={`body-section-${x.key}-${uuid.current}`}>
               <b>{x.key} </b>
               <Type>Array</Type>
-              <div className="http-body-array-item">
+              <div className="pl-4 mt-2 border-l border-border-neutral">
                 <BodyRecursive
                   index={index}
                   onChange={onChange}

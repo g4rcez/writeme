@@ -29,10 +29,8 @@ export default function DashboardIndexPage({ documents }: Props) {
           return (
             <Card as="li" key={x.id} className="">
               <Heading tag="h2" className="text-3xl">
-                <Link href={link} passHref>
-                  <a className="link:text-main-500 transition-colors duration-300" href={link}>
-                    {x.title}
-                  </a>
+                <Link className="link:text-main-500 transition-colors duration-300" href={link} passHref>
+                  {x.title}
                 </Link>
               </Heading>
               <p className={x.description ? "opacity-70 my-4" : "opacity-40 my-4"}>

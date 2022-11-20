@@ -12,5 +12,9 @@ export const MethodTheme: Record<string, string> = {
 
 export const HttpMethod: React.FC<{ method?: string }> = ({ method = "GET" }) => {
   const text = method.toUpperCase();
-  return <span className={`http-method ${MethodTheme[text] ?? MethodTheme.GET}`}>{text}</span>;
+  return (
+    <span className={`http-method rounded-full text-main-accent px-2 py-1 ${MethodTheme[text] ?? MethodTheme.GET}`}>
+      {text}
+    </span>
+  );
 };

@@ -87,18 +87,12 @@ module.exports = {
   content: [
     "./pages/**/*.{jsx,tsx,html,md,mdx}",
     "./src/**/*.{jsx,tsx,html,md,mdx}",
-    "../packages/lego/**/*.{jsx,tsx,html,md,mdx}",
-    "../packages/markdown/**/*.{jsx,tsx,html,md,mdx}",
     "./src/components/**/*.{jsx,tsx,html,md,mdx}",
+    "../../packages/lego/src/*.{jsx,tsx,html,md,mdx}",
+    "../../packages/lego/src/**/*.{jsx,tsx,html,md,mdx}",
+    "../../packages/markdown/src/**/*.{jsx,tsx,html,md,mdx}",
   ],
-  theme: {
-    extend: {
-      colors: remap(Colors),
-      screens: {
-        big: "1900px",
-      },
-    },
-  },
+  theme: { extend: { colors: remap(Colors) } },
   plugins: [
     require("@tailwindcss/forms")({ strategy: "class" }),
     require("@tailwindcss/typography"),

@@ -6,7 +6,7 @@ import "../styles/globals.css";
 import { VscGithub } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 import { CodeLanguageProvider } from "@writeme/markdown";
-import { DarkMode, Navbar } from "@writeme/lego";
+import { DarkMode, Navbar, Preferences } from "@writeme/lego";
 
 function Content({ Component, pageProps }: { Component: NextComponentType<NextPageContext, any, {}>; pageProps: any }) {
   return (
@@ -41,12 +41,14 @@ const iconContextValue = { className: "react-icons" };
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <DarkMode>
-      <IconContext.Provider value={iconContextValue}>
+    <Preferences>
+      <DarkMode>
         <CodeLanguageProvider>
-          <Content Component={Component} pageProps={pageProps} />
+          <IconContext.Provider value={iconContextValue}>
+            <Content Component={Component} pageProps={pageProps} />
+          </IconContext.Provider>
         </CodeLanguageProvider>
-      </IconContext.Provider>
-    </DarkMode>
+      </DarkMode>
+    </Preferences>
   );
 }

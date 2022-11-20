@@ -76,7 +76,7 @@ export const HttpResponse: React.FC<Props> = ({ loading, response }) => {
     return httpResponse.join("\n");
   }, [response]);
 
-  if (loading) return <span className="http-response-loading">Loading...</span>;
+  if (loading) return <span className="text-lg mt-4 mb-2 italic text-text-dim">Loading...</span>;
 
   if (response === null) {
     return (
@@ -87,7 +87,7 @@ export const HttpResponse: React.FC<Props> = ({ loading, response }) => {
   }
 
   return (
-    <section className="http-response">
+    <section className="my-4">
       <MiniTitle data-toc="false">
         <span className="flex items-baseline gap-x-2">
           <a

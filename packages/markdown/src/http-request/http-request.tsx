@@ -96,7 +96,7 @@ export const HttpRequest: React.FC<Props> = ({ curl }) => {
   const body = (req?.body as any).text ?? "";
 
   return (
-    <section className="http-request">
+    <section className="flex flex-col">
       <header className="my-2">
         <h3 data-toc="false" className="text-xs" data-text={`${req?.method} ${onlyPathApi}`}>
           <HttpMethod method={req?.method} /> <span className="ml-1 text-sm">{req?.url}</span>

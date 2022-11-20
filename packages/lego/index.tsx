@@ -15,3 +15,4 @@ export { Img } from "./src/img";
 export { Input } from "./src/form/input";
 export { Checkbox } from "./src/form/checkbox";
 export { themes } from "./src/themes/code-highlight-theme";
+export { usePreferences, Preferences } from "./src/use-preferences";

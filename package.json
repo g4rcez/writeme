@@ -2,23 +2,25 @@
   "name": "writeme",
   "version": "0.0.0",
   "private": true,
+  "repository": "https://github.com/g4rcez/writeme.git",
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "start": "turbo run start",
+    "clean": "turbo run clean",
+    "dev": "turbo run dev",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "start": "turbo run start"
   },
   "devDependencies": {
     "prettier": "latest",
     "turbo": "latest"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   },
   "packageManager": "pnpm@7.16.0",
   "volta": {

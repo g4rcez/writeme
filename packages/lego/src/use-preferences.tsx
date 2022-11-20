@@ -29,7 +29,7 @@ export const Preferences = ({ children }: PropsWithChildren) => {
 
 export const usePreferences = <T extends {}>(key: string, defaultValue: T) => {
   const [global, dispatch] = useContext(context)!;
-  const state: T = global[key] ?? getPreference(key, defaultValue);
+  const state: T = global[key] ?? defaultValue;
 
   const set = useCallback((value: T) => dispatch(key, value), [key, dispatch]);
 

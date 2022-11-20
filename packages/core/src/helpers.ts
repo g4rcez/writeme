@@ -1,5 +1,3 @@
-import { structuredClone } from "next/dist/compiled/@edge-runtime/primitives/structured-clone";
-
 export namespace Helpers {
   export const head = <T>(array: T[]) => array[0];
 

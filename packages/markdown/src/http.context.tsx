@@ -1,6 +1,5 @@
-import { httpClient } from "@writeme/core/src/http-client";
+import { httpClient, Types } from "@writeme/core";
 import { createContext, Fragment, useCallback, useContext, useState } from "react";
-import { Types } from "@writeme/core";
 
 type Http = Types.Nullable<Types.BodyProxy>;
 

@@ -1,4 +1,4 @@
-import { Input, InputProps } from "packages/ui/src";
+import { Input, InputProps } from "@writeme/lego";
 import React, { useState } from "react";
 
 export type FrontMatter = { name: string; value: string };
@@ -14,14 +14,10 @@ const Field: React.FC<Omit<InputProps, "ref">> = (props) => (
   </label>
 );
 
-const FrontMatterForm: React.FC<{
-  showAdd: boolean;
-  id: number;
-  matter: FrontMatterHeaders;
-}> = (props) => {
+const FrontMatterForm = (props: { showAdd: boolean; id: number; matter: FrontMatterHeaders }) => {
   const [matter, setMatter] = useState(props.matter);
 
-  const onChange: InputProps["onChange"] = (event) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
     const value = event.target.value;
     setMatter((prev) => ({ ...prev, [name]: value }));

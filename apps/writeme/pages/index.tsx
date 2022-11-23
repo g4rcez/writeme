@@ -1,7 +1,7 @@
 import React from "react";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Link from "next/link";
-import { Categories, categoriesService } from "@writeme/services";
+import { Categories, categoriesService } from "@writeme/api";
 import { Links } from "@writeme/core";
 import { Img } from "@writeme/lego";
 

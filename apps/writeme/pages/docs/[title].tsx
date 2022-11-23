@@ -7,7 +7,7 @@ import {
   postsService,
   SimplerDocument,
   storage,
-} from "@writeme/services";
+} from "@writeme/api";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";

@@ -1,7 +1,7 @@
 import { FormEvent } from "react";
 import { useRouter } from "next/dist/client/router";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { MarkdownDocument, postsService } from "@writeme/services";
+import { MarkdownDocument, postsService } from "@writeme/api";
 import { httpClient, Links } from "@writeme/core";
 import { Button, Input } from "@writeme/lego";
 import { MarkdownEditor } from "@writeme/admin";

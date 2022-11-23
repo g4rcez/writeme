@@ -1,5 +1,5 @@
 import { Http } from "@writeme/api";
-import { postsService } from "@writeme/services";
+import { postsService } from "@writeme/api";
 import { Either } from "@writeme/core";
 
 export default Http.handler({

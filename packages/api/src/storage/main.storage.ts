@@ -1,5 +1,5 @@
 import { FsStorage } from "./fs.storage";
-import { Config, Helpers } from "@writeme/core/index";
+import { Config, Helpers } from "@writeme/core";
 import { IStorage } from "./storage";
 
 const Strategies = {

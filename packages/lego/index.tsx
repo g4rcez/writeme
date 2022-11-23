@@ -13,6 +13,7 @@ export { copyToClipboard } from "./src/copy-to-clipboard";
 export { useDarkMode, DarkMode } from "./src/use-dark-mode";
 export { Img } from "./src/img";
 export { Input } from "./src/form/input";
+export type { InputProps } from "./src/form/input";
 export { Checkbox } from "./src/form/checkbox";
 export { themes } from "./src/themes/code-highlight-theme";
 export { usePreferences, Preferences } from "./src/use-preferences";

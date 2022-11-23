@@ -3,7 +3,7 @@ import { InferGetStaticPropsType } from "next";
 import { useRouter } from "next/dist/client/router";
 import { FaTrashAlt } from "react-icons/fa";
 import { httpClient, Types } from "@writeme/core";
-import { Categories, categoriesService } from "@writeme/services";
+import { Categories, categoriesService } from "@writeme/api";
 import { Button, Heading, Input } from "@writeme/lego";
 
 type CategoryProps = {

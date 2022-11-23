@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Links, Types } from "@writeme/core";
-import type { SimplerDocument } from "@writeme/services";
+import type { SimplerDocument } from "@writeme/api";
 
 export const Box = ({ doc, back }: { doc: Types.Nullable<SimplerDocument>; back?: boolean }) => {
   const isNull = doc === null;

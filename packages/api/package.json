@@ -4,20 +4,17 @@
   "main": "./index.tsx",
   "types": "./index.tsx",
   "license": "MIT",
-  "scripts": {
-    "lint": "eslint *.ts*"
-  },
   "devDependencies": {
+    "@types/node": "17.0.12",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
     "@writeme/core": "workspace:*",
-    "react": "18.2.0",
     "tsconfig": "workspace:*",
-    "typescript": "4.9.3"
+    "typescript": "4.5.2"
   },
   "dependencies": {
-    "next": "13.0.0",
-    "next-mdx-remote": "4.2.0",
+    "gray-matter": "4.0.3",
+    "yaml": "2.1.3",
     "zod": "3.19.1"
   }
 }

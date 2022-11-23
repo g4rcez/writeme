@@ -3,7 +3,7 @@ import path from "path";
 import { promisify } from "util";
 import fs from "fs";
 import { parse as ymlParse, stringify as ymlStringify } from "yaml";
-import { Is } from "@writeme/core/index";
+import { Is } from "@writeme/core";
 import grayMatter from "gray-matter";
 
 const glob = promisify(require("glob"));

@@ -2,7 +2,7 @@ import { Service } from "./service";
 import { Categories } from "../storage/storage";
 import { IRepository } from "./irepository";
 import { z } from "zod";
-import { Types, Validator, Either, Strings } from "@writeme/core/index";
+import { Types, Validator, Either, Strings } from "@writeme/core";
 
 type SaveCategories = Types.Hide<Categories, "id">;
 

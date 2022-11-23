@@ -1,6 +1,5 @@
-import { httpClient } from "@writeme/core/src/http-client";
-import { Fragment, PropsWithChildren, useEffect, useMemo, useState, VFC } from "react";
-import { Types } from "@writeme/core";
+import { Fragment, PropsWithChildren, useEffect, useMemo, useState } from "react";
+import { httpClient, Types } from "@writeme/core";
 
 type Props = {
   url: string;
@@ -10,15 +9,15 @@ type Props = {
 };
 
 type OpenGraphAttrs = Partial<{
-  "image:alt": string;
   description: string;
   image: string;
-  "image:height": string;
-  "image:width": string;
   site_name: string;
   title: string;
   type: string;
   url: string;
+  "image:alt": string;
+  "image:height": string;
+  "image:width": string;
   "video:height": string;
   "video:secure_url": string;
   "video:tag": string;
@@ -26,7 +25,7 @@ type OpenGraphAttrs = Partial<{
   "video:url": string;
 }>;
 
-export const OpenGraph = ({ url, ...props }: PropsWithChildren<Props>) => {
+export default function OpenGraph({ url, ...props }: PropsWithChildren<Props>) {
   const [ogp, setOgp] = useState<Types.Nullable<OpenGraphAttrs>>(null);
   const [error, setError] = useState("");
 
@@ -107,6 +106,4 @@ export const OpenGraph = ({ url, ...props }: PropsWithChildren<Props>) => {
       )}
     </Fragment>
   );
-};
-
-export default OpenGraph;
+}

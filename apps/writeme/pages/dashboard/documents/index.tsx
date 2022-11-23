@@ -1,6 +1,6 @@
 import { GetStaticProps } from "next";
 import Link from "next/link";
-import { postsService, VitrineDocument } from "@writeme/services";
+import { postsService, VitrineDocument } from "@writeme/api";
 import { Card, Heading } from "@writeme/lego";
 import { Dates, Links } from "@writeme/core";
 

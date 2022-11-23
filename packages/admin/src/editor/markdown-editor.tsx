@@ -13,7 +13,7 @@ import { EditorView, keymap, lineNumbers, placeholder } from "@codemirror/view";
 import { Compartment, EditorState, Extension } from "@codemirror/state";
 import { darkTheme, lightTheme } from "./themes";
 import { FaHeading, FaItalic, FaListOl, FaListUl } from "react-icons/fa";
-import { Types } from "@writeme/core/index";
+import { Types } from "@writeme/core";
 import { LocalStorage } from "storage-manager-js";
 import { defaultKeymap } from "@codemirror/commands";
 import { defaultHighlightStyle, indentOnInput, syntaxHighlighting } from "@codemirror/language";

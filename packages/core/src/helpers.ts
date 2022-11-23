@@ -6,14 +6,9 @@ export namespace Helpers {
   export const has = <T>(obj: T, key: keyof T | string): key is keyof T =>
     Object.prototype.hasOwnProperty.call(obj, key);
 
-  export const uniqBy = <T>(list: T[], find: (item: T) => string | number): T[] => {
-    const map = new Map<string | number, T>();
-    list.forEach((x) => {
-      const key = find(x);
-      return map.has(key) ? undefined : map.set(key, x);
-    });
-    return [...map.values()];
-  };
+  export const uniqBy = <T>(list: T[], find: (item: T) => string | number): T[] => [
+    ...new Map(list.map((x) => [find(x), x])).values(),
+  ];
 
   export const set = <T>(obj: T, pathArray: Array<string | number>, value: any) => {
     const clone = structuredClone(obj);
@@ -21,7 +16,7 @@ export namespace Helpers {
       if (acc[key] === undefined) acc[key] = {};
       if (i === pathArray.length - 1) acc[key] = value;
       return acc[key];
-    }, clone as any);
+    }, clone);
     return clone as T;
   };
 

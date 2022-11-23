@@ -27,7 +27,6 @@ importers:
       '@writeme/core': workspace:*
       '@writeme/lego': workspace:*
       '@writeme/markdown': workspace:*
-      '@writeme/services': workspace:*
       autoprefixer: 10.4.13
       next: 13.0.0
       next-transpile-modules: 10.0.0
@@ -45,7 +44,6 @@ importers:
       '@writeme/core': link:../../packages/core
       '@writeme/lego': link:../../packages/lego
       '@writeme/markdown': link:../../packages/markdown
-      '@writeme/services': link:../../packages/services
       next: 13.0.0_hljcwjkur2tdip6clah3ea6o7u
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -78,7 +76,9 @@ importers:
       '@lezer/highlight': 1.1.2
       '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
+      '@writeme/api': workspace:*
       '@writeme/core': workspace:*
+      '@writeme/lego': workspace:*
       codemirror: 6.0.1
       next: 13.0.0
       next-mdx-remote: 4.2.0
@@ -108,33 +108,35 @@ importers:
     devDependencies:
       '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
+      '@writeme/api': link:../api
       '@writeme/core': link:../core
+      '@writeme/lego': link:../lego
       react: 18.2.0
       tsconfig: link:../tsconfig
       typescript: 4.9.3
 
   packages/api:
     specifiers:
+      '@types/node': 17.0.12
       '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
       '@writeme/core': workspace:*
-      next: 13.0.0
-      next-mdx-remote: 4.2.0
-      react: 18.2.0
+      gray-matter: 4.0.3
       tsconfig: workspace:*
-      typescript: 4.9.3
+      typescript: 4.5.2
+      yaml: 2.1.3
       zod: 3.19.1
     dependencies:
-      next: 13.0.0_react@18.2.0
-      next-mdx-remote: 4.2.0_react@18.2.0
+      gray-matter: 4.0.3
+      yaml: 2.1.3
       zod: 3.19.1
     devDependencies:
+      '@types/node': 17.0.12
       '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
       '@writeme/core': link:../core
-      react: 18.2.0
       tsconfig: link:../tsconfig
-      typescript: 4.9.3
+      typescript: 4.5.2
 
   packages/core:
     specifiers:
@@ -169,8 +171,8 @@ importers:
       '@radix-ui/react-dialog': 1.0.2
       '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
+      '@writeme/api': workspace:*
       '@writeme/core': workspace:*
-      '@writeme/services': workspace:*
       eslint: 7.32.0
       next: 13.0.0
       next-mdx-remote: 4.2.0
@@ -189,8 +191,8 @@ importers:
     devDependencies:
       '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
+      '@writeme/api': link:../api
       '@writeme/core': link:../core
-      '@writeme/services': link:../services
       eslint: 7.32.0
       react: 18.2.0
       tsconfig: link:../tsconfig
@@ -242,29 +244,6 @@ importers:
       '@writeme/lego': link:../lego
       eslint: 7.32.0
       react: 18.2.0
-      tsconfig: link:../tsconfig
-      typescript: 4.5.2
-
-  packages/services:
-    specifiers:
-      '@types/node': 17.0.12
-      '@types/react': 18.0.17
-      '@types/react-dom': 18.0.6
-      '@writeme/core': workspace:*
-      gray-matter: 4.0.3
-      tsconfig: workspace:*
-      typescript: 4.5.2
-      yaml: 2.1.3
-      zod: 3.19.1
-    dependencies:
-      gray-matter: 4.0.3
-      yaml: 2.1.3
-      zod: 3.19.1
-    devDependencies:
-      '@types/node': 17.0.12
-      '@types/react': 18.0.17
-      '@types/react-dom': 18.0.6
-      '@writeme/core': link:../core
       tsconfig: link:../tsconfig
       typescript: 4.5.2
 

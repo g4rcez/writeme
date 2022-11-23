@@ -1,5 +1,5 @@
 // Using https://github.com/mccleanp/remark-docusaurus-tabs
-import { Strings } from "@writeme/core/src/strings";
+import { Strings } from "@writeme/core";
 
 const allowedType = (type: string) => type === "comment" || type === "html" || type === "mdxFlowExpression";
 

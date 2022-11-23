@@ -1,4 +1,3 @@
-import { config } from "src/writemerc";
 
 export default config({
   title: "writeme",

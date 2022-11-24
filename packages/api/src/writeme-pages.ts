@@ -29,10 +29,7 @@ export class WritemePages {
   public documentsPageGetStaticPaths(): GetStaticPaths {
     return async () => {
       const docs = await this.document.getAllPaths();
-      return {
-        fallback: false,
-        paths: docs.map((title) => ({ params: { title } })),
-      };
+      return { fallback: false, paths: docs.map((title) => ({ params: { title } })) };
     };
   }
 
@@ -70,11 +67,7 @@ export class WritemePages {
 
   public indexPageGetStaticProps(): GetStaticProps<{ categories: Domain.Category[] }> {
     return async () => {
-      return {
-        props: {
-          categories: await this.category.getCategories(),
-        },
-      };
+      return { props: { categories: await this.category.getCategories() } };
     };
   }
 }

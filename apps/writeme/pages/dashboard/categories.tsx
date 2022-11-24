@@ -3,12 +3,13 @@ import { InferGetStaticPropsType } from "next";
 import { useRouter } from "next/dist/client/router";
 import { FaTrashAlt } from "react-icons/fa";
 import { httpClient, Types } from "@writeme/core";
-import { Categories, categoriesService } from "@writeme/api";
 import { Button, Heading, Input } from "@writeme/lego";
+import { Domain } from "@writeme/api";
+import { writeme } from "../../src/writeme";
 
 type CategoryProps = {
-  category: Types.Nullable<Categories>;
-  setCategory: (category: Types.Nullable<Categories>) => void;
+  category: Types.Nullable<Domain.Category>;
+  setCategory: (category: Types.Nullable<Domain.Category>) => void;
 };
 
 const CreateCategory = ({ category, setCategory }: CategoryProps) => {
@@ -19,7 +20,7 @@ const CreateCategory = ({ category, setCategory }: CategoryProps) => {
     event.preventDefault();
     const form = event.currentTarget;
     const inputs = Array.from(form.elements).filter((x) => x.tagName.toLowerCase() === "input") as HTMLInputElement[];
-    const state = inputs.reduce((acc, el) => ({ ...acc, [el.name]: el.value ?? "" }), {} as Categories);
+    const state = inputs.reduce((acc, el) => ({ ...acc, [el.name]: el.value ?? "" }), {} as Domain.Category);
     try {
       const fn = nullCategory ? httpClient.post : httpClient.patch;
       const url = nullCategory ? "/categories" : `/categories/${category.id}`;
@@ -49,14 +50,14 @@ const CreateCategory = ({ category, setCategory }: CategoryProps) => {
 };
 
 export const getStaticProps = async () => {
-  const categories = await categoriesService.getCategories();
+  const categories = await writeme.category.getCategories();
   return { props: { categories } };
 };
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function DashboardCategoriesPage(props: Props) {
-  const [category, setCategory] = useState<Types.Nullable<Categories>>(null);
+  const [category, setCategory] = useState<Types.Nullable<Domain.Category>>(null);
   const router = useRouter();
 
   const onSetCategory = (event: MouseEvent<HTMLButtonElement>) => {

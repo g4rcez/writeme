@@ -1,27 +1,20 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-import {
-  Categories,
-  categoriesService,
-  DocumentsJoinCategory,
-  MarkdownDocument,
-  postsService,
-  SimplerDocument,
-  storage,
-} from "@writeme/api";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { Markdown, MarkdownJsx, MdxDocsProvider } from "@writeme/markdown";
-import { Config, Dates, Links, Types } from "@writeme/core";
+import { Dates, Links, Types } from "@writeme/core";
 import { DocumentNavigation } from "@writeme/lego";
+import { Domain } from "@writeme/api";
+import { writeme } from "../../src/writeme";
 
 type Props = {
-  categories: Categories[];
-  groups: DocumentsJoinCategory[];
+  categories: Domain.Category[];
+  groups: Domain.CategoryDocuments[];
   mdx: Markdown.MdxProcessed;
-  next: Types.Nullable<SimplerDocument>;
-  post: MarkdownDocument;
-  previous: Types.Nullable<SimplerDocument>;
+  next: Types.Nullable<Domain.DocumentDesc>;
+  post: Domain.Document;
+  previous: Types.Nullable<Domain.DocumentDesc>;
 };
 
 export const Sidebar = ({ pathname, groups }: Types.Only<Props, "groups"> & { pathname: string }) => {
@@ -88,7 +81,7 @@ export const Sidebar = ({ pathname, groups }: Types.Only<Props, "groups"> & { pa
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const docs = await storage.getAllDocumentPaths();
+  const docs = await writeme.document.getAllPaths();
   return {
     fallback: false,
     paths: docs.map((title) => ({ params: { title } })),
@@ -98,15 +91,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<Props> = async (props) => {
   const title = props.params?.title as string;
   try {
-    const post = await storage.getDocumentByName(title);
+    const post = await writeme.document.findById(title);
     if (post === null) {
       return { notFound: true };
     }
-    const mdx = await Markdown.process(post.content, { ...Config.properties?.requestVariables, ...Config.properties });
-    const categories = await categoriesService.getCategories();
-    const simplerDocuments = await storage.getDocuments();
-    const groups = postsService.aggregateDocumentToCategory(categories, simplerDocuments);
-    const { next, previous } = postsService.getAdjacentPosts(post, groups);
+    const mdx = await Markdown.process(post.content, {});
+    const categories = await writeme.category.getAll();
+    const groups = writeme.document.aggregate(categories, await writeme.document.getAll());
+    const { next, previous } = writeme.document.getAdjacentPosts(post, groups);
     return {
       props: { post, categories, mdx, groups, next: next, previous: previous },
       revalidate: false,

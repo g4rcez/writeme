@@ -1,17 +1,10 @@
-import {
-  Categories,
-  DocumentsJoinCategory,
-  MarkdownDocument,
-  MarkdownDocumentRaw,
-  SimplerDocument,
-  VitrineDocument,
-} from "../interfaces/interfaces";
-import { Service } from "./service";
 import { IRepository } from "./irepository";
 import { z } from "zod";
-import { Validator, Strings, Either } from "@writeme/core";
+import { Either, Strings, Validator } from "@writeme/core";
+import { Domain } from "../domain";
+import { IDocument } from "../interfaces/idocument";
 
-class PostsService extends Service implements IRepository<MarkdownDocument, MarkdownDocumentRaw, VitrineDocument> {
+export class DocumentsService implements IRepository<Domain.Document, Domain.MarkdownDocumentRaw, Domain.DocumentDesc> {
   private saveSchema = z.object({
     category: z.string(),
     content: z.string(),
@@ -28,15 +21,17 @@ class PostsService extends Service implements IRepository<MarkdownDocument, Mark
     id: z.string().uuid().or(z.string()),
   });
 
-  public async save(item: MarkdownDocument): Promise<MarkdownDocument> {
-    await this.storage.saveDocument(item);
+  public constructor(public storage: IDocument) {}
+
+  public async save(item: Domain.Document): Promise<Domain.Document> {
+    await this.storage.Save(item);
     return item;
   }
 
   public async validate(
-    item: MarkdownDocumentRaw,
+    item: Domain.MarkdownDocumentRaw,
     schema: typeof this.editSchema | typeof this.saveSchema = this.saveSchema
-  ): Promise<Either.Error<string[]> | Either.Success<MarkdownDocument>> {
+  ): Promise<Either.Error<string[]> | Either.Success<Domain.Document>> {
     const result = await Validator.validate(schema, item);
     if (result.success) {
       const data = result.success;
@@ -56,27 +51,26 @@ class PostsService extends Service implements IRepository<MarkdownDocument, Mark
     return Either.error(result.error);
   }
 
-  delete(uuid: string): Promise<Either.Error<string[]> | Either.Success<null>> {
+  public delete(uuid: string): Promise<Either.Error<string[]> | Either.Success<null>> {
     throw new Error("Method not implemented.");
   }
 
-  aggregateDocumentToCategory = (categories: Categories[], documents: SimplerDocument[]): DocumentsJoinCategory[] => {
-    const map = new Map<string, SimplerDocument[]>(categories.map((x) => [x.id, []]));
-    const sortDocuments = this.storage.sorted ? documents : documents.sort((a, b) => a.index - b.index);
-    sortDocuments.forEach((doc) => {
+  public aggregate(categories: Domain.Category[], documents: Domain.DocumentDesc[]): Domain.CategoryDocuments[] {
+    const map = new Map<string, Domain.DocumentDesc[]>(categories.map((x) => [x.id, []]));
+    documents.forEach((doc) => {
       const category = map.get(doc.category);
       if (category === undefined) return;
       category.push(doc);
     });
-    return categories.reduce<DocumentsJoinCategory[]>((acc, category) => {
+    return categories.reduce<Domain.CategoryDocuments[]>((acc, category) => {
       const documents = map.get(category.id) ?? [];
       if (documents.length === 0) return acc;
       acc.push({ category, documents });
       return acc;
     }, []);
-  };
+  }
 
-  getAdjacentPosts = (post: SimplerDocument, groups: DocumentsJoinCategory[]) => {
+  public getAdjacentPosts(post: Domain.DocumentDesc, groups: Domain.CategoryDocuments[]) {
     const groupIndex = groups.findIndex((x) => x.category.id === post.category);
     const group = groups[groupIndex];
     const current = group?.documents.findIndex((x) => x.url === post.url) ?? -1;
@@ -86,28 +80,34 @@ class PostsService extends Service implements IRepository<MarkdownDocument, Mark
     const firstOfNextGroup = groups[groupIndex + 1]?.documents[0];
     const next = group?.documents[current + 1] ?? firstOfNextGroup ?? null;
     return { previous, next };
-  };
-
-  public async getAll(): Promise<VitrineDocument[]> {
-    return this.storage.getAllDocuments();
   }
 
-  public async findById(id: string): Promise<MarkdownDocument | null> {
-    return this.storage.getDocumentById(id);
+  public async getAllPaths(): Promise<string[]> {
+    return this.storage.GetAllDocumentPaths();
+  }
+
+  public async getAll(): Promise<Domain.DocumentDesc[]> {
+    return this.storage.GetDocuments();
+  }
+
+  public async getByName(id: string): Promise<Domain.Document | null> {
+    return this.storage.GetDocumentByName(id);
   }
 
   public async update(
-    item: MarkdownDocument,
+    item: Domain.Document,
     uuid: string
-  ): Promise<Either.Error<string[]> | Either.Success<MarkdownDocument>> {
+  ): Promise<Either.Error<string[]> | Either.Success<Domain.Document>> {
     try {
-      const result = await this.storage.updateDocumentById(item, uuid);
+      const result = await this.storage.Update(item, uuid);
       if (result === null) return Either.error(["Not found this document"]);
       return Either.success(item);
     } catch (e) {
       return Either.error([]);
     }
   }
-}
 
-export const postsService = new PostsService();
+  public findById(id: string): Promise<Domain.Document | null> {
+    return this.storage.GetDocumentById(id);
+  }
+}

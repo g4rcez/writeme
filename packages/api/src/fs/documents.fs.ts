@@ -47,11 +47,22 @@ export class Document extends FsPlugin implements IDocument {
 
   public async GetDocuments(): Promise<Domain.DocumentDesc[]> {
     const allDocs = await this.enumerate();
-    return allDocs.map((document): Domain.DocumentDesc => {
-      const text = this.openFile(document);
-      const result = mdxHeader(text);
-      return { index: result.index, title: result.title, category: result.category, url: this.basename(document) };
-    });
+    return allDocs
+      .map((document): Domain.DocumentDesc => {
+        const text = this.openFile(document);
+        const result = mdxHeader(text);
+        const url = this.basename(document);
+        return {
+          category: result.category,
+          createdAt: result.createdAt.toString(),
+          description: result.description,
+          id: result.id ?? url,
+          index: result.index,
+          title: result.title,
+          url,
+        };
+      })
+      .sort((a, b) => a.index - b.index);
   }
 
   public async GetDocumentByName(name: string): Promise<Domain.Document | null> {
@@ -64,22 +75,6 @@ export class Document extends FsPlugin implements IDocument {
   public async GetAllDocumentPaths(): Promise<string[]> {
     const paths: string[] = await this.enumerate();
     return paths.map(this.basename.bind(this));
-  }
-
-  public async getCategories(): Promise<Domain.Category[]> {
-    const text = this.openFile(this.categoryFile);
-    const content: Domain.Category[] = yamlParse(text);
-    return content.map(
-      (x): Domain.Category => ({
-        id: x.id,
-        url: x.url,
-        icon: x.icon ?? "",
-        title: x.title,
-        index: x.index,
-        banner: x.banner ?? "",
-        description: x.description ?? "",
-      })
-    );
   }
 
   private async findDocument(id: string) {

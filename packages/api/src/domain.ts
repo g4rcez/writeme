@@ -47,9 +47,19 @@ export namespace Domain {
   };
 
   export type DocumentDesc = {
+    createdAt: string;
+    description: string;
+    id: string;
     index: number;
     title: string;
     category: string;
     url: string;
+  };
+
+  export type MarkdownDocumentRaw = Types.Hide<Domain.Document, "id"> & { id?: string };
+
+  export type CategoryDocuments = {
+    category: Category;
+    documents: DocumentDesc[];
   };
 }

@@ -3,13 +3,13 @@ import { parse as ymlParse } from "yaml";
 import { FsPlugin } from "./fs.plugin";
 import { ICategory } from "../interfaces/icategory";
 
-export class CategoriesFs extends FsPlugin implements ICategory {
+export class Category extends FsPlugin implements ICategory {
   public async getCategories(): Promise<Domain.Category[]> {
     const text = this.openFile(this.categoryFile);
     const content: Domain.Category[] = ymlParse(text);
     return content.map(
       (x): Domain.Category => ({
-        id: x.id,
+        id: x.id || x.url,
         url: x.url,
         icon: x.icon ?? "",
         title: x.title,

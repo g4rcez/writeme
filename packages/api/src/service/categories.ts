@@ -7,8 +7,6 @@ import { ICategory } from "../interfaces/icategory";
 type SaveCategories = Types.Hide<Domain.Category, "id">;
 
 export class CategoriesService implements IRepository<Domain.Category, SaveCategories> {
-  constructor(public storage: ICategory) {}
-
   private saveSchema = z.object({
     title: z.string().max(256),
     index: z.number().int(),
@@ -17,6 +15,8 @@ export class CategoriesService implements IRepository<Domain.Category, SaveCateg
     icon: z.string().optional(),
     url: Validator.urlFriendly.max(256),
   });
+
+  constructor(public storage: ICategory) {}
 
   public async delete(uuid: string): Promise<Either.Error<string[]> | Either.Success<null>> {
     await this.storage.delete(uuid);
@@ -65,7 +65,7 @@ export class CategoriesService implements IRepository<Domain.Category, SaveCateg
   }
 
   public async getAll(): Promise<Domain.Category[]> {
-    return [];
+    return this.storage.getCategories();
   }
 
   public async findById(id: string): Promise<Domain.Category | null> {

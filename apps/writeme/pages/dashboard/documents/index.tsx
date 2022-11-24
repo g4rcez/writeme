@@ -1,15 +1,16 @@
 import { GetStaticProps } from "next";
 import Link from "next/link";
-import { postsService, VitrineDocument } from "@writeme/api";
 import { Card, Heading } from "@writeme/lego";
 import { Dates, Links } from "@writeme/core";
+import { Domain } from "@writeme/api";
+import { writeme } from "../../../src/writeme";
 
 type Props = {
-  documents: VitrineDocument[];
+  documents: Domain.DocumentDesc[];
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const documents = await postsService.getAll();
+  const documents = await writeme.document.getAll();
   return {
     revalidate: 20,
     props: { documents },

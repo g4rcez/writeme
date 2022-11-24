@@ -1,13 +1,14 @@
 import React from "react";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Link from "next/link";
-import { Categories, categoriesService } from "@writeme/api";
 import { Links } from "@writeme/core";
 import { Img } from "@writeme/lego";
+import { Domain } from "@writeme/api";
+import { writeme } from "../src/writeme";
 
-export const getStaticProps: GetStaticProps<{ categories: Categories[] }> = async () => ({
+export const getStaticProps: GetStaticProps<{ categories: Domain.Category[] }> = async () => ({
   props: {
-    categories: await categoriesService.getCategories(),
+    categories: await writeme.category.getCategories(),
   },
 });
 

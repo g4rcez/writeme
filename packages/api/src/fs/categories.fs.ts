@@ -4,10 +4,18 @@ import { FsPlugin } from "./fs.plugin";
 import { ICategory } from "../interfaces/icategory";
 
 export class Category extends FsPlugin implements ICategory {
-  public async getCategories(): Promise<Domain.Category[]> {
+  private getCategoriesContent(): Domain.Category[] {
     const text = this.openFile(this.categoryFile);
-    const content: Domain.Category[] = ymlParse(text);
-    return content.map(
+    return ymlParse(text);
+  }
+
+  public async getAllPaths(): Promise<string[]> {
+    const content = this.getCategoriesContent();
+    return content.map((x) => x.url);
+  }
+
+  public async getCategories(): Promise<Domain.Category[]> {
+    return this.getCategoriesContent().map(
       (x): Domain.Category => ({
         id: x.id || x.url,
         url: x.url,

@@ -1,15 +1,15 @@
 import { Domain } from "../domain";
 
 export interface IDocument {
-  GetAllDocumentPaths(): Promise<string[]>;
+  getAllPaths(): Promise<string[]>;
 
-  GetDocumentById(id: string): Promise<Domain.Document | null>;
+  getById(id: string): Promise<Domain.Document | null>;
 
-  GetDocumentByName(name: string): Promise<Domain.Document | null>;
+  getByName(name: string): Promise<Domain.Document | null>;
 
-  GetDocuments(): Promise<Domain.DocumentDesc[]>;
+  getAll(): Promise<Domain.DocumentDesc[]>;
 
-  Save(document: Domain.Document): Promise<void>;
+  save(document: Domain.Document): Promise<void>;
 
-  Update(document: Domain.Document, id: string): Promise<Domain.Document | null>;
+  update(document: Domain.Document, id: string): Promise<Domain.Document | null>;
 }

@@ -1,4 +1,3 @@
-import { GetStaticPaths, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
@@ -80,37 +79,9 @@ export const Sidebar = ({ pathname, groups }: Types.Only<Props, "groups"> & { pa
   );
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const docs = await writeme.document.getAllPaths();
-  return {
-    fallback: false,
-    paths: docs.map((title) => ({ params: { title } })),
-  };
-};
+export const getStaticPaths = writeme.documentsPageGetStaticPaths();
 
-export const getStaticProps: GetStaticProps<Props> = async (props) => {
-  const title = props.params?.title as string;
-  try {
-    const post = await writeme.document.findById(title);
-    if (post === null) {
-      return { notFound: true };
-    }
-    const mdx = await Markdown.process(post.content, {});
-    const categories = await writeme.category.getAll();
-    const groups = writeme.document.aggregate(categories, await writeme.document.getAll());
-    const { next, previous } = writeme.document.getAdjacentPosts(post, groups);
-    return {
-      props: { post, categories, mdx, groups, next: next, previous: previous },
-      revalidate: false,
-    };
-  } catch (error) {
-    if (process.env.NODE_ENV === "development") {
-      console.log(error);
-      throw error;
-    }
-    return { notFound: true };
-  }
-};
+export const getStaticProps = writeme.documentsPageGetStaticProps();
 
 const providerValue = { theme: "light", titlePrefix: "WriteMe" };
 

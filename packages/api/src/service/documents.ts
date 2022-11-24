@@ -1,10 +1,10 @@
-import { IRepository } from "./irepository";
+import { IService } from "./IService";
 import { z } from "zod";
 import { Either, Strings, Validator } from "@writeme/core";
 import { Domain } from "../domain";
 import { IDocument } from "../interfaces/idocument";
 
-export class DocumentsService implements IRepository<Domain.Document, Domain.MarkdownDocumentRaw, Domain.DocumentDesc> {
+export class DocumentsService implements IService<Domain.Document, Domain.MarkdownDocumentRaw, Domain.DocumentDesc> {
   private saveSchema = z.object({
     category: z.string(),
     content: z.string(),
@@ -24,7 +24,7 @@ export class DocumentsService implements IRepository<Domain.Document, Domain.Mar
   public constructor(public storage: IDocument) {}
 
   public async save(item: Domain.Document): Promise<Domain.Document> {
-    await this.storage.Save(item);
+    await this.storage.save(item);
     return item;
   }
 
@@ -83,15 +83,15 @@ export class DocumentsService implements IRepository<Domain.Document, Domain.Mar
   }
 
   public async getAllPaths(): Promise<string[]> {
-    return this.storage.GetAllDocumentPaths();
+    return this.storage.getAllPaths();
   }
 
   public async getAll(): Promise<Domain.DocumentDesc[]> {
-    return this.storage.GetDocuments();
+    return this.storage.getAll();
   }
 
   public async getByName(id: string): Promise<Domain.Document | null> {
-    return this.storage.GetDocumentByName(id);
+    return this.storage.getByName(id);
   }
 
   public async update(
@@ -99,7 +99,7 @@ export class DocumentsService implements IRepository<Domain.Document, Domain.Mar
     uuid: string
   ): Promise<Either.Error<string[]> | Either.Success<Domain.Document>> {
     try {
-      const result = await this.storage.Update(item, uuid);
+      const result = await this.storage.update(item, uuid);
       if (result === null) return Either.error(["Not found this document"]);
       return Either.success(item);
     } catch (e) {
@@ -107,7 +107,7 @@ export class DocumentsService implements IRepository<Domain.Document, Domain.Mar
     }
   }
 
-  public findById(id: string): Promise<Domain.Document | null> {
-    return this.storage.GetDocumentById(id);
+  public getById(id: string): Promise<Domain.Document | null> {
+    return this.storage.getById(id);
   }
 }

@@ -4,16 +4,10 @@
   "main": "./index.tsx",
   "types": "./index.tsx",
   "license": "MIT",
-  "scripts": {
-    "lint": "eslint *.ts*"
-  },
   "devDependencies": {
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
     "@types/shell-quote": "1.7.1",
-    "@writeme/core": "workspace:*",
-    "@writeme/lego": "workspace:*",
-    "eslint": "7.32.0",
     "react": "18.2.0",
     "tsconfig": "workspace:*",
     "typescript": "4.5.2"
@@ -22,6 +16,8 @@
     "@codesandbox/sandpack-react": "1.17.0",
     "@g4rcez/httpsnippet": "1.24.5",
     "@g4rcez/prism-react-renderer": "0.0.1",
+    "@writeme/core": "workspace:*",
+    "@writeme/lego": "workspace:*",
     "flowchart.js": "1.17.1",
     "gray-matter": "4.0.3",
     "next": "13.0.0",

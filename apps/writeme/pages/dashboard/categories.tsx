@@ -49,10 +49,7 @@ const CreateCategory = ({ category, setCategory }: CategoryProps) => {
   );
 };
 
-export const getStaticProps = async () => {
-  const categories = await writeme.category.getCategories();
-  return { props: { categories } };
-};
+export const getStaticProps = writeme.indexPageGetStaticProps();
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 

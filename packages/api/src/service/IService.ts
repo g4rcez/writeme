@@ -3,10 +3,12 @@ import { Either } from "@writeme/core";
 
 type ID = string;
 
-export interface IRepository<Entity, SaveEntity, GetEntity = SaveEntity> {
+export interface IService<Entity, SaveEntity, GetEntity = SaveEntity> {
   getAll(): Promise<GetEntity[]>;
 
-  findById(id: string): Promise<Entity | null>;
+  getAllPaths(): Promise<string[]>;
+
+  getById(id: string): Promise<Entity | null>;
 
   save(item: Entity): Promise<Entity>;
 

@@ -4,15 +4,9 @@
   "main": "./index.tsx",
   "types": "./index.tsx",
   "license": "MIT",
-  "scripts": {
-    "lint": "eslint *.ts*"
-  },
   "devDependencies": {
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
-    "@writeme/core": "workspace:*",
-    "@writeme/api": "workspace:*",
-    "eslint": "7.32.0",
     "react": "18.2.0",
     "tsconfig": "workspace:*",
     "typescript": "4.9.3"
@@ -20,6 +14,7 @@
   "dependencies": {
     "@radix-ui/react-checkbox": "1.0.1",
     "@radix-ui/react-dialog": "1.0.2",
+    "@writeme/core": "workspace:*",
     "next": "13.0.0",
     "next-mdx-remote": "4.2.0",
     "react-icons": "4.6.0",

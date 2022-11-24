@@ -1,4 +1,4 @@
-import { IRepository } from "./irepository";
+import { IService } from "./IService";
 import { z } from "zod";
 import { Types, Validator, Either, Strings } from "@writeme/core";
 import { Domain } from "../domain";
@@ -6,7 +6,7 @@ import { ICategory } from "../interfaces/icategory";
 
 type SaveCategories = Types.Hide<Domain.Category, "id">;
 
-export class CategoriesService implements IRepository<Domain.Category, SaveCategories> {
+export class CategoriesService implements IService<Domain.Category, SaveCategories> {
   private saveSchema = z.object({
     title: z.string().max(256),
     index: z.number().int(),
@@ -68,7 +68,11 @@ export class CategoriesService implements IRepository<Domain.Category, SaveCateg
     return this.storage.getCategories();
   }
 
-  public async findById(id: string): Promise<Domain.Category | null> {
-    return null;
+  public async getById(id: string): Promise<Domain.Category | null> {
+    return this.storage.getCategoryById(id);
+  }
+
+  public getAllPaths(): Promise<string[]> {
+    return this.storage.getAllPaths();
   }
 }

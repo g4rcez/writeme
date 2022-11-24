@@ -2,10 +2,15 @@ import path from "path";
 import fs from "fs";
 import { stringify as ymlStringify } from "yaml";
 import { promisify } from "util";
+import { WritemeApiPlugin } from "../writeme-api.plugin";
 
 const glob = promisify(require("glob"));
 
-export abstract class FsPlugin {
+export abstract class FsPlugin extends WritemeApiPlugin {
+  constructor() {
+    super("fs");
+  }
+
   protected root = path.join(path.resolve(process.cwd()), "docs");
 
   protected postsDirectory = path.join(this.root, "**", "*.mdx");

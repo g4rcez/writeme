@@ -20,7 +20,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (props) => {
   const id = props.params?.id as string;
   try {
-    const document = await writeme.document.findById(id);
+    const document = await writeme.document.getById(id);
     return { props: { document } };
   } catch (e) {
     console.log("ERROR", e);

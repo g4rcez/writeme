@@ -3,6 +3,8 @@ import { Domain } from "../domain";
 export interface ICategory {
   delete(id: string): Promise<boolean>;
 
+  getAllPaths(): Promise<string[]>;
+
   getCategories(): Promise<Domain.Category[]>;
 
   getCategoryById(id: string): Promise<Domain.Category | null>;

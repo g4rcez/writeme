@@ -10,7 +10,7 @@ importers:
     dependencies:
       next: 13.0.4
     devDependencies:
-      prettier: 2.7.1
+      prettier: 2.8.0
       turbo: 1.6.3
 
   apps/writeme:
@@ -121,6 +121,7 @@ importers:
       '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
       '@writeme/core': workspace:*
+      '@writeme/markdown': workspace:*
       gray-matter: 4.0.3
       tsconfig: workspace:*
       typescript: 4.5.2
@@ -135,6 +136,7 @@ importers:
       '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
       '@writeme/core': link:../core
+      '@writeme/markdown': link:../markdown
       tsconfig: link:../tsconfig
       typescript: 4.5.2
 
@@ -6138,8 +6140,8 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /prettier/2.7.1:
-    resolution: {integrity: sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==}
+  /prettier/2.8.0:
+    resolution: {integrity: sha512-9Lmg8hTFZKG0Asr/kW9Bp8tJjRVluO8EJQVfY2T7FMw9T5jy4I/Uvx0Rca/XWf50QQ1/SS48+6IJWnrb+2yemA==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true

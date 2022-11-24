@@ -5,7 +5,7 @@ import {
   MarkdownDocumentRaw,
   SimplerDocument,
   VitrineDocument,
-} from "../storage/storage";
+} from "../interfaces/interfaces";
 import { Service } from "./service";
 import { IRepository } from "./irepository";
 import { z } from "zod";

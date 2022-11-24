@@ -104,7 +104,7 @@ export const getStaticProps: GetStaticProps<Props> = async (props) => {
     }
     const mdx = await Markdown.process(post.content, { ...Config.properties?.requestVariables, ...Config.properties });
     const categories = await categoriesService.getCategories();
-    const simplerDocuments = await storage.getSimplerDocuments();
+    const simplerDocuments = await storage.getDocuments();
     const groups = postsService.aggregateDocumentToCategory(categories, simplerDocuments);
     const { next, previous } = postsService.getAdjacentPosts(post, groups);
     return {

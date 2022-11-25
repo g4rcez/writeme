@@ -48,7 +48,7 @@ export class Category extends FsPlugin implements ICategory {
   }
 
   public getAll(): Promise<Domain.Category[]> {
-    return Promise.resolve([]);
+    return Promise.resolve(this.getCategoriesContent());
   }
 
   public async getById(id: string): Promise<Domain.Category | null> {

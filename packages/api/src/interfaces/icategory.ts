@@ -1,15 +1,4 @@
 import { Domain } from "../domain";
+import { IRepository } from "./irepository";
 
-export interface ICategory {
-  delete(id: string): Promise<boolean>;
-
-  getAllPaths(): Promise<string[]>;
-
-  getCategories(): Promise<Domain.Category[]>;
-
-  getCategoryById(id: string): Promise<Domain.Category | null>;
-
-  save(category: Domain.Category): Promise<void>;
-
-  update(category: Domain.Category): Promise<void>;
-}
+export interface ICategory extends IRepository<Domain.Category> {}

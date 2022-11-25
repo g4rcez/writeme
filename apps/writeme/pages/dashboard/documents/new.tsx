@@ -17,10 +17,7 @@ export default function DashboardDocumentsPage() {
       HTMLInputElement | HTMLTextAreaElement
     >;
     const state = inputs.reduce(
-      (acc, el) => ({
-        ...acc,
-        [el.name]: (el as HTMLInputElement).valueAsNumber || el.value,
-      }),
+      (acc, el) => ({ ...acc, [el.name]: (el as HTMLInputElement).valueAsNumber || el.value }),
       { category: "roadmap" } as Record<string, unknown>
     );
     try {
@@ -39,7 +36,7 @@ export default function DashboardDocumentsPage() {
         <div className="grid md:grid-cols-4 grid-cols-1 gap-8 mb-8">
           <Input form={FORM_NAME} name="title" placeholder="Title" />
           <Input form={FORM_NAME} name="url" placeholder="Url" />
-          <Input type="number" form={FORM_NAME} name="index" placeholder="Order" />
+          <Input form={FORM_NAME} type="number" name="index" placeholder="Order" />
           <Input form={FORM_NAME} name="description" placeholder="Description" />
         </div>
         <div className="relative">

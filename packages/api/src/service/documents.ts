@@ -1,10 +1,10 @@
-import { IService } from "./IService";
+import { Iservice } from "./iservice";
 import { z } from "zod";
 import { Either, Strings, Validator } from "@writeme/core";
 import { Domain } from "../domain";
 import { IDocument } from "../interfaces/idocument";
 
-export class DocumentsService implements IService<Domain.Document, Domain.MarkdownDocumentRaw, Domain.DocumentDesc> {
+export class DocumentsService implements Iservice<Domain.Document, Domain.MarkdownDocumentRaw, Domain.DocumentDesc> {
   private saveSchema = z.object({
     category: z.string(),
     content: z.string(),
@@ -91,7 +91,7 @@ export class DocumentsService implements IService<Domain.Document, Domain.Markdo
   }
 
   public async getByName(id: string): Promise<Domain.Document | null> {
-    return this.storage.getByName(id);
+    return this.storage.getById(id);
   }
 
   public async update(
@@ -99,7 +99,7 @@ export class DocumentsService implements IService<Domain.Document, Domain.Markdo
     uuid: string
   ): Promise<Either.Error<string[]> | Either.Success<Domain.Document>> {
     try {
-      const result = await this.storage.update(item, uuid);
+      const result = await this.storage.update(item);
       if (result === null) return Either.error(["Not found this document"]);
       return Either.success(item);
     } catch (e) {

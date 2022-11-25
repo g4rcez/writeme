@@ -1,4 +1,4 @@
-import { IService } from "./IService";
+import { Iservice } from "./iservice";
 import { z } from "zod";
 import { Types, Validator, Either, Strings } from "@writeme/core";
 import { Domain } from "../domain";
@@ -6,7 +6,7 @@ import { ICategory } from "../interfaces/icategory";
 
 type SaveCategories = Types.Hide<Domain.Category, "id">;
 
-export class CategoriesService implements IService<Domain.Category, SaveCategories> {
+export class CategoriesService implements Iservice<Domain.Category, SaveCategories> {
   private saveSchema = z.object({
     title: z.string().max(256),
     index: z.number().int(),
@@ -16,10 +16,10 @@ export class CategoriesService implements IService<Domain.Category, SaveCategori
     url: Validator.urlFriendly.max(256),
   });
 
-  constructor(public storage: ICategory) {}
+  constructor(public repository: ICategory) {}
 
   public async delete(uuid: string): Promise<Either.Error<string[]> | Either.Success<null>> {
-    await this.storage.delete(uuid);
+    await this.repository.delete(uuid);
     return Either.success(null);
   }
 
@@ -27,7 +27,7 @@ export class CategoriesService implements IService<Domain.Category, SaveCategori
     item: Partial<SaveCategories>,
     id: string
   ): Promise<Either.Error<string[]> | Either.Success<Domain.Category>> {
-    const category = await this.storage.getCategoryById(id);
+    const category = await this.repository.getById(id);
     if (category === null) {
       throw new Error("This category not exist.");
     }
@@ -40,19 +40,19 @@ export class CategoriesService implements IService<Domain.Category, SaveCategori
       banner: item.banner ?? category.banner,
       icon: item.icon ?? category.icon,
     };
-    await this.storage.update(updated);
+    await this.repository.update(updated);
     return Either.success(updated);
   }
 
   public getCategories = async (): Promise<Domain.Category[]> => {
-    const list = await this.storage.getCategories();
+    const list = await this.repository.getAll();
     return list.sort((a, b) => a.index - b.index);
   };
 
   public async save(item: Domain.Category): Promise<Domain.Category> {
     const id = Strings.uuid();
     const category = { ...item, id };
-    await this.storage.save(category);
+    await this.repository.save(category);
     return category;
   }
 
@@ -65,14 +65,14 @@ export class CategoriesService implements IService<Domain.Category, SaveCategori
   }
 
   public async getAll(): Promise<Domain.Category[]> {
-    return this.storage.getCategories();
+    return this.repository.getAll();
   }
 
   public async getById(id: string): Promise<Domain.Category | null> {
-    return this.storage.getCategoryById(id);
+    return this.repository.getById(id);
   }
 
   public getAllPaths(): Promise<string[]> {
-    return this.storage.getAllPaths();
+    return this.repository.getAllPaths();
   }
 }

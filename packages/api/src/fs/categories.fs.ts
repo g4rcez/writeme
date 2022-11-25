@@ -2,13 +2,9 @@ import { Domain } from "../domain";
 import { parse as ymlParse } from "yaml";
 import { FsPlugin } from "./fs.plugin";
 import { ICategory } from "../interfaces/icategory";
+import { Either } from "@writeme/core";
 
 export class Category extends FsPlugin implements ICategory {
-  private getCategoriesContent(): Domain.Category[] {
-    const text = this.openFile(this.categoryFile);
-    return ymlParse(text);
-  }
-
   public async getAllPaths(): Promise<string[]> {
     const content = this.getCategoriesContent();
     return content.map((x) => x.url);
@@ -28,27 +24,39 @@ export class Category extends FsPlugin implements ICategory {
     );
   }
 
-  public async delete(id: string): Promise<boolean> {
+  public async delete(id: string) {
     const categories = await this.getCategories();
-    this.writeCategory(categories.filter((x) => x.id !== id));
-    return true;
+    const category = categories.find((x) => x.id === id) ?? null;
+    if (category === null) return null;
+    const newList = categories.filter((x) => x.id !== id);
+    this.writeCategory(newList);
+    return category;
   }
 
-  public async update(category: Domain.Category): Promise<void> {
+  public async update(category: Domain.Category) {
     const categories = await this.getCategories();
     const newCategories = categories.map((x) => (x.id === category.id ? category : x));
     this.writeCategory(newCategories);
+    return Either.success(category);
   }
 
-  public async getCategoryById(id: string): Promise<Domain.Category | null> {
-    const text = this.openFile(this.categoryFile);
-    const yml = ymlParse(text);
-    return yml.find((x: any) => x.id === id) ?? null;
-  }
-
-  public async save(category: Domain.Category): Promise<void> {
+  public async save(category: Domain.Category) {
     const categories = await this.getCategories();
     categories.push(category);
     this.writeCategory(categories);
+    return Either.success(category);
+  }
+
+  public getAll(): Promise<Domain.Category[]> {
+    return Promise.resolve([]);
+  }
+
+  public async getById(id: string): Promise<Domain.Category | null> {
+    return this.getCategoriesContent().find((x) => x.id === id) ?? null;
+  }
+
+  private getCategoriesContent(): Domain.Category[] {
+    const text = this.openFile(this.categoryFile);
+    return ymlParse(text);
   }
 }

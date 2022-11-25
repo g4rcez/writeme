@@ -2,7 +2,7 @@ import { stringify as ymlStringify } from "yaml";
 import { FsPlugin } from "./fs.plugin";
 import { IDocument } from "../interfaces/idocument";
 import { Domain } from "../domain";
-import { Is } from "@writeme/core";
+import { Either, Is } from "@writeme/core";
 import path from "path";
 import grayMatter from "gray-matter";
 
@@ -12,9 +12,9 @@ const parseMdx = (content: string) => {
 };
 
 export class Document extends FsPlugin implements IDocument {
-  public async update(document: Domain.Document, id: string) {
-    const find = await this.findDocument(id);
-    if (Is.NilOrEmpty(find)) return null;
+  public async update(document: Domain.Document) {
+    const find = await this.findDocument(document.id);
+    if (Is.NilOrEmpty(find)) return Either.error(["File not found"]);
     const { content, ...frontMatter } = document;
     const text = this.openFile(find);
     const result = parseMdx(text).frontMatter;
@@ -23,7 +23,7 @@ export class Document extends FsPlugin implements IDocument {
     const yaml = ymlStringify({ ...result, ...frontMatter, tags, authors });
     const markdown = "--- yaml\n" + yaml + "---\n" + content;
     this.writeFile(find, markdown);
-    return document;
+    return Either.success(document);
   }
 
   public async getById(id: string): Promise<Domain.Document | null> {
@@ -33,11 +33,12 @@ export class Document extends FsPlugin implements IDocument {
     return this.buildDocument(filename);
   }
 
-  public async save(document: Domain.Document): Promise<void> {
+  public async save(document: Domain.Document) {
     const { content, ...data } = document;
     const yaml = ymlStringify(data);
     const text = "--- yaml\n" + yaml + "---\n" + content;
     this.writeFile(path.join(this.root, this.filename(document.url)), text);
+    return Either.success(document);
   }
 
   public async getAll(): Promise<Domain.DocumentDesc[]> {
@@ -70,6 +71,10 @@ export class Document extends FsPlugin implements IDocument {
   public async getAllPaths(): Promise<string[]> {
     const paths: string[] = await this.enumerate();
     return paths.map(this.basename.bind(this));
+  }
+
+  public async delete(id: string) {
+    return Promise.resolve(null);
   }
 
   private async findDocument(id: string) {

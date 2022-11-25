@@ -3,7 +3,7 @@ import { Either } from "@writeme/core";
 
 type ID = string;
 
-export interface IService<Entity, SaveEntity, GetEntity = SaveEntity> {
+export interface Iservice<Entity, SaveEntity, GetEntity = SaveEntity> {
   getAll(): Promise<GetEntity[]>;
 
   getAllPaths(): Promise<string[]>;

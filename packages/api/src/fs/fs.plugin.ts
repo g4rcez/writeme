@@ -7,12 +7,15 @@ import { WritemeApiPlugin } from "../writeme-api.plugin";
 const glob = promisify(require("glob"));
 
 export abstract class FsPlugin extends WritemeApiPlugin {
-  protected root = path.join(path.resolve(process.cwd()), "docs");
-  protected postsDirectory = path.join(this.root, "**", "*.mdx");
-  protected categoryFile = path.join(this.root, "categories.yml");
+  protected root: string;
+  protected postsDirectory: string;
+  protected categoryFile: string;
 
-  constructor() {
+  constructor(dir: string) {
     super("fs");
+    this.root = path.resolve(dir);
+    this.postsDirectory = path.join(this.root, "**", "*.mdx");
+    this.categoryFile = path.join(this.root, "categories.yml");
   }
 
   protected filename(basename: string) {

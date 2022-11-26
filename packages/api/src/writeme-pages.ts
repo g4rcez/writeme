@@ -1,5 +1,3 @@
-import { IDocument } from "./interfaces/idocument";
-import { ICategory } from "./interfaces/icategory";
 import { CategoriesService } from "./service/categories";
 import { DocumentsService } from "./service/documents";
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
@@ -21,9 +19,9 @@ export class WritemePages {
   public readonly category: CategoriesService;
   public readonly document: DocumentsService;
 
-  public constructor(document: IDocument, category: ICategory) {
-    this.category = new CategoriesService(category);
-    this.document = new DocumentsService(document);
+  public constructor(args: { categoryService: CategoriesService; documentsService: DocumentsService }) {
+    this.category = args.categoryService;
+    this.document = args.documentsService;
   }
 
   public documentsPageGetStaticPaths(): GetStaticPaths {

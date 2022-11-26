@@ -6,16 +6,13 @@ const context = createContext<[state: Record<string, any>, setPreference: (key: 
   () => {},
 ]);
 
-const getPreference = <T extends {}>(key: string, defaultValue: T): T =>
-  LocalStorage.get<T>(`writeme/${key}`) ?? (defaultValue as any);
-
 const setPreference = <T extends {}>(key: string, value: T): void => LocalStorage.set<T>(`writeme/${key}`, value);
 
 export const Preferences = ({ children }: PropsWithChildren) => {
   const [state, setState] = useState<{}>(() => ({}));
 
   useEffect(() => {
-    const st = Object.entries(localStorage).reduce((acc, el) => ({ ...acc, [el[0]]: el[1] }), {});
+    const st = Object.entries(window.localStorage).reduce((acc, el) => ({ ...acc, [el[0]]: el[1] }), {});
     setState(st);
   }, []);
 
@@ -29,7 +26,8 @@ export const Preferences = ({ children }: PropsWithChildren) => {
 
 export const usePreferences = <T extends {}>(key: string, defaultValue: T) => {
   const [global, dispatch] = useContext(context)!;
-  const state: T = global[key] ?? defaultValue;
+  const ref = "writeme/" + key;
+  const state: T = global[ref] ?? defaultValue;
 
   const set = useCallback((value: T) => dispatch(key, value), [key, dispatch]);
 

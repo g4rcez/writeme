@@ -1,10 +1,10 @@
-import { Iservice } from "./iservice";
+import { IService } from "../interfaces/iservice";
 import { z } from "zod";
 import { Either, Strings, Validator } from "@writeme/core";
 import { Domain } from "../domain";
-import { IDocument } from "../interfaces/idocument";
+import { DocumentsRepository } from "../interfaces/documents-repository";
 
-export class DocumentsService implements Iservice<Domain.Document, Domain.MarkdownDocumentRaw, Domain.DocumentDesc> {
+export class DocumentsService implements IService<DocumentsRepository, Domain.MarkdownDocumentRaw> {
   private saveSchema = z.object({
     category: z.string(),
     content: z.string(),
@@ -17,21 +17,18 @@ export class DocumentsService implements Iservice<Domain.Document, Domain.Markdo
     authors: z.array(z.unknown()).length(0).optional().default([]),
   });
 
-  public editSchema = this.saveSchema.extend({
-    id: z.string().uuid().or(z.string()),
-  });
+  public editSchema = this.saveSchema.extend({ id: z.string().uuid().or(z.string()) });
 
-  public constructor(public storage: IDocument) {}
+  public constructor(public repository: DocumentsRepository) {}
 
-  public async save(item: Domain.Document): Promise<Domain.Document> {
-    await this.storage.save(item);
-    return item;
+  public async save(item: Domain.Document) {
+    return this.repository.save(item);
   }
 
   public async validate(
     item: Domain.MarkdownDocumentRaw,
     schema: typeof this.editSchema | typeof this.saveSchema = this.saveSchema
-  ): Promise<Either.Error<string[]> | Either.Success<Domain.Document>> {
+  ) {
     const result = await Validator.validate(schema, item);
     if (result.success) {
       const data = result.success;
@@ -51,8 +48,8 @@ export class DocumentsService implements Iservice<Domain.Document, Domain.Markdo
     return Either.error(result.error);
   }
 
-  public delete(uuid: string): Promise<Either.Error<string[]> | Either.Success<null>> {
-    throw new Error("Method not implemented.");
+  public async delete(uuid: string) {
+    return Either.success(null);
   }
 
   public aggregate(categories: Domain.Category[], documents: Domain.DocumentDesc[]): Domain.CategoryDocuments[] {
@@ -82,24 +79,17 @@ export class DocumentsService implements Iservice<Domain.Document, Domain.Markdo
     return { previous, next };
   }
 
-  public async getAllPaths(): Promise<string[]> {
-    return this.storage.getAllPaths();
+  public async getAllPaths() {
+    return this.repository.getAllPaths();
   }
 
-  public async getAll(): Promise<Domain.DocumentDesc[]> {
-    return this.storage.getAll();
+  public async getAll() {
+    return this.repository.getAll();
   }
 
-  public async getByName(id: string): Promise<Domain.Document | null> {
-    return this.storage.getById(id);
-  }
-
-  public async update(
-    item: Domain.Document,
-    uuid: string
-  ): Promise<Either.Error<string[]> | Either.Success<Domain.Document>> {
+  public async update(item: Domain.Document) {
     try {
-      const result = await this.storage.update(item);
+      const result = await this.repository.update(item);
       if (result === null) return Either.error(["Not found this document"]);
       return Either.success(item);
     } catch (e) {
@@ -108,6 +98,6 @@ export class DocumentsService implements Iservice<Domain.Document, Domain.Markdo
   }
 
   public getById(id: string): Promise<Domain.Document | null> {
-    return this.storage.getById(id);
+    return this.repository.getById(id);
   }
 }

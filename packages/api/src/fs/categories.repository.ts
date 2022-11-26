@@ -1,10 +1,10 @@
 import { Domain } from "../domain";
 import { parse as ymlParse } from "yaml";
 import { FsPlugin } from "./fs.plugin";
-import { ICategory } from "../interfaces/icategory";
+import { ICategoryRepository } from "../interfaces/category-repository";
 import { Either } from "@writeme/core";
 
-export class Category extends FsPlugin implements ICategory {
+export class Category extends FsPlugin implements ICategoryRepository {
   public async getAllPaths(): Promise<string[]> {
     const content = this.getCategoriesContent();
     return content.map((x) => x.url);

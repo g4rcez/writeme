@@ -1,6 +1,6 @@
 import { stringify as ymlStringify } from "yaml";
 import { FsPlugin } from "./fs.plugin";
-import { IDocument } from "../interfaces/idocument";
+import { DocumentsRepository } from "../interfaces/documents-repository";
 import { Domain } from "../domain";
 import { Either, Is } from "@writeme/core";
 import path from "path";
@@ -11,17 +11,16 @@ const parseMdx = (content: string) => {
   return { content: document.content, frontMatter: document.data };
 };
 
-export class Document extends FsPlugin implements IDocument {
+export class Document extends FsPlugin implements DocumentsRepository {
   public async update(document: Domain.Document) {
     const find = await this.findDocument(document.id);
     if (Is.NilOrEmpty(find)) return Either.error(["File not found"]);
     const { content, ...frontMatter } = document;
     const text = this.openFile(find);
     const result = parseMdx(text).frontMatter;
-    const tags = (result.tags ?? ([] as any[])).concat(document.tags);
-    const authors = (result.authors ?? ([] as any[])).concat(document.authors);
-    const yaml = ymlStringify({ ...result, ...frontMatter, tags, authors });
-    const markdown = "--- yaml\n" + yaml + "---\n" + content;
+    const tags = (result.tags || []).concat(document.tags);
+    const authors = (result.authors || []).concat(document.authors);
+    const markdown = "--- yaml\n" + ymlStringify({ ...result, ...frontMatter, tags, authors }) + "---\n" + content;
     this.writeFile(find, markdown);
     return Either.success(document);
   }
@@ -35,8 +34,7 @@ export class Document extends FsPlugin implements IDocument {
 
   public async save(document: Domain.Document) {
     const { content, ...data } = document;
-    const yaml = ymlStringify(data);
-    const text = "--- yaml\n" + yaml + "---\n" + content;
+    const text = "--- yaml\n" + ymlStringify(data) + "---\n" + content;
     this.writeFile(path.join(this.root, this.filename(document.url)), text);
     return Either.success(document);
   }
@@ -59,13 +57,6 @@ export class Document extends FsPlugin implements IDocument {
         };
       })
       .sort((a, b) => a.index - b.index);
-  }
-
-  public async getByName(name: string): Promise<Domain.Document | null> {
-    const paths: string[] = await this.enumerate();
-    const document = paths.find((x) => name === this.basename(x)) ?? null;
-    if (Is.Null(document)) return null;
-    return this.buildDocument(document);
   }
 
   public async getAllPaths(): Promise<string[]> {

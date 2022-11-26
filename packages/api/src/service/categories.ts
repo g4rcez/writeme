@@ -1,12 +1,13 @@
-import { Iservice } from "./iservice";
+import { IService } from "../interfaces/iservice";
 import { z } from "zod";
 import { Types, Validator, Either, Strings } from "@writeme/core";
 import { Domain } from "../domain";
-import { ICategory } from "../interfaces/icategory";
+import { ICategoryRepository } from "../interfaces/category-repository";
+import { IRepository } from "../interfaces/irepository";
 
 type SaveCategories = Types.Hide<Domain.Category, "id">;
 
-export class CategoriesService implements Iservice<Domain.Category, SaveCategories> {
+export class CategoriesService implements IService<ICategoryRepository, SaveCategories> {
   private saveSchema = z.object({
     title: z.string().max(256),
     index: z.number().int(),
@@ -16,17 +17,15 @@ export class CategoriesService implements Iservice<Domain.Category, SaveCategori
     url: Validator.urlFriendly.max(256),
   });
 
-  constructor(public repository: ICategory) {}
+  constructor(public repository: ICategoryRepository) {}
 
   public async delete(uuid: string): Promise<Either.Error<string[]> | Either.Success<null>> {
     await this.repository.delete(uuid);
     return Either.success(null);
   }
 
-  public async update(
-    item: Partial<SaveCategories>,
-    id: string
-  ): Promise<Either.Error<string[]> | Either.Success<Domain.Category>> {
+  public async update(item: Domain.Category) {
+    const id = item.id;
     const category = await this.repository.getById(id);
     if (category === null) {
       throw new Error("This category not exist.");
@@ -49,11 +48,10 @@ export class CategoriesService implements Iservice<Domain.Category, SaveCategori
     return list.sort((a, b) => a.index - b.index);
   };
 
-  public async save(item: Domain.Category): Promise<Domain.Category> {
+  public async save(item: Domain.Category) {
     const id = Strings.uuid();
     const category = { ...item, id };
-    await this.repository.save(category);
-    return category;
+    return this.repository.save(category);
   }
 
   public async validate(item: SaveCategories): Promise<Either.Error<string[]> | Either.Success<Domain.Category>> {

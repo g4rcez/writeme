@@ -28,7 +28,7 @@ export default function DashboardIndexPage({ documents }: Props) {
           const date = Dates.localeDate(x.createdAt);
           const link = Links.dashboard.document(x.id);
           return (
-            <Card as="li" key={x.id} className="">
+            <Card as="li" key={x.id} className="block">
               <Heading tag="h2" className="text-3xl">
                 <Link className="link:text-main-500 transition-colors duration-300" href={link} passHref>
                   {x.title}

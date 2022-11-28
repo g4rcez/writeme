@@ -3,12 +3,11 @@ import { Card, Heading } from "@writeme/lego";
 import { Dates, Links } from "@writeme/core";
 import { Domain } from "@writeme/api";
 import { writeme } from "../../../src/writeme";
-
-type Props = {
-  documents: Domain.DocumentDesc[];
-};
+import { InferGetServerSidePropsType } from "next";
 
 export const getStaticProps = writeme.indexDashboardPagesGetStaticProps();
+
+type Props = InferGetServerSidePropsType<typeof getStaticProps>;
 
 export default function DashboardIndexPage({ documents }: Props) {
   return (

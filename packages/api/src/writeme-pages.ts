@@ -98,7 +98,7 @@ export class WritemePages {
     return async () => ({ props: { categories: await this.category.getAll() } });
   }
 
-  public indexDashboardPagesGetStaticProps(): GetStaticProps<{ categories: Domain.DocumentDesc[] }> {
-    return async () => ({ props: { categories: await this.document.getAll() } });
+  public indexDashboardPagesGetStaticProps(): GetStaticProps<{ documents: Domain.DocumentDesc[] }> {
+    return async () => ({ props: { documents: await this.document.getAll() } });
   }
 }

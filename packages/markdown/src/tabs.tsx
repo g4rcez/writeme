@@ -102,7 +102,6 @@ const calculateWidthSize = (ul: HTMLUListElement, id: string) => {
 };
 
 export const Tabs = (props: PropsWithChildren<TabsProps>) => {
-  console.log(props);
   const inkBar = useRef<HTMLDivElement>(null);
   const header = useRef<HTMLUListElement>(null);
   const container = useRef<HTMLDivElement>(null);

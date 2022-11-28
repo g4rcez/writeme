@@ -1,34 +1,20 @@
 import { FormEvent } from "react";
 import { useRouter } from "next/dist/client/router";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { MarkdownDocument, postsService } from "@writeme/api";
 import { httpClient, Links } from "@writeme/core";
 import { Button, Input } from "@writeme/lego";
 import { MarkdownEditor } from "@writeme/admin";
+import { writeme } from "../../../src/writeme";
+import { Domain } from "@writeme/api";
 
 const FORM_NAME = "edit-form";
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const allDocuments = await postsService.getAll();
-  return {
-    paths: allDocuments.map((x) => ({ params: { id: x.id } })),
-    fallback: false,
-  };
-};
+export const getStaticPaths = writeme.documentsPageGetStaticPaths("id");
 
-export const getStaticProps: GetStaticProps = async (props) => {
-  const id = props.params?.id as string;
-  try {
-    const document = await postsService.findById(id);
-    return { props: { document } };
-  } catch (e) {
-    console.log("ERROR", e);
-    return { notFound: true };
-  }
-};
+export const getStaticProps = writeme.documentsByIdPageGetStaticProps("id");
 
 type Props = {
-  document: MarkdownDocument;
+  document: Domain.Document;
 };
 
 export default function DashboardEditDocumentPage(props: Props) {

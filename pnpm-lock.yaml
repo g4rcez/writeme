@@ -121,6 +121,7 @@ importers:
       '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
       '@writeme/core': workspace:*
+      '@writeme/markdown': workspace:*
       gray-matter: 4.0.3
       tsconfig: workspace:*
       typescript: 4.5.2
@@ -135,6 +136,7 @@ importers:
       '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
       '@writeme/core': link:../core
+      '@writeme/markdown': link:../markdown
       tsconfig: link:../tsconfig
       typescript: 4.5.2
 
@@ -171,9 +173,7 @@ importers:
       '@radix-ui/react-dialog': 1.0.2
       '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
-      '@writeme/api': workspace:*
       '@writeme/core': workspace:*
-      eslint: 7.32.0
       next: 13.0.0
       next-mdx-remote: 4.2.0
       react: 18.2.0
@@ -184,6 +184,7 @@ importers:
     dependencies:
       '@radix-ui/react-checkbox': 1.0.1_react@18.2.0
       '@radix-ui/react-dialog': 1.0.2_ug65io7jkbhmo4fihdmbrh3ina
+      '@writeme/core': link:../core
       next: 13.0.0_react@18.2.0
       next-mdx-remote: 4.2.0_react@18.2.0
       react-icons: 4.6.0_react@18.2.0
@@ -191,9 +192,6 @@ importers:
     devDependencies:
       '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
-      '@writeme/api': link:../api
-      '@writeme/core': link:../core
-      eslint: 7.32.0
       react: 18.2.0
       tsconfig: link:../tsconfig
       typescript: 4.9.3
@@ -208,7 +206,6 @@ importers:
       '@types/shell-quote': 1.7.1
       '@writeme/core': workspace:*
       '@writeme/lego': workspace:*
-      eslint: 7.32.0
       flowchart.js: 1.17.1
       gray-matter: 4.0.3
       next: 13.0.0
@@ -226,6 +223,8 @@ importers:
       '@codesandbox/sandpack-react': 1.17.0_react@18.2.0
       '@g4rcez/httpsnippet': 1.24.5
       '@g4rcez/prism-react-renderer': 0.0.1_react@18.2.0
+      '@writeme/core': link:../core
+      '@writeme/lego': link:../lego
       flowchart.js: 1.17.1
       gray-matter: 4.0.3
       next: 13.0.0_react@18.2.0
@@ -240,9 +239,6 @@ importers:
       '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
       '@types/shell-quote': 1.7.1
-      '@writeme/core': link:../core
-      '@writeme/lego': link:../lego
-      eslint: 7.32.0
       react: 18.2.0
       tsconfig: link:../tsconfig
       typescript: 4.5.2

@@ -1,15 +1,11 @@
 import React from "react";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { InferGetStaticPropsType } from "next";
 import Link from "next/link";
-import { Categories, categoriesService } from "@writeme/api";
 import { Links } from "@writeme/core";
 import { Img } from "@writeme/lego";
+import { writeme } from "../src/writeme";
 
-export const getStaticProps: GetStaticProps<{ categories: Categories[] }> = async () => ({
-  props: {
-    categories: await categoriesService.getCategories(),
-  },
-});
+export const getStaticProps = writeme.getAllCategoriesStaticProps();
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 

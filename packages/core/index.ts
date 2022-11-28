@@ -11,7 +11,6 @@ export { httpClient } from "./src/http-client";
 export { Is } from "./src/is";
 export { config } from "./src/writemerc";
 export { Helpers } from "./src/helpers";
-export { Config } from "../../apps/writeme/src/config";
 export { Validator } from "./src/validator";
 export type { WritemeRcConfig } from "./src/writemerc";
 export type { Types } from "./src/types";

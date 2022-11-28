@@ -1,4 +1,6 @@
 export namespace Strings {
+  export const pad = (str: string) => str.padStart(2, "0");
+
   export const uuid = (): string =>
     "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
       let r = (Math.random() * 16) | 0;
@@ -22,7 +24,7 @@ export namespace Strings {
       .replace(/-+/g, "-");
   };
 
-  const normalizePath = (str: string) => str.replace(/\/\//g, "/");
+  export const normalizePath = (str: string) => str.replace(/\/\//g, "/");
 
   export const concatUrl = (baseURL: string, ...urls: string[]) =>
     normalizePath(urls.reduce((acc, el) => acc.replace(/\/+$/, "") + "/" + el.replace(/^\/+/, ""), baseURL));

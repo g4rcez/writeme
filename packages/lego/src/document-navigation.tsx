@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Links, Types } from "@writeme/core";
-import type { SimplerDocument } from "@writeme/api";
 
-export const Box = ({ doc, back }: { doc: Types.Nullable<SimplerDocument>; back?: boolean }) => {
+type Doc = Types.Nullable<{ url: string; title: string }>;
+
+export const Box = ({ doc, back }: { doc: Doc; back?: boolean }) => {
   const isNull = doc === null;
   return (
     <Link
@@ -22,8 +23,8 @@ export const Box = ({ doc, back }: { doc: Types.Nullable<SimplerDocument>; back?
 };
 
 type Props = {
-  next: Types.Nullable<SimplerDocument>;
-  previous: Types.Nullable<SimplerDocument>;
+  next: Doc;
+  previous: Doc;
 };
 
 export const DocumentNavigation = ({ next, previous }: Props) => (

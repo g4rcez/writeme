@@ -1,20 +1,13 @@
-import { GetStaticProps } from "next";
 import Link from "next/link";
-import { postsService, VitrineDocument } from "@writeme/api";
 import { Card, Heading } from "@writeme/lego";
 import { Dates, Links } from "@writeme/core";
+import { Domain } from "@writeme/api";
+import { writeme } from "../../../src/writeme";
+import { InferGetServerSidePropsType } from "next";
 
-type Props = {
-  documents: VitrineDocument[];
-};
+export const getStaticProps = writeme.indexDashboardPagesGetStaticProps();
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  const documents = await postsService.getAll();
-  return {
-    revalidate: 20,
-    props: { documents },
-  };
-};
+type Props = InferGetServerSidePropsType<typeof getStaticProps>;
 
 export default function DashboardIndexPage({ documents }: Props) {
   return (
@@ -27,7 +20,7 @@ export default function DashboardIndexPage({ documents }: Props) {
           const date = Dates.localeDate(x.createdAt);
           const link = Links.dashboard.document(x.id);
           return (
-            <Card as="li" key={x.id} className="">
+            <Card as="li" key={x.id} className="block">
               <Heading tag="h2" className="text-3xl">
                 <Link className="link:text-main-500 transition-colors duration-300" href={link} passHref>
                   {x.title}

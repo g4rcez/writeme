@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Card, Heading } from "@writeme/lego";
 import { Dates, Links } from "@writeme/core";
-import { Domain } from "@writeme/api";
 import { writeme } from "../../../src/writeme";
 import { InferGetServerSidePropsType } from "next";
 

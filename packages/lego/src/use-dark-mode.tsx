@@ -12,8 +12,10 @@ const Context = createContext({
   setMode: (n: Modes | ((prev: Modes) => Modes)) => {},
 });
 
+const KEY = "theme";
+
 const useInternalDarkMode = () => {
-  const [mode, setMode] = usePreferences<string>("theme", "light");
+  const [mode, setMode] = usePreferences<string>(KEY, "light");
 
   useEffect(() => {
     const onChange = (event: any) => setMode(event.matches ? "dark" : "light");

@@ -12,7 +12,12 @@ export const Preferences = ({ children }: PropsWithChildren) => {
   const [state, setState] = useState<{}>(() => ({}));
 
   useEffect(() => {
-    const st = Object.entries(window.localStorage).reduce((acc, el) => ({ ...acc, [el[0]]: el[1] }), {});
+    const st = Object.keys(window.localStorage).reduce((acc, key) => {
+      const value = LocalStorage.get(key);
+      if (!key.startsWith("writeme/")) return acc;
+      const convertedKey = key.replace(/^writeme\//, "");
+      return { ...acc, [convertedKey]: value };
+    }, {});
     setState(st);
   }, []);
 
@@ -24,12 +29,9 @@ export const Preferences = ({ children }: PropsWithChildren) => {
   return <context.Provider value={[state, callback]}>{children}</context.Provider>;
 };
 
-export const usePreferences = <T extends {}>(key: string, defaultValue: T) => {
+export const usePreferences = <T extends {}>(KEY: string, defaultValue: T) => {
   const [global, dispatch] = useContext(context)!;
-  const ref = "writeme/" + key;
-  const state: T = global[ref] ?? defaultValue;
-
-  const set = useCallback((value: T) => dispatch(key, value), [key, dispatch]);
-
+  const state: T = global[KEY] ?? defaultValue;
+  const set = useCallback((value: T) => dispatch(KEY, value), [KEY, dispatch]);
   return [state, set] as const;
 };

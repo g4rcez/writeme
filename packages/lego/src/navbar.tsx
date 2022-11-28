@@ -15,7 +15,7 @@ export const Navbar = () => {
             <Link href="/">Writeme</Link>
           </h1>
         </section>
-        <button className="bg-transparent p-0 m-0" onClick={onToggleMode}>
+        <button className="bg-transparent p-0 m-0 focus:outline" onClick={onToggleMode}>
           <FaSun />
         </button>
       </nav>

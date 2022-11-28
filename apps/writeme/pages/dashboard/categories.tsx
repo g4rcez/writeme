@@ -49,7 +49,7 @@ const CreateCategory = ({ category, setCategory }: CategoryProps) => {
   );
 };
 
-export const getStaticProps = writeme.indexPageGetStaticProps();
+export const getStaticProps = writeme.getAllCategoriesStaticProps();
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 

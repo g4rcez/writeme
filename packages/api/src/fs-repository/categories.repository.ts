@@ -57,6 +57,7 @@ export class Category extends FsPlugin implements ICategoryRepository {
 
   private getCategoriesContent(): Domain.Category[] {
     const text = this.openFile(this.categoryFile);
-    return ymlParse(text);
+    const categories: Domain.Category[] = ymlParse(text);
+    return categories.sort((a, b) => a.index - b.index);
   }
 }

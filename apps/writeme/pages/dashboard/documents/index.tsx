@@ -1,4 +1,3 @@
-import { GetStaticProps } from "next";
 import Link from "next/link";
 import { Card, Heading } from "@writeme/lego";
 import { Dates, Links } from "@writeme/core";
@@ -9,13 +8,7 @@ type Props = {
   documents: Domain.DocumentDesc[];
 };
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  const documents = await writeme.document.getAll();
-  return {
-    revalidate: 20,
-    props: { documents },
-  };
-};
+export const getStaticProps = writeme.indexDashboardPagesGetStaticProps();
 
 export default function DashboardIndexPage({ documents }: Props) {
   return (

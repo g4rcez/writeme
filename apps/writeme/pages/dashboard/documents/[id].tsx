@@ -9,24 +9,9 @@ import { Domain } from "@writeme/api";
 
 const FORM_NAME = "edit-form";
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const allDocuments = await writeme.document.getAll();
-  return {
-    paths: allDocuments.map((x) => ({ params: { id: x.id } })),
-    fallback: false,
-  };
-};
+export const getStaticPaths = writeme.documentsPageGetStaticPaths("id");
 
-export const getStaticProps: GetStaticProps = async (props) => {
-  const id = props.params?.id as string;
-  try {
-    const document = await writeme.document.getById(id);
-    return { props: { document } };
-  } catch (e) {
-    console.log("ERROR", e);
-    return { notFound: true };
-  }
-};
+export const getStaticProps = writeme.documentsByIdPageGetStaticProps("id");
 
 type Props = {
   document: Domain.Document;

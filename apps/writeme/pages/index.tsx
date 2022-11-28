@@ -5,7 +5,7 @@ import { Links } from "@writeme/core";
 import { Img } from "@writeme/lego";
 import { writeme } from "../src/writeme";
 
-export const getStaticProps = writeme.indexPageGetStaticProps();
+export const getStaticProps = writeme.getAllCategoriesStaticProps();
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 

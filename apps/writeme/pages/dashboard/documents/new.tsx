@@ -3,10 +3,16 @@ import { useRouter } from "next/router";
 import { httpClient } from "@writeme/core";
 import { Input, Button } from "@writeme/lego";
 import { MarkdownEditor } from "@writeme/admin";
+import { writeme } from "../../../src/writeme";
+import { InferGetStaticPropsType } from "next";
 
 const FORM_NAME = "form";
 
-export default function DashboardDocumentsPage() {
+export const getStaticProps = writeme.getAllCategoriesStaticProps();
+
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
+
+export default function DashboardDocumentsPage(props: Props) {
   const nullDocument = true;
   const router = useRouter();
 

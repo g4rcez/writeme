@@ -28,6 +28,7 @@ export const usePreferences = <T extends {}>(key: string, defaultValue: T) => {
   const [global, dispatch] = useContext(context)!;
   const ref = "writeme/" + key;
   const state: T = global[ref] ?? defaultValue;
+  console.log(state, global);
 
   const set = useCallback((value: T) => dispatch(key, value), [key, dispatch]);
 

@@ -43,11 +43,6 @@ export class CategoriesService implements IService<ICategoryRepository, SaveCate
     return Either.success(updated);
   }
 
-  public getCategories = async (): Promise<Domain.Category[]> => {
-    const list = await this.repository.getAll();
-    return list.sort((a, b) => a.index - b.index);
-  };
-
   public async save(item: Domain.Category) {
     const id = Strings.uuid();
     const category = { ...item, id };

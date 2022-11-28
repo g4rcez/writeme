@@ -15,6 +15,10 @@ type DocumentsPageGetStaticProps = {
   previous: Types.Nullable<Domain.DocumentDesc>;
 };
 
+type DocumentsByIdPageGetStaticProps = {
+  document: Types.Nullable<Domain.Document>;
+};
+
 export class WritemePages {
   public readonly category: CategoriesService;
   public readonly document: DocumentsService;
@@ -24,10 +28,39 @@ export class WritemePages {
     this.document = args.documentsService;
   }
 
-  public documentsPageGetStaticPaths(): GetStaticPaths {
+  public documentsPageGetStaticPaths(fileNameParam: string = "title"): GetStaticPaths {
     return async () => {
       const docs = await this.document.getAllPaths();
-      return { fallback: false, paths: docs.map((title) => ({ params: { title } })) };
+      return { fallback: false, paths: docs.map((title) => ({ params: { [fileNameParam]: title } })) };
+    };
+  }
+
+  public async refactor<T>(
+    result: T,
+    props: GetStaticPropsContext,
+    callback?: (context: GetStaticPropsContext, result: T) => GetStaticPropsResult<T>
+  ) {
+    if (callback === undefined) return { props: result, revalidate: false };
+    const callbackResult = (await callback(props, result)) as any;
+    return { ...callbackResult, props: { ...result, ...callbackResult.props } };
+  }
+
+  public documentsByIdPageGetStaticProps(
+    fileNameParam: string,
+    callback?: (
+      context: GetStaticPropsContext,
+      result: DocumentsByIdPageGetStaticProps
+    ) => GetStaticPropsResult<DocumentsByIdPageGetStaticProps>
+  ): GetStaticProps<DocumentsByIdPageGetStaticProps> {
+    return async (props) => {
+      const id = props.params?.[fileNameParam || "id"] as string;
+      try {
+        const result: DocumentsByIdPageGetStaticProps = { document: await this.document.getById(id) };
+        return this.refactor(result, props, callback);
+      } catch (e) {
+        console.log("ERROR", e);
+        return { notFound: true };
+      }
     };
   }
 
@@ -50,9 +83,7 @@ export class WritemePages {
         const groups = this.document.aggregate(categories, await this.document.getAll());
         const { next, previous } = this.document.getAdjacentPosts(post, groups);
         const result = { post, categories, mdx, groups, next: next, previous: previous };
-        if (callback === undefined) return { props: result, revalidate: false };
-        const callbackResult = (await callback(props, result)) as any;
-        return { ...callbackResult, props: { ...result, ...callbackResult.props } };
+        return this.refactor(result, props, callback);
       } catch (error) {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
@@ -63,9 +94,11 @@ export class WritemePages {
     };
   }
 
-  public indexPageGetStaticProps(): GetStaticProps<{ categories: Domain.Category[] }> {
-    return async () => {
-      return { props: { categories: await this.category.getCategories() } };
-    };
+  public getAllCategoriesStaticProps(): GetStaticProps<{ categories: Domain.Category[] }> {
+    return async () => ({ props: { categories: await this.category.getAll() } });
+  }
+
+  public indexDashboardPagesGetStaticProps(): GetStaticProps<{ categories: Domain.DocumentDesc[] }> {
+    return async () => ({ props: { categories: await this.document.getAll() } });
   }
 }

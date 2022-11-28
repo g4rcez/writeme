@@ -1,8 +1,8 @@
 export type { IService } from "./src/interfaces/iservice";
 export { Http } from "./src/http";
 export { WritemePages } from "./src/writeme-pages";
-export { Document as FsDocument } from "./src/fs/documents.repository";
-export { Category as FsCategory } from "./src/fs/categories.repository";
+export { Document as FsDocument } from "./src/fs-repository/documents.repository";
+export { Category as FsCategory } from "./src/fs-repository/categories.repository";
 export { DocumentsService } from "./src/service/documents";
 export { CategoriesService } from "./src/service/categories";
 export type { Domain } from "./src/domain";

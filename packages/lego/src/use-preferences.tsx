@@ -1,7 +1,7 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useState } from "react";
 import { LocalStorage } from "storage-manager-js";
 
-const context = createContext<[state: Record<string, any>, setPreference: (key: string, val: any) => void]>([
+const Context = createContext<[state: Record<string, any>, setPreference: (key: string, val: any) => void]>([
   {},
   () => {},
 ]);
@@ -26,11 +26,11 @@ export const Preferences = ({ children }: PropsWithChildren) => {
     setPreference(key, val);
   }, []);
 
-  return <context.Provider value={[state, callback]}>{children}</context.Provider>;
+  return <Context.Provider value={[state, callback]}>{children}</Context.Provider>;
 };
 
 export const usePreferences = <T extends {}>(KEY: string, defaultValue: T) => {
-  const [global, dispatch] = useContext(context)!;
+  const [global, dispatch] = useContext(Context);
   const state: T = global[KEY] ?? defaultValue;
   const set = useCallback((value: T) => dispatch(KEY, value), [KEY, dispatch]);
   return [state, set] as const;

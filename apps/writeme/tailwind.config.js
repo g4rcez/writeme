@@ -91,6 +91,7 @@ module.exports = {
     "../../packages/lego/src/*.{jsx,tsx,html,md,mdx}",
     "../../packages/lego/src/**/*.{jsx,tsx,html,md,mdx}",
     "../../packages/markdown/src/**/*.{jsx,tsx,html,md,mdx}",
+    "../../packages/admin/src/**/*.{jsx,tsx,html,md,mdx}",
   ],
   theme: { extend: { colors: remap(Colors) } },
   plugins: [

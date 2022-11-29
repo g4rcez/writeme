@@ -1,6 +1,7 @@
 {
   "name": "writeme",
   "version": "0.0.0",
+  "description": "A markdown engine to write pretty and interactive documentations and posts.",
   "private": true,
   "repository": "https://github.com/g4rcez/writeme.git",
   "workspaces": [

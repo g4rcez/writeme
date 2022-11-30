@@ -11,8 +11,12 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function Home({ categories }: Props) {
   return (
-    <main className="flex flex-col h-screen justify-between">
-      <section className="my-12 w-full grid grid-cols-1 md:grid-cols-2 gap-12 px-6 mx-auto container">
+    <main className="flex w-full mx-auto container flex-col px-6 justify-between">
+      <header className="mt-8 mb-6">
+        <h1 className="text-5xl font-bold tracking-wide leading-1">Writeme</h1>
+        <p className="my-2">A markdown engine to write pretty and interactive documentations and posts.</p>
+      </header>
+      <section className="my-4 w-full grid grid-cols-1 md:grid-cols-2 gap-12">
         {categories.map((category) => (
           <Link
             className="transition-colors duration-300 block shadow-sm rounded-lg p-8 max-w-5xl bg-white dark:bg-transparent backdrop-blur-md border border-slate-200 link:border-slate-300 dark:border-zinc-700 dark:link:border-zinc-500"

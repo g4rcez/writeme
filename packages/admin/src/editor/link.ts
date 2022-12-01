@@ -52,7 +52,7 @@ const extension = (view: EditorView) => {
     syntaxTree(view.state).iterate({
       from: range.from,
       to: range.to,
-      enter: ({ type, node, from, to }) => {
+      enter: ({ type, from, to }) => {
         const text: string = view.state.doc.sliceString(from, to);
         if (type.name === "URL") {
           const link = new Link(from, to, text);

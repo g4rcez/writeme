@@ -2,100 +2,7 @@ import { EditorView } from "@codemirror/view";
 import { Extension } from "@codemirror/state";
 import { HighlightStyle, syntaxHighlighting, TagStyle } from "@codemirror/language";
 import { tags as t } from "@lezer/highlight";
-
-type Colors = {
-  chalky: string;
-  coral: string;
-  cyan: string;
-  invalid: string;
-  ivory: string;
-  stone: string;
-  malibu: string;
-  sage: string;
-  whiskey: string;
-  violet: string;
-  darkBackground: string;
-  highlightBackground: string;
-  background: string;
-  tooltipBackground: string;
-  selection: string;
-  cursor: string;
-};
-
-const simpleDarkColors: Colors = {
-  chalky: "#e5c07b",
-  coral: "#D3525C",
-  cyan: "#56b6c2",
-  invalid: "#ffffff",
-  ivory: "#fff",
-  stone: "#7d8799",
-  malibu: "#61afef",
-  sage: "#4c613c",
-  whiskey: "#d19a66",
-  violet: "#c678dd",
-  darkBackground: "transparent",
-  highlightBackground: "#b9b9b9",
-  background: "transparent",
-  tooltipBackground: "#aaa",
-  selection: "#9ea1a8",
-  cursor: "#128bff",
-};
-const simpleLightColors: Colors = {
-  chalky: "#e5c07b",
-  coral: "#D3525C",
-  cyan: "#56b6c2",
-  invalid: "#ffffff",
-  ivory: "#1e293b",
-  stone: "#7d8799",
-  malibu: "#61afef",
-  sage: "#4c613c",
-  whiskey: "#d19a66",
-  violet: "#c678dd",
-  darkBackground: "transparent",
-  highlightBackground: "#b9b9b9",
-  background: "transparent",
-  tooltipBackground: "#aaa",
-  selection: "#9ea1a8",
-  cursor: "#128bff",
-};
-
-const lightColors: Colors = {
-  chalky: "#e5c07b",
-  coral: "#D3525C",
-  cyan: "#56b6c2",
-  invalid: "#ffffff",
-  ivory: "#1e293b",
-  stone: "#7d8799",
-  malibu: "#61afef",
-  sage: "#4c613c",
-  whiskey: "#d19a66",
-  violet: "#c678dd",
-  darkBackground: "#efefef",
-  highlightBackground: "#b9b9b9",
-  background: "#fff",
-  tooltipBackground: "#aaa",
-  selection: "#9ea1a8",
-  cursor: "#128bff",
-};
-
-const darkColors: Colors = {
-  chalky: "#e5c07b",
-  coral: "#e06c75",
-  cyan: "#56b6c2",
-  invalid: "#ffffff",
-  ivory: "#abb2bf",
-  stone: "#7d8799",
-  malibu: "#61afef",
-  sage: "#98c379",
-  whiskey: "#d19a66",
-  violet: "#c678dd",
-  darkBackground: "#21252b",
-  highlightBackground: "#2c313a",
-  background: "#282c34",
-  tooltipBackground: "#353a42",
-  selection: "#3e4451",
-  cursor: "#528bff",
-};
+import { colors, Colors } from "./colors";
 
 const createColorTheme = (
   name: string,
@@ -143,7 +50,7 @@ const createColorTheme = (
       ".cm-selectionMatch": { backgroundColor: "#aafe661a" },
 
       "&.cm-focused .cm-matchingBracket, &.cm-focused .cm-nonmatchingBracket": {
-        backgroundColor: "#bad0f847",
+        backgroundColor: stone,
         outline: "1px solid #515a6b",
       },
 
@@ -237,7 +144,7 @@ export const createHighlightStyle = (
       },
       {
         tag: t.link,
-        color: stone,
+        color: ivory,
         textDecoration: "underline",
       },
       {
@@ -260,29 +167,39 @@ export const createHighlightStyle = (
     ].concat(tagStyle as any)
   );
 
-export const darkTheme: Extension = [
-  createColorTheme("dark", darkColors),
-  syntaxHighlighting(createHighlightStyle(darkColors)),
+const createThemeExtension = (name: string, theme: Colors) => [
+  createColorTheme(name, theme),
+  syntaxHighlighting(createHighlightStyle(theme)),
 ];
 
-export const lightTheme: Extension = [
-  createColorTheme("light", lightColors),
-  syntaxHighlighting(createHighlightStyle(lightColors)),
-];
+export const darkTheme: Extension = createThemeExtension("dark", colors.normal.dark);
+
+export const lightTheme: Extension = createThemeExtension("light", colors.normal.light);
 
 const SimpleTagStyle: TagStyle[] = [
   {
     tag: t.heading1,
     class: "text-3xl",
   },
+  {
+    tag: t.heading2,
+    class: "text-2xl",
+  },
+  {
+    tag: t.heading3,
+    class: "text-xl",
+  },
+  {
+    tag: t.heading4,
+    class: "text-lg",
+  },
 ];
 
-export const simpleLightMode: Extension = [
-  createColorTheme("light", simpleLightColors),
-  syntaxHighlighting(createHighlightStyle(simpleLightColors, SimpleTagStyle)),
+const createSimpleTheme = (name: string, theme: Colors) => [
+  createColorTheme("light", theme),
+  syntaxHighlighting(createHighlightStyle(theme, SimpleTagStyle)),
 ];
 
-export const simpleDarkMode: Extension = [
-  createColorTheme("light", simpleDarkColors),
-  syntaxHighlighting(createHighlightStyle(simpleDarkColors, SimpleTagStyle)),
-];
+export const simpleLightMode: Extension = createSimpleTheme("light", colors.simple.light);
+
+export const simpleDarkMode: Extension = createSimpleTheme("dark", colors.simple.dark);

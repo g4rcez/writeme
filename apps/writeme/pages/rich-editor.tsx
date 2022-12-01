@@ -4,7 +4,7 @@ import { Markdown } from "@writeme/markdown";
 import { InferGetStaticPropsType } from "next";
 
 export const getStaticProps = async () => {
-  const post = await writeme.document.getById("roadmap");
+  const post = await writeme.document.getById("test");
   if (post === null) {
     return { notFound: true };
   }
@@ -16,7 +16,6 @@ export const getStaticProps = async () => {
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function EditorPage(props: Props) {
-  console.log(props.mdx);
   return (
     <div className="w-full container mx-auto">
       <RichEditor {...props.mdx} />

@@ -11,41 +11,12 @@ import { minimalSetup } from "codemirror";
 import { autocompletion, CompletionContext } from "@codemirror/autocomplete";
 import { links } from "./link";
 import { useDarkMode } from "@writeme/lego";
+import { autoComplete } from "./autocomplete";
+import { commonExtensions } from "./common-extensions";
 
 export const themeSwitcher = new Compartment();
 
-export const coreExtensions: Extension[] = [
-  minimalSetup,
-  links,
-  autocompletion({
-    closeOnBlur: true,
-    selectOnOpen: true,
-    icons: true,
-    override: [
-      async (context: CompletionContext) => {
-        let word = context.matchBefore(/@(\w+)?/);
-        if (!word) return null;
-        if (word.from === word.to && !context.explicit) {
-          return null;
-        }
-        return {
-          from: word.from,
-          options: [
-            { label: "@Writeme", type: "css" },
-            { label: "@mention", type: "mention" },
-            { label: "@Test", type: "css" },
-            { label: "@This apply filter", type: "css" },
-          ],
-        };
-      },
-    ],
-  }),
-  syntaxHighlighting(defaultHighlightStyle),
-  placeholder("Text here..."),
-  keymap.of(defaultKeymap),
-  markdown({ base: markdownLanguage, codeLanguages: languages, addKeymap: true }),
-  themeSwitcher.of(simpleDarkMode),
-];
+export const coreExtensions: Extension[] = [minimalSetup, ...commonExtensions, themeSwitcher.of(simpleDarkMode)];
 
 type UseCodeMirror = {
   view: Types.Nullable<EditorView>;
@@ -98,9 +69,8 @@ const noop = () => {};
 
 export const SimpleEditor = (props: Props) => {
   const [ref, , textRef] = useCodeMirror(props.text ?? "");
-
   return (
-    <div className="w-full mx-auto inline-block max-w-full border border-zinc-400 rounded px-1 dark:border-zinc-800">
+    <div className="w-full mx-auto inline-block max-w-full border border-zinc-200 rounded px-1 dark:border-zinc-800">
       <textarea
         id={props.name}
         form={props.form}

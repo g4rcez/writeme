@@ -61,6 +61,7 @@ type TabProps = {
   title: React.ReactNode;
   isActive?: boolean;
   onClick?: (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => void;
+  children: any;
 };
 
 export const Tab: React.FC<TabProps> = (props) => (

@@ -10,5 +10,5 @@ description: "Test"
 ---
 
 ```bash type=request
-curl -X GET "https://api.postmon.com.br/v1/cep/55641715" -H "Content-Type: application/json"
+curl -X GET "/v1/cep/55641715?query=string" -H "Content-Type: application/json" -H 'Host: https://api.postmon.com.br'
 ```

@@ -1,7 +1,7 @@
 import * as React from "react";
 
 export { Heading, Text } from "./src/text";
-export { Select } from "./src/select";
+export { Select } from "./src/form/select";
 export { Navbar } from "./src/navbar";
 export { MiniTitle } from "./src/mini-title";
 export { Box, DocumentNavigation } from "./src/document-navigation";

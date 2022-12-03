@@ -13,6 +13,7 @@
     "@writeme/core": "workspace:*",
     "@writeme/api": "workspace:*",
     "@writeme/lego": "workspace:*",
+    "@writeme/markdown": "workspace:*",
     "react": "18.2.0",
     "tsconfig": "workspace:*",
     "typescript": "4.9.3"

@@ -9,7 +9,7 @@ export * from "../../lego/src/mini-title";
 export * from "./open-graph/open-graph";
 export * from "./playground";
 export * from "./prism";
-export * from "../../lego/src/select";
+export * from "@writeme/lego/src/form/select";
 export * from "./table-of-content";
 export * from "./tabs";
 export * from "../../lego/src/text";

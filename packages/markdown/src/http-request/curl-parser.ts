@@ -31,8 +31,8 @@ export type Parameter = Comment & {
 export type Body =
   | string
   | {
-      mimeType?: string;
       text?: string;
+      mimeType?: string;
       params?: Parameter[];
     };
 
@@ -53,20 +53,13 @@ export type PostData = {
   text?: string;
 };
 
-export type QueryString = Comment & {
-  name: string;
-};
-
-export type ImportRequestType = "environment" | "request" | "request_group" | "workspace";
-
 export type ImportRequest<T extends {} = {}> = Comment & {
   _id?: string;
-  _type?: ImportRequestType;
   authentication?: Authentication;
   body?: Body;
-  cookies?: Cookie[];
+  cookies: Cookie[];
   environment?: Record<string, string>;
-  headers?: Header[];
+  headers: Header[];
   httpVersion?: string;
   method?: string;
   name?: string;
@@ -76,17 +69,10 @@ export type ImportRequest<T extends {} = {}> = Comment & {
   postData?: PostData;
   variable?: any;
   queryString?: Parameter[];
-  url?: string;
+  url: string;
 };
 
 export type Converter<T extends {} = {}> = (rawData: string) => ImportRequest<T> | null;
-
-export type Importer = {
-  id: string;
-  name: string;
-  description: string;
-  convert: Converter;
-};
 
 const SUPPORTED_ARGS = [
   "url",
@@ -109,6 +95,13 @@ const SUPPORTED_ARGS = [
   "request",
   "X",
 ];
+
+const findHost = (entries: ParseEntry[]) => {
+  const host = entries.find((x) => `${x}`.toLowerCase().startsWith("host:")) as string | undefined;
+  if (host === undefined) return "";
+  const [, ...path] = host.split(/^Host:/i);
+  return path.join("");
+};
 
 type Pair = string | boolean;
 
@@ -162,16 +155,22 @@ const importCommand = (parseEntries: ParseEntry[]): ImportRequest => {
   // ~~~~~~~~~~~~~~~~~ //
 
   /// /////// Url & parameters //////////
-  let parameters: Parameter[] = [];
-  let url = (singletons.find((x) => `${x}`.match(/^https?:\/\//)) as string) ?? "";
+  let parameters: Parameter[];
+  const host = findHost(singletons);
+  let url: string =
+    (singletons.find((x) => {
+      const r = `${x}`.match(/^https?:\/\//);
+      if (r) return r;
+      return `${x}`.startsWith("/");
+    }) as string) ?? "";
+  url = url?.startsWith("http://") || url?.startsWith("https://") ? url : (host ?? "") + url;
+  url = url.trim();
 
-  try {
-    const { searchParams, href, search } = new URL(url);
-    parameters = Array.from(searchParams.entries()).map(([name, value]) => ({
-      name,
-      value,
-    }));
-  } catch (error) {}
+  const curlURL = new URL(url);
+  parameters = Array.from(curlURL.searchParams.entries()).map(([name, value]) => ({
+    name,
+    value,
+  }));
 
   /// /////// Authentication //////////
   const [username, password] = getPairValue(pairsByName, "", ["u", "user"]).split(/:(.*)$/);
@@ -221,6 +220,19 @@ const importCommand = (parseEntries: ParseEntry[]): ImportRequest => {
     });
   }
 
+  const parseCookies = (cookie: string = "") =>
+    cookie === ""
+      ? []
+      : cookie
+          .split("; ")
+          .map((v) => v.split("="))
+          .reduce<Cookie[]>(
+            (acc, [k, v]) => [...acc, { name: decodeURIComponent(k.trim()), value: decodeURIComponent(v.trim()) }],
+            []
+          );
+
+  const cookies = parseCookies(headers.find((x) => x.name.toLowerCase() === "cookie")?.value);
+
   /// /////// Body (Text or Blob) //////////
   let textBodyParams: Pair[] = [];
   const paramNames = ["d", "data", "data-raw", "data-urlencode", "data-binary", "data-ascii"];
@@ -260,7 +272,7 @@ const importCommand = (parseEntries: ParseEntry[]): ImportRequest => {
   });
 
   /// /////// Body //////////
-  const body: PostData = mimeType ? { mimeType } : {};
+  const body: PostData = {};
   const bodyAsGET = getPairValue(pairsByName, false, ["G", "get"]);
 
   if (textBody && bodyAsGET) {
@@ -292,28 +304,10 @@ const importCommand = (parseEntries: ParseEntry[]): ImportRequest => {
   let method = getPairValue(pairsByName, "__UNSET__", ["X", "request"]).toUpperCase();
 
   if (method === "__UNSET__") {
-    method = body.text || body.params ? "POST" : "GET";
+    method = (body.text || body.params ? "POST" : "GET").toUpperCase();
   }
 
-  const urlSearchParams = new URLSearchParams(url);
-  const qs = Array.from(urlSearchParams.keys()).reduce(
-    (acc, el) => ({
-      ...acc,
-      [el]: urlSearchParams.get(el),
-    }),
-    {}
-  );
-
-  return {
-    _type: "request",
-    name: url,
-    queryString: parameters,
-    url: url,
-    method: method.toUpperCase(),
-    headers,
-    authentication,
-    body,
-  };
+  return { name: url, queryString: parameters, url, method, headers: headers ?? [], authentication, body, cookies };
 };
 
 const getPairValue = <T extends string | boolean>(parisByName: PairsByName, defaultValue: T, names: string[]) => {

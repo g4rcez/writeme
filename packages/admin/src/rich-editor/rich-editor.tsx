@@ -3,6 +3,9 @@ import { Fragment, useMemo } from "react";
 import { SimpleEditor } from "../editor/simple-editor";
 import { ItemEditor } from "./li";
 import { TextResolver } from "../editor/resolver";
+import dynamic from "next/dynamic";
+
+const Pre = dynamic(() => import("./code/pre"));
 
 const HeadingEditor = (size: number) => (props: any) => <SimpleEditor text={`${"#".repeat(size)} ${props.children}`} />;
 
@@ -11,10 +14,7 @@ export const RichEditor = (source: MDXRemoteProps) => {
     return {
       TableOfContent: Fragment,
       Playground: Fragment,
-      Pre: (props: any) => {
-        console.log(props);
-        return props.code;
-      },
+      Pre,
       Tab: Fragment,
       Tabs: Fragment,
       h1: HeadingEditor(1),

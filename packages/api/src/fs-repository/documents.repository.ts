@@ -1,6 +1,6 @@
 import { stringify as ymlStringify } from "yaml";
 import { FsPlugin } from "./fs.plugin";
-import { DocumentsRepository } from "../interfaces/documents-repository";
+import { IDocumentsRepository } from "../interfaces/documents.repository";
 import { Domain } from "../domain";
 import { Either, Is } from "@writeme/core";
 import path from "path";
@@ -11,7 +11,7 @@ const parseMdx = (content: string) => {
   return { content: document.content, frontMatter: document.data };
 };
 
-export class Document extends FsPlugin implements DocumentsRepository {
+export class Document extends FsPlugin implements IDocumentsRepository {
   public async update(document: Domain.Document) {
     const find = await this.findDocument(document.id);
     if (Is.NilOrEmpty(find)) return Either.error(["File not found"]);

@@ -47,6 +47,7 @@
       </arrangement>
     </codeStyleSettings>
     <codeStyleSettings language="EditorConfig">
+      <option name="ALIGN_GROUP_FIELD_DECLARATIONS" value="true" />
       <option name="SPACE_AFTER_COLON" value="true" />
     </codeStyleSettings>
     <codeStyleSettings language="HTML">

@@ -10,9 +10,9 @@ export interface IRepository<Entity extends {} = any, EntityView extends {} = En
 
   getById(id: string): Promise<Entity | null>;
 
-  save(category: Entity): Promise<Either.Success<Entity> | Either.Error<string[]>>;
+  save(entity: Entity): Promise<Either.Success<Entity> | Either.Error<string[]>>;
 
-  update(category: Entity): Promise<Either.Success<Entity> | Either.Error<string[]>>;
+  update(entity: Entity): Promise<Either.Success<Entity> | Either.Error<string[]>>;
 
   delete(id: string): Promise<Types.Nullable<Entity>>;
 }

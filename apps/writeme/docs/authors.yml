@@ -1,0 +1,8 @@
+- id: d91061dd-0f4f-478c-a2d5-403b57694916
+  name: Foo Bar
+  email: foo@bar.com
+  nickname: fuba
+  links:
+    - name: linkedin
+      avatar: avatar.png
+      url: https://linkedin.com/avatar-fuba.png

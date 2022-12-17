@@ -76,7 +76,7 @@ export default function DashboardCategoriesPage(props: Props) {
         <Heading className="text-4xl" tag="h2">
           Categories
         </Heading>
-        <p>Create or list your categories</p>
+        <p>Create and list your categories</p>
       </header>
       <section className="my-8">
         <ul className="grid md:grid-cols-4 grid-cols-1">

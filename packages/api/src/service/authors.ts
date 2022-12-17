@@ -1,6 +1,6 @@
 import { IService } from "../interfaces/iservice";
 import { Domain } from "../domain";
-import { Either, Strings, Types, Validator } from "@writeme/core";
+import { Either, Is, Strings, Types, Validator } from "@writeme/core";
 import { IAuthorsRepository } from "../interfaces/authors.repository";
 import { z } from "zod";
 
@@ -14,33 +14,38 @@ export class AuthorsService implements IService<IAuthorsRepository, SaveAuthor> 
     links: z.array(
       z.object({
         name: z.string(),
-        image: z.string(),
+        avatar: z.string(),
         url: z.string().url(),
       })
     ),
   });
 
+  public constructor(public repository: IAuthorsRepository) {}
+
   public async delete(uuid: string): Promise<Either.Error<string[]> | Either.Success<null>> {
-    return Either.success(null);
+    const result = await this.repository.delete(uuid);
+    return Is.Null(result) ? Either.success(result) : Either.error(["Error on delete author"]);
   }
 
   public async getAll() {
-    return [];
+    return this.repository.getAll();
   }
 
   public async getAllPaths(): Promise<string[]> {
-    return [];
+    return this.repository.getAllPaths();
   }
 
   public async getById(id: string) {
-    return null;
+    return this.repository.getById(id);
   }
 
   public async save(entity: Domain.Author) {
+    await this.repository.save(entity);
     return Either.success(entity);
   }
 
   public async update(entity: Domain.Author) {
+    await this.repository.update(entity);
     return Either.success(entity);
   }
 

@@ -5,6 +5,7 @@ import { Markdown } from "@writeme/markdown";
 import { Domain } from "./domain";
 import { Types } from "@writeme/core";
 import { GetStaticPropsResult } from "next/types";
+import { AuthorsService } from "./service/authors";
 
 type DocumentsPageGetStaticProps = {
   categories: Domain.Category[];
@@ -19,13 +20,23 @@ type DocumentsByIdPageGetStaticProps = {
   document: Types.Nullable<Domain.Document>;
 };
 
+type Constructor = {
+  services: {
+    categories: CategoriesService;
+    documents: DocumentsService;
+    authors: AuthorsService;
+  };
+};
+
 export class WritemePages {
   public readonly category: CategoriesService;
   public readonly document: DocumentsService;
+  public readonly authors: AuthorsService;
 
-  public constructor(args: { categoryService: CategoriesService; documentsService: DocumentsService }) {
-    this.category = args.categoryService;
-    this.document = args.documentsService;
+  public constructor(args: Constructor) {
+    this.category = args.services.categories;
+    this.document = args.services.documents;
+    this.authors = args.services.authors;
   }
 
   public documentsPageGetStaticPaths(fileNameParam: string = "title"): GetStaticPaths {
@@ -35,7 +46,7 @@ export class WritemePages {
     };
   }
 
-  public async refactor<T>(
+  private async refactor<T>(
     result: T,
     props: GetStaticPropsContext,
     callback?: (context: GetStaticPropsContext, result: T) => GetStaticPropsResult<T>
@@ -100,5 +111,9 @@ export class WritemePages {
 
   public indexDashboardPagesGetStaticProps(): GetStaticProps<{ documents: Domain.DocumentDesc[] }> {
     return async () => ({ props: { documents: await this.document.getAll() } });
+  }
+
+  public getAllAuthorsProps(): GetStaticProps<{ authors: Domain.Author[] }> {
+    return async () => ({ props: { authors: await this.authors.getAll() } });
   }
 }

@@ -7,7 +7,7 @@ import { z } from "zod";
 type SaveAuthor = Types.Hide<Domain.Author, "id">;
 
 export class AuthorsService implements IService<IAuthorsRepository, SaveAuthor> {
-  private schema = z.object({
+  public schema = z.object({
     name: z.string(),
     email: z.string().email(),
     nickname: z.string(),
@@ -19,6 +19,8 @@ export class AuthorsService implements IService<IAuthorsRepository, SaveAuthor> 
       })
     ),
   });
+
+  public editSchema = this.schema.extend({ id: z.string().uuid() });
 
   public constructor(public repository: IAuthorsRepository) {}
 

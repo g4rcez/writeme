@@ -13,3 +13,5 @@ export { documentsWithIdEndpoint } from "./src/api/documents-with-id-endpoint";
 export { documentsRootEndpoint } from "./src/api/documents-root-endpoint";
 export { categoriesWithIdEndpoint } from "./src/api/categories-with-id-endpoint";
 export { categoriesRootEndpoint } from "./src/api/categories-root-endpoint";
+export { authorsRootEndpoint } from "./src/api/authors-root-endpoint";
+export { authorsWithIdEndpoint } from "./src/api/authors-with-id-endpoint";

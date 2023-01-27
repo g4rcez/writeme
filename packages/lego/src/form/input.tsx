@@ -2,7 +2,7 @@ import { DetailedHTMLProps, forwardRef, InputHTMLAttributes } from "react";
 
 export type InputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(function C({ className = "", ...props }, ref) {
+export const Input = forwardRef<HTMLInputElement, InputProps>(function __Input({ className = "", ...props }, externalRef) {
   return (
     <fieldset
       form={props.form}
@@ -11,7 +11,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function C({ class
     >
       <input
         {...props}
-        ref={ref}
+        ref={externalRef}
         id={props.id ?? props.name}
         className={`input w-full bg-form-bg-input text-form-text-input border p-1 dark:border-zinc-600 border-border-neutral rounded-md absolute bottom-0 ${className}`}
       />

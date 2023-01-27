@@ -6,6 +6,8 @@ import { parse as ymlParse } from "yaml";
 
 export class Authors extends FsPlugin implements IAuthorsRepository {
   public async delete(id: string): Promise<Types.Nullable<Domain.Author>> {
+    const authors = this.getAuthorsContent();
+    this.writeFile(this.authorsFile, JSON.stringify(authors.filter((x) => x.id !== id)));
     return null;
   }
 

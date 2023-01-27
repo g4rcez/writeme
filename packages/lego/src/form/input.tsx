@@ -1,20 +1,16 @@
-import { DetailedHTMLProps, forwardRef, InputHTMLAttributes, PropsWithoutRef } from "react";
+import { DetailedHTMLProps, forwardRef, InputHTMLAttributes, PropsWithRef, Ref } from "react";
 import { Types } from "@writeme/core";
 
 export type InputProps<T extends {}> = Types.Hide<
   DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
   "name" | "id"
 > &
-  Partial<{ name: keyof T; id: keyof T }>;
+  Partial<{ name: keyof T; id: keyof T; ref: Ref<HTMLInputElement> }>;
 
-<<<<<<< HEAD
-export const Input = forwardRef<HTMLInputElement, InputProps>(function __Input({ className = "", ...props }, externalRef) {
-=======
-export const Input: <T extends {}>(props: PropsWithoutRef<InputProps<T>>) => JSX.Element = forwardRef<
+export const Input: <T extends {}>(props: PropsWithRef<InputProps<T>>) => JSX.Element = forwardRef<
   HTMLInputElement,
   InputProps<{}>
->(function InnerInput({ className = "", ...props }, ref) {
->>>>>>> ae0f519 (wip)
+>(function InnerInput({ className = "", ...props }, externalRef) {
   return (
     <fieldset
       form={props.form}

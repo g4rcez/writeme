@@ -2,9 +2,9 @@ import { IService } from "../interfaces/iservice";
 import { z } from "zod";
 import { Either, Strings, Validator } from "@writeme/core";
 import { Domain } from "../domain";
-import { DocumentsRepository } from "../interfaces/documents-repository";
+import { IDocumentsRepository } from "../interfaces/documents.repository";
 
-export class DocumentsService implements IService<DocumentsRepository, Domain.MarkdownDocumentRaw> {
+export class DocumentsService implements IService<IDocumentsRepository, Domain.MarkdownDocumentRaw> {
   private saveSchema = z.object({
     category: z.string(),
     content: z.string(),
@@ -19,7 +19,7 @@ export class DocumentsService implements IService<DocumentsRepository, Domain.Ma
 
   public editSchema = this.saveSchema.extend({ id: z.string().uuid().or(z.string()) });
 
-  public constructor(public repository: DocumentsRepository) {}
+  public constructor(public repository: IDocumentsRepository) {}
 
   public async save(item: Domain.Document) {
     return this.repository.save(item);

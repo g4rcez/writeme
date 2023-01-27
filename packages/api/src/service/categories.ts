@@ -1,13 +1,12 @@
 import { IService } from "../interfaces/iservice";
 import { z } from "zod";
-import { Types, Validator, Either, Strings } from "@writeme/core";
+import { Either, Strings, Types, Validator } from "@writeme/core";
 import { Domain } from "../domain";
-import { ICategoryRepository } from "../interfaces/category-repository";
-import { IRepository } from "../interfaces/irepository";
+import { ICategoriesRepository } from "../interfaces/categories.repository";
 
 type SaveCategories = Types.Hide<Domain.Category, "id">;
 
-export class CategoriesService implements IService<ICategoryRepository, SaveCategories> {
+export class CategoriesService implements IService<ICategoriesRepository, SaveCategories> {
   private saveSchema = z.object({
     title: z.string().max(256),
     index: z.number().int(),
@@ -17,7 +16,7 @@ export class CategoriesService implements IService<ICategoryRepository, SaveCate
     url: Validator.urlFriendly.max(256),
   });
 
-  constructor(public repository: ICategoryRepository) {}
+  constructor(public repository: ICategoriesRepository) {}
 
   public async delete(uuid: string): Promise<Either.Error<string[]> | Either.Success<null>> {
     await this.repository.delete(uuid);

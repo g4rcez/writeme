@@ -1,9 +1,20 @@
-import { CategoriesService, DocumentsService, FsCategory, FsDocument, WritemePages } from "@writeme/api";
+import {
+  AuthorsService,
+  CategoriesService,
+  DocumentsService,
+  FsAuthors,
+  FsCategory,
+  FsDocument,
+  WritemePages,
+} from "@writeme/api";
 import path from "path";
 
 const rootDir = path.join(process.cwd(), "docs");
 
 export const writeme = new WritemePages({
-  categoryService: new CategoriesService(new FsCategory(rootDir)),
-  documentsService: new DocumentsService(new FsDocument(rootDir)),
+  services: {
+    categories: new CategoriesService(new FsCategory(rootDir)),
+    documents: new DocumentsService(new FsDocument(rootDir)),
+    authors: new AuthorsService(new FsAuthors(rootDir)),
+  },
 });

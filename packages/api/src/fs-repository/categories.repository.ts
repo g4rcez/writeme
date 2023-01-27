@@ -1,10 +1,11 @@
-import { Domain } from "../domain";
-import { parse as ymlParse } from "yaml";
+import { parse as ymlParse, stringify as ymlStringify } from "yaml";
 import { FsPlugin } from "./fs.plugin";
-import { ICategoryRepository } from "../interfaces/category-repository";
 import { Either } from "@writeme/core";
+import { ICategoriesRepository } from "../interfaces/categories.repository";
+import { Domain } from "../domain";
+import fs from "fs";
 
-export class Category extends FsPlugin implements ICategoryRepository {
+export class Category extends FsPlugin implements ICategoriesRepository {
   public async getAllPaths(): Promise<string[]> {
     const content = this.getCategoriesContent();
     return content.map((x) => x.url);
@@ -53,6 +54,10 @@ export class Category extends FsPlugin implements ICategoryRepository {
 
   public async getById(id: string): Promise<Domain.Category | null> {
     return this.getCategoriesContent().find((x) => x.id === id) ?? null;
+  }
+
+  private writeCategory(yaml: Domain.Category[]) {
+    return fs.writeFileSync(this.categoryFile, ymlStringify(yaml));
   }
 
   private getCategoriesContent(): Domain.Category[] {

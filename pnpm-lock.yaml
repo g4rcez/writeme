@@ -10,7 +10,7 @@ importers:
     dependencies:
       next: 13.0.4
     devDependencies:
-      prettier: 2.7.1
+      prettier: 2.8.1
       turbo: 1.6.3
 
   apps/writeme:
@@ -166,6 +166,18 @@ importers:
       react: 18.2.0
       tsconfig: link:../tsconfig
       typescript: 4.9.3
+
+  packages/database:
+    specifiers:
+      '@writeme/api': workspace:*
+      '@writeme/core': workspace:*
+      tsconfig: workspace:*
+      typescript: 4.5.2
+    devDependencies:
+      '@writeme/api': link:../api
+      '@writeme/core': link:../core
+      tsconfig: link:../tsconfig
+      typescript: 4.5.2
 
   packages/lego:
     specifiers:
@@ -6134,8 +6146,8 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /prettier/2.7.1:
-    resolution: {integrity: sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==}
+  /prettier/2.8.1:
+    resolution: {integrity: sha512-lqGoSJBQNJidqCHE80vqZJHWHRFoNYsSpP9AjFhlhi9ODCJA541svILes/+/1GM3VaL/abZi7cpFzOpdR9UPKg==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true

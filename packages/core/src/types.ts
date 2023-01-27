@@ -15,4 +15,8 @@ export namespace Types {
   export type Hide<T, K extends keyof T> = Omit<T, K>;
 
   export type Only<T, K extends keyof T> = Pick<T, K>;
+
+  export type Autocomplete<T extends string> = T | Omit<string, T>;
+
+  export type KeyString<T> = Omit<T, number | symbol>;
 }

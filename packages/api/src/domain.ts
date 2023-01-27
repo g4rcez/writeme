@@ -23,7 +23,7 @@ export namespace Domain {
     description: string;
   };
 
-  type SocialLinks = { name: string; url: string; image: string };
+  type SocialLinks = { name: string; url: string; avatar: string };
 
   export type Author = {
     id: ID;

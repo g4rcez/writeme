@@ -16,7 +16,7 @@ const KeyPair = ({ items, id, name }: KeyPairProps) => {
   return (
     <Fragment>
       {items.map((x) => (
-        <div className="flex flex-nowrap gap-x-2 items-center" key={`${name}-${x.name}-${x.value}-${id}`}>
+        <div className="flex flex-nowrap gap-4 mb-2 items-center" key={`${name}-${x.name}-${x.value}-${id}`}>
           <div className="w-1/4">
             <SimpleEditor text={x.name} />
           </div>
@@ -57,7 +57,7 @@ export default function HttpRequest(props: Props) {
         <SimpleEditor text={request.url.trim()} />
         <Button className="w-fit">Preview</Button>
       </header>
-      <section className="mt-8">
+      <section className="mt-4">
         <Tabs>
           <Tab id="headers" title="Headers">
             <KeyPair items={request.headers} name="headers" id={id} />

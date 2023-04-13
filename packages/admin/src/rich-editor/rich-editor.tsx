@@ -12,9 +12,9 @@ const HeadingEditor = (size: number) => (props: any) => <SimpleEditor text={`${"
 export const RichEditor = (source: MDXRemoteProps) => {
   const map = useMemo(() => {
     return {
+      Pre,
       TableOfContent: Fragment,
       Playground: Fragment,
-      Pre,
       Tab: Fragment,
       Tabs: Fragment,
       h1: HeadingEditor(1),
@@ -24,8 +24,8 @@ export const RichEditor = (source: MDXRemoteProps) => {
       h5: HeadingEditor(5),
       h6: HeadingEditor(6),
       li: ItemEditor,
-      ul: (props: any) => <ul {...props} className={`${props.className} list-inside list-disc my-4`} />,
-      ol: (props: any) => <ol {...props} className={`${props.className} list-inside list-decimal my-4`} />,
+      ul: (props: any) => <ul {...props} className={`${props.className} list-inside list-disc`} />,
+      ol: (props: any) => <ol {...props} className={`${props.className} list-inside list-decimal`} />,
       p: (props: any) => (
         <div className="my-4">
           <TextResolver children={props.children}></TextResolver>
@@ -34,5 +34,9 @@ export const RichEditor = (source: MDXRemoteProps) => {
     };
   }, [source]);
 
-  return <MDXRemote {...source} scope={source.scope} components={map} />;
+  return (
+    <div className="flex flex-col flex-wrap w-full gap-8">
+      <MDXRemote {...source} scope={source.scope} components={map} />
+    </div>
+  );
 };

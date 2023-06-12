@@ -16,7 +16,7 @@ const KeyPair = ({ items, id, name }: KeyPairProps) => {
   return (
     <Fragment>
       {items.map((x) => (
-        <div className="flex flex-nowrap gap-4 mb-2 items-center" key={`${name}-${x.name}-${x.value}-${id}`}>
+        <div className="mb-2 flex flex-nowrap items-center gap-4" key={`${name}-${x.name}-${x.value}-${id}`}>
           <div className="w-1/4">
             <SimpleEditor text={x.name} />
           </div>
@@ -46,14 +46,8 @@ export default function HttpRequest(props: Props) {
 
   return (
     <section className="w-full">
-      <header className="flex flex-nowrap gap-2 items-center">
-        <Select value={request.method}>
-          {httpMethods.map((x) => (
-            <option key={`edit-http-method-${x}-${id}`} value={x}>
-              {x}
-            </option>
-          ))}
-        </Select>
+      <header className="flex flex-nowrap items-center gap-2">
+        <Select options={httpMethods} value={request.method} />
         <SimpleEditor text={request.url.trim()} />
         <Button className="w-fit">Preview</Button>
       </header>

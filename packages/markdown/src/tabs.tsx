@@ -70,11 +70,12 @@ export const Tab: React.FC<TabProps> = (props) => (
     id={props.id}
     aria-selected={props.isActive ? "true" : "false"}
     onClick={props.onClick}
-    className="flex flex-grow-0 flex-shrink-0 outline-none focus:outline-none px-4 m-0"
+    className="m-0 flex flex-shrink-0 flex-grow-0 px-4 outline-none focus:outline-none"
   >
     <button
       role="link"
-      className={`px-4 bg-transparent outline-none m-0 focus:outline-none relative cursor-pointer ${
+      type="button"
+      className={`relative m-0 cursor-pointer bg-transparent px-4 outline-none focus:outline-none ${
         props.isActive ? "text-main-500 font-extrabold tracking-wide" : ""
       }`}
     >
@@ -132,10 +133,11 @@ export const Tabs = (props: PropsWithChildren<TabsProps>) => {
     ?.children;
 
   return (
-    <div className="block w-full my-4">
-      <header className="relative w-full tab-container overflow-x-auto flex flex-nowrap pb-2 border-b border-slate-300">
-        <ul ref={header} className="tab-container p-0 m-0 list-none inline-flex flex-nowrap text-base" role="tablist">
+    <div className="my-4 block w-full">
+      <header className="tab-container relative flex w-full flex-nowrap overflow-x-auto border-b border-slate-300 pb-2">
+        <ul ref={header} className="tab-container m-0 inline-flex list-none flex-nowrap p-0 text-base" role="tablist">
           {React.Children.map(props.children, (x: any) => {
+            if (x === null) return null;
             const tabProps: TabProps = x.props;
             const isActive = active === tabProps.id;
             return <Tab {...tabProps} onClick={onTabClick(tabProps.id)} isActive={isActive} key={`${x}-li-tabs`} />;
@@ -143,7 +145,7 @@ export const Tabs = (props: PropsWithChildren<TabsProps>) => {
         </ul>
         <div ref={inkBar} className="inkbar" />
       </header>
-      <section className="block w-full mt-2" ref={container}>
+      <section className="mt-2 block w-full" ref={container}>
         {children}
       </section>
     </div>

@@ -1,17 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { EditorView, keymap, placeholder } from "@codemirror/view";
+import { EditorView } from "@codemirror/view";
 import { Compartment, EditorState, Extension } from "@codemirror/state";
 import { simpleDarkMode, simpleLightMode } from "./themes";
 import { Types } from "@writeme/core";
-import { defaultKeymap } from "@codemirror/commands";
-import { defaultHighlightStyle, syntaxHighlighting } from "@codemirror/language";
-import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
-import { languages } from "@codemirror/language-data";
 import { minimalSetup } from "codemirror";
-import { autocompletion, CompletionContext } from "@codemirror/autocomplete";
-import { links } from "./link";
 import { useDarkMode } from "@writeme/lego";
-import { autoComplete } from "./autocomplete";
 import { commonExtensions } from "./common-extensions";
 
 export const themeSwitcher = new Compartment();
@@ -70,7 +63,7 @@ const noop = () => {};
 export const SimpleEditor = (props: Props) => {
   const [ref, , textRef] = useCodeMirror(props.text ?? "");
   return (
-    <div className="w-full mx-auto inline-block max-w-full border border-zinc-200 rounded px-1 dark:border-zinc-800">
+    <div className="mx-auto inline-block w-full max-w-full rounded border border-zinc-200 px-1 dark:border-zinc-800">
       <textarea
         id={props.name}
         form={props.form}

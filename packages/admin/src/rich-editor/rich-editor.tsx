@@ -35,7 +35,7 @@ export const RichEditor = (source: MDXRemoteProps) => {
   }, [source]);
 
   return (
-    <div className="flex flex-col flex-wrap w-full gap-8">
+    <div className="flex w-full flex-col flex-wrap gap-8">
       <MDXRemote {...source} scope={source.scope} components={map} />
     </div>
   );

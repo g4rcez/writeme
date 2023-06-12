@@ -14,7 +14,7 @@ export const authorsRootEndpoint = (writeme: WritemePages) =>
         const saved = await writeme.authors.save(result.success as never);
         return Either.success({ status: Http.Created, item: saved });
       } catch (e) {
-        console.log(e);
+        console.error(e);
         return Either.error({ status: Http.InternalServerError, errors: [e as string], payload: req.body });
       }
     },

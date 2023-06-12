@@ -9,7 +9,7 @@ export const Card = <T extends React.ElementType = "div">({ as, ...props }: Reac
   return (
     <Component
       {...props}
-      className={`rounded-xl border-slate-200 dark:border-zinc-600 border p-4 shadow-sm bg-white dark:bg-zinc-800 ${
+      className={`rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-zinc-600 dark:bg-zinc-800 ${
         props.className ?? ""
       }`}
     />

@@ -21,7 +21,7 @@ export const Input: <T extends {}>(props: PropsWithRef<InputProps<T>>) => JSX.El
         {...props}
         ref={externalRef}
         id={props.id ?? props.name}
-        className={`input w-full bg-form-bg-input text-form-text-input border p-1 dark:border-zinc-600 border-border-neutral rounded-md absolute bottom-0 ${className}`}
+        className={`input bg-form-bg-input text-form-text-input border-border absolute bottom-0 w-full rounded-md border p-1 dark:border-zinc-600 ${className}`}
       />
       <label
         htmlFor={props.id || props.name}

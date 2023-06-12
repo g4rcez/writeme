@@ -7,10 +7,10 @@ type Props = Parameters<typeof Primitive.Root>[0] & {
 
 export const Checkbox = (props: Props) => {
   return (
-    <label className="flex items-center gap-x-2 cursor-pointer">
+    <label className="flex cursor-pointer items-center gap-x-2">
       <Primitive.Root
         {...props}
-        className="bg-white dark:bg-zinc-600 w-4 h-4 rounded flex items-center justify-center border dark:border-zinc-500"
+        className="flex h-4 w-4 items-center justify-center rounded border bg-white dark:border-zinc-500 dark:bg-zinc-600"
       >
         <Primitive.Indicator className="text-main-500">
           <GrFormCheckmark />

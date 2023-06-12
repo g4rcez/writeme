@@ -1,0 +1,40 @@
+@import "./markdown.css";
+@import "./prism.css";
+@import "./components.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    @apply duration-300 transition-colors ease-in bg-body text-typography;
+}
+
+/*–color-primary: #6F7FAC; uma mescla de azul com roxo, que pode ser usada como a cor dos elementos principais*/
+/*–color-secondary: #FFD15C; um amarelo alaranjado, que pode ser usado como a cor dos elementos secundários ou de contraste*/
+/*–color-background: #F2F2F2; um cinza claro, que pode ser usado como a cor do fundo da página*/
+/*–color-text: #404040; um cinza escuro, que pode ser usado como a cor do texto da página*/
+/*–color-title: #3C3C3C; um cinza mais escuro, que pode ser usado como a cor dos títulos da página*/
+/*–color-alert: #FF5C5C; um vermelho vivo, que pode ser usado como a cor dos alertas ou mensagens de erro*/
+/*–color-navbar: #E0E0E0; um cinza médio, que pode ser usado como a cor da navbar da página, que não seja agressivo aos olhos*/
+
+html,
+body,
+#__next {
+    min-width: 100%;
+    min-height: 100%;
+    scroll-padding: 4.5rem;
+    font-family: "Inter", sans-serif;
+}
+
+.cm-editor {
+    font-size: 1.05rem;
+}
+
+.translate-1\/2 {
+    transform: translate(-50%, -50%);
+}
+
+.react-icons {
+    vertical-align: middle;
+}

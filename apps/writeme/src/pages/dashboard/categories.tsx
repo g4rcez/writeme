@@ -1,0 +1,102 @@
+import { FormEvent, MouseEvent, useState } from "react";
+import { InferGetStaticPropsType } from "next";
+import { useRouter } from "next/dist/client/router";
+import { FaTrashAlt } from "react-icons/fa";
+import { httpClient, Types } from "@writeme/core";
+import { Button, Heading, Input } from "@writeme/lego";
+import { Domain } from "@writeme/api";
+import { writeme } from "../../writeme";
+
+type CategoryProps = {
+  category: Types.Nullable<Domain.Category>;
+  setCategory: (category: Types.Nullable<Domain.Category>) => void;
+};
+
+const CreateCategory = ({ category, setCategory }: CategoryProps) => {
+  const nullCategory = category === null;
+  const router = useRouter();
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const inputs = Array.from(form.elements).filter((x) => x.tagName.toLowerCase() === "input") as HTMLInputElement[];
+    const state = inputs.reduce((acc, el) => ({ ...acc, [el.name]: el.value ?? "" }), {} as Domain.Category);
+    try {
+      const fn = nullCategory ? httpClient.post : httpClient.patch;
+      const url = nullCategory ? "/categories" : `/categories/${category.id}`;
+      await fn(url, { ...state, index: Number(state.index), id: category?.id ?? undefined });
+      setCategory(null);
+      form.reset();
+      router.reload();
+    } catch (e: any) {
+      console.error(e.response.data);
+    }
+  };
+
+  return (
+    <form onSubmit={onSubmit} className="block w-full">
+      <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-4">
+        <input type="hidden" value={category?.id} name="id" />
+        <Input autoFocus={!nullCategory} defaultValue={category?.title} required placeholder="Title" name="title" />
+        <Input defaultValue={category?.url} required placeholder="Url" name="url" />
+        <Input defaultValue={category?.index} required placeholder="Index" name="index" type="number" />
+        <Input defaultValue={category?.description} required placeholder="Description" name="description" />
+        <Input defaultValue={category?.icon} placeholder="Icon" name="icon" />
+        <Input defaultValue={category?.banner} placeholder="Banner" name="banner" />
+      </div>
+      <Button className="button w-fit">{!category ? "New" : "Update"}</Button>
+    </form>
+  );
+};
+
+export const getStaticProps = writeme.getAllCategoriesStaticProps();
+
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
+
+export default function DashboardCategoriesPage(props: Props) {
+  const [category, setCategory] = useState<Types.Nullable<Domain.Category>>(null);
+  const router = useRouter();
+
+  const onSetCategory = (event: MouseEvent<HTMLButtonElement>) => {
+    const button = event.currentTarget;
+    const id = button.dataset.id ?? "";
+    setCategory(props.categories.find((x) => x.id === id) ?? null);
+  };
+
+  const deleteCategory = async (event: MouseEvent<HTMLButtonElement>) => {
+    const button = event.currentTarget;
+    const id = button.dataset.id ?? "";
+    await httpClient.delete(`/categories/${id}`);
+    router.reload();
+  };
+
+  return (
+    <div className="container mx-auto w-full">
+      <header className="mb-4">
+        <Heading className="text-4xl" tag="h2">
+          Categories
+        </Heading>
+        <p>Create and list your categories</p>
+      </header>
+      <section className="my-8">
+        <ul className="grid grid-cols-1 md:grid-cols-4">
+          {props.categories.map((x) => (
+            <li key={x.id} className="my-2 flex items-center gap-x-1">
+              <button
+                onClick={onSetCategory}
+                className="link:text-main-300 link:underline text-lg font-medium transition-colors duration-300"
+              >
+                {x.title}
+              </button>
+              <button className="text-red-400" onClick={deleteCategory} data-id={x.id}>
+                <FaTrashAlt className="" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      </section>
+      <hr className="mb-8 border-slate-300 dark:border-zinc-700" />
+      <CreateCategory category={category} setCategory={setCategory} />
+    </div>
+  );
+}

@@ -1,7 +1,7 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect } from "react";
 import { setCssVars } from "./themes/themes";
-import { LightTheme } from "./themes/light";
-import { DarkTheme } from "./themes/dark";
+import LightTheme from "./themes/light.json";
+import DarkTheme from "./themes/dark.json";
 import { usePreferences } from "./use-preferences";
 
 type Modes = "light" | "dark";

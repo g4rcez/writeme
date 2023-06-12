@@ -100,16 +100,16 @@ export const TableOfContent = ({
   }
 
   return (
-    <header className={`${className} my-8 py-4 dark:border-zinc-700 border-zinc-200 border-b border-t`}>
+    <header className={className}>
       {children}
-      <nav>
-        <ul className="list-inside ml-4 text-sm">
+      <nav className="w-fit">
+        <ul className="list-inside text-inherit">
           {titles.map((x) => (
             <li
               key={x.id}
-              className={`table-of-content-item my-2 ${
+              className={`my-2 ${
                 (hash === x.id && observeHash) || (highlight === x.id && markHighlight)
-                  ? "text-main-500 font-extrabold"
+                  ? "text-title underline font-medium"
                   : ""
               } ${Tags[x.tag]}`}
             >

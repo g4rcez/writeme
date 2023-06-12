@@ -1,0 +1,67 @@
+{
+  "body": "#ffffff",
+  "typography": "#404040",
+  "title": "#3C3C3C",
+  "transparent": "transparent",
+  "display": "#fbfbfb",
+  "border": "#eaeaea",
+  "primary": "#7A6FAC",
+  "primary-subtle": "#615889",
+  "dropdown": {
+    "bg": "#121212",
+    "text": "#ccc"
+  },
+  "navbar": {
+    "bg": "#282A36",
+    "text": "#d1d5db"
+  },
+  "fail": {
+    "normal": "#EF4444",
+    "hover": "#BF3636"
+  },
+  "success": {
+    "normal": "#34D399"
+  },
+  "form": {
+    "text-input": "#282A36",
+    "bg-input": "#ffffff"
+  },
+  "http": {
+    "get": "#64d2ff",
+    "post": "#6EE7B7",
+    "patch": "#A78BFA",
+    "put": "#F472B6",
+    "delete": "#EF4444",
+    "info": "#64d2ff",
+    "success": "#6EE7B7",
+    "redirect": "#A78BFA",
+    "client": "#ffcc00",
+    "server": "#EF4444"
+  },
+  "text": {
+    "paragraph": "#3d3f4a",
+    "title": "#181920",
+    "invert": "#888",
+    "normal": "#6B7280",
+    "dim": "#aeaeb2",
+    "slight": "#D1D5DB",
+    "warn": "#ffcc00"
+  },
+  "neutral": {
+    "normal": "#c7c7cc",
+    "dim": "#d1d1d6",
+    "slight": "#e5e5ea"
+  },
+  "main": {
+    "300": "#7A6FAC",
+    "500": "#7A6FAC",
+    "normal": "#7A6FAC",
+    "hover-border": "#7A6FAC",
+    "dim": "#7A6FAC",
+    "slight": "#7A6FAC",
+    "accent": "#7A6FAC",
+    "bg": "#7A6FAC"
+  },
+  "code": "#282A36",
+  "word": "#F8F8F2"
+}

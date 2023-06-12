@@ -15,7 +15,7 @@ export const documentsWithIdEndpoint = (writeme: WritemePages) =>
         const saved = await writeme.document.update({ ...result.success, id });
         return Either.success({ status: Http.Created, item: saved });
       } catch (e) {
-        console.log(e);
+        console.error(e);
         return Either.error({ status: Http.InternalServerError, errors: [e as string], payload: req.body });
       }
     },

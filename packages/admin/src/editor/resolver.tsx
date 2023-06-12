@@ -31,7 +31,6 @@ const map = new Map<string, (str: LastNode) => string>([
 ]);
 
 const recTransformer = (node: Node, transformers: Transformer[] = []): string => {
-  console.log(node);
   if (node?.type === undefined) {
     return "";
   }
@@ -67,7 +66,6 @@ const Resolver = ({ items }: { items: any[]; className?: string }) => {
       return acc;
     }
     const existElement = map.has(el.type);
-    console.log(el);
     if (existElement) text += recTransformer(el);
     return acc;
   }, []);

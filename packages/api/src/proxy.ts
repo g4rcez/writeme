@@ -13,7 +13,6 @@ export const proxy = () =>
           data: body.body,
           headers: body.headers as any,
         });
-
         const end = Date.now();
         return Either.success({
           status: response.status,
@@ -25,7 +24,7 @@ export const proxy = () =>
           method: body.method,
         });
       } catch (error: any) {
-        console.log(error);
+        console.error(error);
         const end = Date.now();
         return Either.success({
           status: Http.InternalServerError,

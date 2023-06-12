@@ -1,7 +1,7 @@
 import * as React from "react";
 
-export { CodeLanguageProvider, useCodeLanguage } from "./src/code-language";
+export { CodeLanguageProvider, useCodeLanguage } from "./src/codes/code-language";
 export { MarkdownJsx, MarkdownJsxComponents } from "./src/markdown-jsx";
 export { Markdown } from "./src/mdx/markdown";
 export { MdxDocsProvider } from "./src/mdx-docs.context";
-export { convert as curl } from "./src/http-request/curl-parser";
+export { convert as curl } from "./src/codes/http-request/curl-parser";

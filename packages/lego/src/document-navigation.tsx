@@ -9,9 +9,9 @@ export const Box = ({ doc, back }: { doc: Doc; back?: boolean }) => {
   return (
     <Link
       aria-hidden={isNull}
-      className={`${isNull ? "opacity-0" : ""} border p-4 w-full max-w-sm rounded-md dark:border-zinc-700 flex ${
+      className={`${isNull ? "opacity-0" : ""} flex w-full max-w-sm rounded-md border p-4 dark:border-zinc-700 ${
         back ? "justify-start" : "justify-end"
-      } items-center gap-2 link:underline link:text-main-300 link:border-main-300 dark:link:border-main-300 transition-colors duration-300`}
+      } link:underline link:text-main-300 link:border-main-300 dark:link:border-main-300 items-center gap-2 transition-colors duration-300`}
       href={Links.toDoc(doc?.url ?? "")}
       passHref
     >
@@ -28,7 +28,7 @@ type Props = {
 };
 
 export const DocumentNavigation = ({ next, previous }: Props) => (
-  <nav className="w-full flex justify-between gap-8 mt-8">
+  <nav className="mt-8 flex w-full justify-between gap-8">
     <Box doc={previous} back />
     <Box doc={next} />
   </nav>

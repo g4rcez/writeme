@@ -156,9 +156,9 @@ export const MarkdownEditor = (props: Props) => {
   };
 
   return (
-    <div className={`${props.className ?? "w-full mx-auto block max-w-full"}`}>
+    <div className={`${props.className ?? "mx-auto block w-full max-w-full"}`}>
       {props.viewHeader && (
-        <header className="w-full flex gap-x-8 mb-2">
+        <header className="mb-2 flex w-full gap-x-8">
           <button onClick={onAddText} data-text="# " data-inline="false">
             <FaHeading aria-hidden="true" />
           </button>

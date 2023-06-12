@@ -18,7 +18,7 @@ export const Button = ({ theme = "primary", loading, ...props }: Props) => {
       {...props}
       data-theme={theme}
       disabled={disabled}
-      className={`button px-3 py-2.5 my-0 leading-3 text-sm rounded-lg transition-colors duration-500 ease-in-out font-medium min-w-[150px] border text-base ${
+      className={`bg-primary link:bg-primary-subtle min-w-[100px] rounded-lg border px-4 py-1.5 text-sm text-white transition-colors duration-300 ease-in-out ${
         props.className ?? ""
       }`}
     ></button>

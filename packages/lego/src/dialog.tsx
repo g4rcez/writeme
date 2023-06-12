@@ -5,14 +5,14 @@ import { IoMdClose } from "react-icons/io";
 function Content({ children, ...props }: PropsWithChildren<any>) {
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="bg-black/50 fixed inset-0 z-10" />
+      <DialogPrimitive.Overlay className="fixed inset-0 z-10 bg-black/50" />
       <DialogPrimitive.Content
         {...props}
-        className="bg-white dark:bg-zinc-800 fixed rounded-xl left-1/2 top-1/2 translate-1/2 p-8 shadow-xl isolate z-20"
+        className="translate-1/2 fixed left-1/2 top-1/2 isolate z-20 rounded-xl bg-white p-8 shadow-xl dark:bg-zinc-800"
       >
         <DialogPrimitive.Close
           asChild
-          className="top-2 right-3 w-6 h-6 inline-flex items-center justify-center absolute link:bg-red-300 link:text-red-600 rounded-full transition-colors"
+          className="link:bg-red-300 link:text-red-600 absolute right-3 top-2 inline-flex h-6 w-6 items-center justify-center rounded-full transition-colors"
         >
           <button className="">
             <IoMdClose />
@@ -28,7 +28,7 @@ export const Dialog = {
   Root: DialogPrimitive.Root,
   Content,
   Title: (props: PropsWithChildren) => (
-    <DialogPrimitive.Title className="m-0 font-bold text-main-500 text-3xl leading-loose">
+    <DialogPrimitive.Title className="text-main-500 m-0 text-3xl font-bold leading-loose">
       {props.children}
     </DialogPrimitive.Title>
   ),

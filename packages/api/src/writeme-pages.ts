@@ -69,7 +69,7 @@ export class WritemePages {
         const result: DocumentsByIdPageGetStaticProps = { document: await this.document.getById(id) };
         return this.refactor(result, props, callback);
       } catch (e) {
-        console.log("ERROR", e);
+        console.error(e);
         return { notFound: true };
       }
     };
@@ -97,7 +97,7 @@ export class WritemePages {
         return this.refactor(result, props, callback);
       } catch (error) {
         if (process.env.NODE_ENV === "development") {
-          console.log(error);
+          console.error(error);
           throw error;
         }
         return { notFound: true };

@@ -1,5 +1,8 @@
 {
     "arrowParens": "always",
     "printWidth": 120,
-    "useTabs": false
+    "useTabs": false,
+    "plugins": [
+        "prettier-plugin-tailwindcss"
+    ]
 }

@@ -1,0 +1,46 @@
+@tailwind components;
+
+@layer components {
+    /* HttpRequest */
+    .http-body-array-item[data-empty="true"] {
+        @apply font-bold text-text-dim text-sm italic;
+    }
+
+    /* Tabs */
+    .tab-container::-webkit-scrollbar {
+        background-color: transparent;
+        height: 0.1rem;
+        width: 0.5rem;
+    }
+
+    .tab-container::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    .tab-container::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+
+    .tab-container::-webkit-scrollbar-thumb:hover {
+        background-color: transparent;
+    }
+
+    .inkbar {
+        @apply bg-main-500 absolute bottom-0 left-0 w-fit h-1;
+        transition: all 150ms cubic-bezier(0.28, 0.5, 0.51, 0.87);
+    }
+
+    /* Paragraph */
+    .text-paragraph {
+        @apply my-2 mx-auto leading-relaxed antialiased text-text-paragraph lining-nums whitespace-pre-wrap break-words w-full container;
+    }
+
+    .link {
+        @apply transition-colors duration-300 text-main-normal hover:text-main-dim active:text-main-dim no-underline hover:underline active:underline;
+    }
+
+    .input:required + label:after {
+        @apply text-main-500;
+        content: " *";
+    }
+}

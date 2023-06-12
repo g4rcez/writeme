@@ -8,9 +8,9 @@ type FrontMatterHeaders = FrontMatter & {
 };
 
 const Field: React.FC<Omit<InputProps, "ref">> = (props) => (
-  <label className="flex-col w-full gap-y-1 flex" htmlFor={props.id}>
-    <span className="text-sm tracking-wider font-semibold">{props.title}:</span>
-    <Input {...props} className="w-full text-normal" id={props.id} />
+  <label className="flex w-full flex-col gap-y-1" htmlFor={props.id}>
+    <span className="text-sm font-semibold tracking-wider">{props.title}:</span>
+    <Input {...props} className="text-normal w-full" id={props.id} />
   </label>
 );
 
@@ -24,7 +24,7 @@ const FrontMatterForm = (props: { showAdd: boolean; id: number; matter: FrontMat
   };
 
   return (
-    <section data-form="front-matter" className="flex w-full gap-x-4 mb-4 items-end">
+    <section data-form="front-matter" className="mb-4 flex w-full items-end gap-x-4">
       <Field
         id={`title-${props.id}`}
         name="name"
@@ -40,7 +40,7 @@ const FrontMatterForm = (props: { showAdd: boolean; id: number; matter: FrontMat
 };
 
 export const FrontMatter: React.FC<{ headers: FrontMatterHeaders[] }> = (props) => (
-  <section className="flex flex-col w-full gap-x-4">
+  <section className="flex w-full flex-col gap-x-4">
     {props.headers.map((header, id) => (
       <FrontMatterForm
         showAdd={id === props.headers.length - 1}

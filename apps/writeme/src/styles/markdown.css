@@ -1,0 +1,81 @@
+.contains-task-list {
+    @apply ml-8 list-inside;
+}
+
+.contains-task-list > li {
+    @apply my-1;
+}
+
+.markdown p {
+    @apply mt-1 mb-2 antialiased lining-nums break-words w-full leading-relaxed text-left;
+}
+
+.markdown a:not([data-unstyled]) {
+    @apply hover:underline text-main-300 hover:text-main-500 duration-300 ease-in underline;
+}
+
+.markdown tr {
+    @apply border-b border-border p-2;
+}
+
+.markdown td,
+.markdown th {
+    @apply p-2;
+}
+
+.markdown blockquote {
+    @apply p-2 pl-5 text-lg border rounded-lg my-4 w-fit border-border relative;
+}
+
+.markdown blockquote::before {
+    @apply absolute left-0 top-0 h-full w-2.5 bg-primary rounded-l-lg;
+    content: " ";
+}
+
+.markdown .contains-task-list {
+    @apply mt-2 mb-4;
+}
+
+.markdown .task-list-item {
+    @apply flex items-center gap-x-1;
+}
+
+.markdown .footnotes {
+    @apply my-4 pt-2;
+}
+
+.markdown dl {
+    @apply my-1;
+}
+
+.markdown dt {
+    @apply font-bold;
+}
+
+.markdown dd {
+    @apply font-thin italic ml-4 mb-2;
+}
+
+.markdown code:not([class]) {
+    @apply text-title font-medium p-1 rounded font-mono bg-display;
+}
+
+.markdown[data-heading="true"] {
+    @apply mb-2 leading-relaxed;
+}
+
+.markdown[data-heading="true"]:not(:first-of-type) {
+    @apply mt-6;
+}
+
+.markdown table {
+    @apply w-full min-w-full;
+    border: 1px solid;
+    table-layout: fixed;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.markdown table, .markdown table tr {
+    border-color: #cccccc;
+}

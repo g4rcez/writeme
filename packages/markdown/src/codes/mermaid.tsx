@@ -5,36 +5,35 @@ type Props = { content: string };
 
 export default function Mermaid(props: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  const [style, setStyle] = useState<Partial<CSSProperties>>({});
-  const listener = useRef<{ element: HTMLElement; listener: () => void } | undefined>(undefined);
+  const [style, setStyle] = useState<Partial<CSSProperties>>({ minHeight: "300px" });
+
   useEffect(() => {
     const div = ref.current;
     if (div === null) return;
+    let listener: { element: HTMLElement; fn: () => void } | null = null;
     mermaid.run({
       nodes: [div],
       suppressErrors: true,
       postRenderCallback: (id) => {
         const element = document.getElementById(id)!;
-        const getH = (): CSSProperties => {
-          const h = `${element.getBoundingClientRect().height}px`;
-          return { height: h, minHeight: h };
-        };
+        const getH = (): CSSProperties => ({
+          minHeight: "300px",
+          height: `${Math.max(element.getBoundingClientRect().height, 300)}px`,
+        });
         setStyle(getH);
-        const handler = () => setStyle(getH);
-        element.addEventListener("resize", handler);
-        listener.current = { element, listener: handler };
+        const fn = () => setStyle(getH);
+        element.addEventListener("resize", fn);
+        listener = { element, fn };
       },
     });
     return () => {
-      listener.current?.element.removeEventListener("resize", listener.current?.listener);
+      listener?.element.removeEventListener("resize", listener?.fn);
     };
   }, []);
 
   return (
-    <div style={style}>
-      <div ref={ref} className="mermeid">
-        {props.content}
-      </div>
+    <div style={style} ref={ref} className="mermeid">
+      {props.content}
     </div>
   );
 }

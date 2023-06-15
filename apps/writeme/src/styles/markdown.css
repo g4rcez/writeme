@@ -44,6 +44,12 @@
     @apply my-4 pt-2;
 }
 
+.markdown .footnotes > ol > li > p {
+    @apply inline;
+}
+
+
+
 .markdown dl {
     @apply my-1;
 }
